@@ -10,8 +10,8 @@ const Category = ({setActiveCategory}) => {
         { name: "Stats", icon: "stats-chart" }, 
         { name: "Boundary", icon: "tennisball" }, // Add the "Boundary" icon here
         { name: "Wicket Down", icon: "tennisball" }, // Add the "Boundary" icon here
-        { name: "Score", icon: "trophy" }, 
-        { name: "Watch Party ", icon: "eye" }, 
+        // { name: "Score", icon: "trophy" }, 
+        // { name: "Watch Party ", icon: "eye" }, 
         { name: "Point Table", icon: "list" }
     ];
 

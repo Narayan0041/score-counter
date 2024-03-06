@@ -3,7 +3,7 @@ import React from "react";
 import theme from "../theme/style";
 
 const WicketDown = () => {
-  const wicketDownData = [10, 15, 20, 50];
+  const wicketDownData = [`10-1 (1.4)`, `15-2 (2.1)`, `20-3 (2.5)`, `50-4 (5.5)`];
 
   return (
     <View style={styles.wicketDownContainer}>
@@ -11,7 +11,7 @@ const WicketDown = () => {
         WicketDown
       </Text>
       <View style={styles.table}>
-        <View style={styles.row}>
+        <View style={[ styles.headerRow]}>
           <Text style={[styles.header, { color: theme.colors.fontColor }]}>
             Sr No
           </Text>
@@ -57,6 +57,10 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     borderBottomWidth: 1,
     borderBottomColor: "gray",
+  },
+  headerRow:{
+    flexDirection: "row",
+    backgroundColor:theme.colors.secondaryBackground,
   },
   header: {
     flex: 1,

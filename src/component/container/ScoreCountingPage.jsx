@@ -7,6 +7,8 @@ import Stats from '../Stats';
 import RingChart from '../common/Chart/RingChart'
 import WicketDown from '../WicketDown'
 import ScoreCountSection from '../ScoreCountingPage/ScoreCountSection'
+import ScoreAddSection from '../ScoreAddSection'
+import ScoreCard from '../ScoreCard'
 
 
 const ScoreCountingPage = (props) => {
@@ -18,8 +20,9 @@ const ScoreCountingPage = (props) => {
     {activeCategory === "Stats" && <Stats />}
     {activeCategory ==="Boundary" && <RingChart />}
     {activeCategory ==="Wicket Down" && <WicketDown />}
-
-    {/* <Slider/> */}
+    {/* {activeCategory === "Score" && <ScoreCard/>} */}
+    <Slider/>
+    <ScoreAddSection/>
     </View>
   )
 }

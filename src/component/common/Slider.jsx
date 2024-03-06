@@ -30,7 +30,7 @@ export default function Slider() {
           renderItem={({ item, index }) => {
             return (
               <View style={styles.itemContainer}>
-                <ScoreDisplayContainer/>
+               <ScoreDisplayContainer/>
               </View>
             );
           }}
@@ -45,7 +45,7 @@ export default function Slider() {
                 style={[
                   styles.dot,
                   {
-                    width: currentIndex === index ? 50 : 8,
+                    width: currentIndex === index ? 35 : 8,
                     height: currentIndex === index ? 10 : 8,
                     borderRadius: currentIndex === index ? 5 : 4,
                     backgroundColor:
@@ -64,16 +64,10 @@ export default function Slider() {
 
 const styles = StyleSheet.create({
   container: {
-    height: height/3.2 ,
-    // justifyContent: "center",
-    // alignItems: "center",
     width:"100%"
   },
   itemContainer: {
     width: width,
-    height: height / 3.7,
-    // justifyContent: "center",
-    // alignItems: "center",
   },
   touchableOpacity: {
     width: "90%",
@@ -92,6 +86,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   dot: {
+    marginTop:"5%",
     marginLeft: 5,
   },
 });

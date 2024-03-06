@@ -5,7 +5,8 @@ const theme = {
     secondary: "#baff75", //  secondary lightGreen color
     fontColor: "#fbfbfb", // white color
     background: "black", // background black color
-    secondaryBackground: "#151718", //  background lightBlack color
+    secondaryBackground: "#151718",
+    grayColor:"gray" //  background lightBlack color
   },
   fonts: {
     regular: "Arial", // example regular font family

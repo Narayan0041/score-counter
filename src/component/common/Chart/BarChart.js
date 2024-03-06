@@ -43,6 +43,6 @@ const styles = StyleSheet.create({
   chart: {
     marginTop: 10,
     height: 110,
-    marginBottom: 80,
+    marginBottom: 100,
   },
 });
