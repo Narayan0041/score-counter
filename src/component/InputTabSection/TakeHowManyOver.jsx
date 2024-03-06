@@ -7,8 +7,7 @@ export default function TakeHowManyOver(props) {
     };
     
     const handleNext = () => {
-        // console.warn(props)
-        // navigation.navigate("ScoreCountPage");
+        props.navigation.navigate("ScoreCountPage");
     };
 
     return (

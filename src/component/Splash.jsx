@@ -5,7 +5,7 @@ import theme from "../theme/style";
 const Splash = ({ navigation }) => {
   useEffect(() => {
     setTimeout(() => {
-      navigation.navigate("Home");
+      navigation.navigate("ScoreCountPage");
     }, 1500);
   }, []);
   return (

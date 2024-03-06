@@ -7,7 +7,7 @@ import PreMatch from "./DifferentTabsSection/PreMatch";
 import CreateMatch from "./DifferentTabsSection/CreateMatch";
 import FutureMatch from "./DifferentTabsSection/FutureMatch";
 
-const Home = () => {
+const Home = ({navigation}) => {
     const [currentTab , setCurrentTab] =useState(1);
   return (
     <View style={styles.container}>
@@ -18,7 +18,7 @@ const Home = () => {
         <Tab setCurrentTab={setCurrentTab}/>
         {/* Different Tabs Layout */}
         {currentTab === 1 && <PreMatch />}
-        {currentTab === 2 && <CreateMatch />}
+        {currentTab === 2 && <CreateMatch navigation={navigation}/>}
         {currentTab === 3 && <FutureMatch />}
       </View>
     </View>
