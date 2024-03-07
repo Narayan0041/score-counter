@@ -16,6 +16,7 @@ import theme from "../../theme/style";
 const ScoreCountSection = () => {
   const navigation = useNavigation();
   const [opacityValue] = useState(new Animated.Value(1));
+  const [secondInn , setSecondInn] = useState(true);
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -67,7 +68,7 @@ const ScoreCountSection = () => {
             <Text style={styles.textScore}>
               {60}-{4} / <Text style={{fontSize:15, marginLeft:15 , color:theme.colors.grayColor}}>{`(4)`}</Text>
             </Text>
-            <Text style={styles.textPrimary}>CRR . {3.44}</Text>
+            <Text style={styles.textPrimary}>CRR  {3.44}</Text>
           </View>
       
 {/* ------------------------------Bat Icon---------------------------- */}
@@ -85,7 +86,7 @@ const ScoreCountSection = () => {
           <Text style={styles.textScore}>
           {60}-{4} / <Text style={{fontSize:15, marginLeft:15 , color:theme.colors.grayColor}}>{`(4)`}</Text>
           </Text>
-          <Text style={styles.textPrimary}>CRR . {3.44}</Text>
+          <Text style={styles.textPrimary}>CRR  {3.44}</Text>
         </View>
       </View>
         <View>
@@ -93,7 +94,7 @@ const ScoreCountSection = () => {
         </View>
       <View style={styles.separatorLine}></View>
       <View>
-        <Text style={styles.textPro}>Projected Score is {100}</Text>
+        <Text style={styles.textPro}>{secondInn ?(`${"india"} need ${104} runs in ${430} balls at ${14.51} rpo`) :(`Projected Score is ${100}`)}</Text>
       </View>
     </View>
   );
@@ -206,9 +207,10 @@ const styles = StyleSheet.create({
   },
   textPro: {
     marginTop: 20,
-    fontSize: 17,
+    fontSize: 16,
     color: theme.colors.fontColor,
     textAlign: "center",
+    fontWeight:"600"
   },
   icon: {
     fontSize: 30, // Adjust size as needed

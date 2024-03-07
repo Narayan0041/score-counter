@@ -72,8 +72,8 @@ export default function TakeTeamsName({ setActiveTab }) {
   return (
     <View>
       <View style={styles.textContainer}>
-        <Text style={[styles.text, { textAlign: "center", fontSize: 18 }]}>
-          Enter Teams Name
+        <Text style={[styles.text, { textAlign: "center", fontSize: 24 , fontWeight:"bold" ,fontStyle: "italic",}]}>
+          Enter Teams Name !!
         </Text>
       </View>
       <View style={styles.teamNameContainer}>
@@ -93,8 +93,8 @@ export default function TakeTeamsName({ setActiveTab }) {
           onChangeText={(text) => handleChange(text, "VisitorName")}
         />
       </View>
-      <View>{errorMeassage && <Text style={{color:"red" , marginLeft:"5%" , marginTop:"4%" , textAlign:"center"}}> Please enter both host and visitor team names to proceed.</Text>}</View>
-      <View style={styles.buttonContainer}>
+      <View>{errorMeassage && <Text style={{color:"red" , marginLeft:"1%" , marginTop:"4%" , textAlign:"center" , fontSize:15}}> Please enter both host and visitor team names to proceed.</Text>}</View>
+      <View style={{}}>
         <View>
           <TouchableOpacity
             disabled={inactiveBtn}
@@ -110,7 +110,7 @@ export default function TakeTeamsName({ setActiveTab }) {
           </TouchableOpacity>
         </View>
       </View>
-    </View>
+   </View>
   );
 }
 
@@ -125,8 +125,8 @@ const styles = StyleSheet.create({
     },
     teamNameContainer: {
       backgroundColor: theme.colors.secondaryBackground,
-      paddingTop: 25,
-      paddingBottom: 25,
+      paddingTop: 35,
+      paddingBottom: 35,
       paddingLeft: 20,
       paddingRight: 20,
       borderRadius: 15,
@@ -136,12 +136,15 @@ const styles = StyleSheet.create({
       marginBottom: 10,
       borderBottomWidth: 0.5,
       borderBottomColor: "gray",
+      fontSize:18,
+      marginBottom:20
     },
     focusedInput: {
     //   borderBottomColor: theme.colors.secondary,
     },
     buttonContainer: {
-      marginTop: "10%",
+      marginTop: "20%",
+      // alignItems:"flex-end"
     },
     button: {
       backgroundColor: "orange",
