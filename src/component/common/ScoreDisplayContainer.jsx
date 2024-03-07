@@ -34,11 +34,12 @@ const styles = StyleSheet.create({
     borderTopWidth: 0,
     padding: 10,
     borderRadius: 30,
-    width: "90%",
+    width: "97%",
     flexDirection:"row",
-    // justifyContent:"space-between",
-    marginLeft:10,
+    marginLeft:8,
     position: "relative",
+    alignItems:"center",
+    justifyContent:"center"
   },
   // absoluteContainer: {
   //   backgroundColor: theme.colors.primary,
@@ -67,7 +68,7 @@ const styles = StyleSheet.create({
     backgroundColor: 'rgb(40, 40, 40)',
     borderRadius: 30,
     paddingTop: 6,
-    marginRight:15,
+    marginRight:10,
   },
   runText: {
     fontSize: 20,

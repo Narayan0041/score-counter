@@ -33,7 +33,7 @@ const Tab = ({ setCurrentTab }) => {
         onPress={() => handleActive(3)}
       >
         <Text style={activeTab === 3 ? styles.activeText : styles.text}>
-          Future Match
+          Completed
         </Text>
       </TouchableOpacity>
     </View>

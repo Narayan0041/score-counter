@@ -1,10 +1,11 @@
 import React from 'react'
 import { View ,Text } from 'react-native'
+import ScoreCard from '../ScoreCard'
 
-export default function FutureMatch() {
+export default function CompletedComponent() {
   return (
-    <View style={{backgroundColor:"orange" , height:"100%" ,width:"100%"}}>
-        <Text>I am Future Tab</Text>
+    <View>
+       <ScoreCard/>
     </View>
   )
 }

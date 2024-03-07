@@ -87,17 +87,21 @@ const ScoreAddSection = () => {
 
           <View style={styles.container3}>
             <TouchableOpacity
-              style={styles.extraOptionBox}
+              style={[styles.extraOptionBox, { paddingTop: 1 }]}
               onPress={() => setShowScoreContainer(false)}
             >
               <Icon
                 name="arrow-down-sharp"
                 style={{
                   fontSize: 20,
-                  paddingTop: 7,
+                  paddingTop: 0,
+                  fontWeight: "800",
                   color: theme.colors.fontColor,
                 }}
               />
+              <Text style={{ color: "white", fontWeight: "800" }}>
+                Close Tab
+              </Text>
             </TouchableOpacity>
             <TouchableOpacity
               style={styles.extraOptionBox}
@@ -115,7 +119,10 @@ const ScoreAddSection = () => {
         </View>
       ) : (
         <View style={styles.getStartContainer}>
-          <TouchableOpacity style={styles.button} onPress={()=>setShowScoreContainer(true)}>
+          <TouchableOpacity
+            style={styles.button}
+            onPress={() => setShowScoreContainer(true)}
+          >
             <Text style={styles.text}>Get Start</Text>
           </TouchableOpacity>
         </View>
@@ -131,9 +138,10 @@ const styles = StyleSheet.create({
     position: "absolute",
     bottom: 0,
     left: 0,
-    paddingTop:15,
+    paddingTop: 15,
     width: "100%",
-    backgroundColor:theme.colors.background,
+    backgroundColor: theme.colors.background,
+    paddingBottom: 10,
   },
   container: {
     flexDirection: "row",
@@ -206,19 +214,19 @@ const styles = StyleSheet.create({
     width: 35,
     height: 35,
   },
-  getStartContainer:{
-    justifyContent:"center",
-    alignItems:"center",
+  getStartContainer: {
+    justifyContent: "center",
+    alignItems: "center",
   },
   button: {
-    backgroundColor: 'green',
+    backgroundColor: "green",
     paddingVertical: 10,
     paddingHorizontal: 20,
     borderRadius: 5,
   },
   text: {
-    color: 'white',
+    color: "white",
     fontSize: 18,
-    fontWeight: 'bold',
+    fontWeight: "bold",
   },
 });

@@ -5,7 +5,7 @@ import theme from "../theme/style";
 import Tab from "./Tab";
 import PreMatch from "./DifferentTabsSection/PreMatch";
 import CreateMatch from "./DifferentTabsSection/CreateMatch";
-import FutureMatch from "./DifferentTabsSection/FutureMatch";
+import CompletedComponent from "./DifferentTabsSection/FutureMatch";
 
 const Home = ({navigation}) => {
     const [currentTab , setCurrentTab] =useState(1);
@@ -19,7 +19,7 @@ const Home = ({navigation}) => {
         {/* Different Tabs Layout */}
         {currentTab === 1 && <PreMatch />}
         {currentTab === 2 && <CreateMatch navigation={navigation}/>}
-        {currentTab === 3 && <FutureMatch />}
+        {currentTab === 3 && <CompletedComponent />}
       </View>
     </View>
   );

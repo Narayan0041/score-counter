@@ -45,8 +45,8 @@ export default function Slider() {
                 style={[
                   styles.dot,
                   {
-                    width: currentIndex === index ? 35 : 8,
-                    height: currentIndex === index ? 10 : 8,
+                    width: currentIndex === index ? 35 : 6,
+                    height: currentIndex === index ? 5 : 6,
                     borderRadius: currentIndex === index ? 5 : 4,
                     backgroundColor:
                       currentIndex === index ? theme.colors.primary : "gray",
