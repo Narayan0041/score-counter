@@ -1,36 +1,33 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { View, Text, StyleSheet, TouchableOpacity, Image } from "react-native";
 import theme from "../../theme/style";
 
 export default function TakeBattingOption({ setActiveTab }) {
-    const [activeTeam, setActiveTeam] = useState("");
-    const [nextBtn, setNextBtn] = useState(false);
+  const [activeTeam, setActiveTeam] = useState("");
+  const [nextBtn, setNextBtn] = useState(false);
   const [errorMessage, setErrorMessage] = useState(false);
   const handlePrev = () => {
     setActiveTab(2); // Move to the previous tab
   };
 
   const handleNext = () => {
-    if(activeTeam !== ""){
-        setActiveTab(4); 
-    }else{
-        setErrorMessage(true)
+    if (activeTeam !== "") {
+      setActiveTab(4);
+    } else {
+      setErrorMessage(true);
     }
   };
   const handleClick = (value) => {
-    // setActiveTeam((prevActiveTeam) => {
-    //     const newActiveTeam = prevActiveTeam === value ? "" : value;
-    //     return newActiveTeam;
-    // });
-    setActiveTeam(prevTeam =>prevTeam== value ? "" :value);
+    setActiveTeam((prevTeam) => (prevTeam == value ? "" : value));
+  };
+  useEffect(() => {
     if (activeTeam === "") {
-        setNextBtn(false);
+      setNextBtn(false);
     } else {
-        setNextBtn(true);
-        setErrorMessage(false)
+      setNextBtn(true);
+      setErrorMessage(false);
     }
-};
-
+  }, [activeTeam]);
 
   return (
     <View>
@@ -44,27 +41,29 @@ export default function TakeBattingOption({ setActiveTab }) {
           marginTop: 20,
         }}
       >
-        What you want to do <Text >{`Team 1`}</Text>
+        What you want to do <Text>{`Team 1`}</Text>
       </Text>
       <View style={styles.battingContainer}>
         <View>
-        <View style={styles.secondOption}>
-          <TouchableOpacity
-            style={styles.radioBtnContainer}
-            onPress={() => handleClick("1")}
-          >
-            <View style={styles.radioBtn}>
-              {activeTeam == 1 ? <View style={styles.activeBtn}></View> : null}
-            </View>
-            <Text
-              style={{ color: "white", marginLeft: 10, fontSize: 20 }}
-            >Batting</Text>
+          <View style={styles.secondOption}>
+            <TouchableOpacity
+              style={styles.radioBtnContainer}
+              onPress={() => handleClick("1")}
+            >
+              <View style={styles.radioBtn}>
+                {activeTeam == 1 ? (
+                  <View style={styles.activeBtn}></View>
+                ) : null}
+              </View>
+              <Text style={{ color: "white", marginLeft: 10, fontSize: 20 }}>
+                Batting
+              </Text>
               <Image
                 source={require("../../assets/cricket_bat.png")}
                 style={styles.tossImage}
               />
-          </TouchableOpacity>
-        </View>
+            </TouchableOpacity>
+          </View>
         </View>
         <View>
           <View style={[styles.secondOption, { marginTop: "10%" }]}>
@@ -77,13 +76,13 @@ export default function TakeBattingOption({ setActiveTab }) {
                   <View style={styles.activeBtn}></View>
                 ) : null}
               </View>
-              <Text
-                style={{ color: "white", marginLeft: 10, fontSize: 20 }}
-              >Bowling</Text>
-                <Image
-                  source={require("../../assets/cricket_ball.png")}
-                  style={styles.tossImage}
-                />
+              <Text style={{ color: "white", marginLeft: 10, fontSize: 20 }}>
+                Bowling
+              </Text>
+              <Image
+                source={require("../../assets/cricket_ball.png")}
+                style={styles.tossImage}
+              />
             </TouchableOpacity>
           </View>
         </View>
@@ -131,10 +130,10 @@ export default function TakeBattingOption({ setActiveTab }) {
 
 const styles = StyleSheet.create({
   battingContainer: {
-    marginTop:"10%",
-    paddingHorizontal:30,
-    paddingVertical:30,
-    borderRadius:20,
+    marginTop: "10%",
+    paddingHorizontal: 30,
+    paddingVertical: 30,
+    borderRadius: 20,
     backgroundColor: theme.colors.secondaryBackground,
   },
   radioBtnContainer: {

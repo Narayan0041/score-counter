@@ -6,9 +6,11 @@ import Tab from "./Tab";
 import PreMatch from "./DifferentTabsSection/PreMatch";
 import CreateMatch from "./DifferentTabsSection/CreateMatch";
 import CompletedComponent from "./DifferentTabsSection/FutureMatch";
+import { useSelector } from "react-redux";
 
 const Home = ({navigation}) => {
     const [currentTab , setCurrentTab] =useState(1);
+    // let data =useSelector(data=>console.warn(data))
   return (
     <View style={styles.container}>
       {/* Set StatusBar background color */}

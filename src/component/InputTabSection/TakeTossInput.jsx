@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   View,
   Text,
@@ -19,25 +19,24 @@ export default function TakeTossInput({ setActiveTab }) {
 
   const handleNext = () => {
     if (nextBtn !== false) {
-      setActiveTab(3); 
+      setActiveTab(3);
     }
-    if(activeTeam === ""){
-        setErrorMessage(true)   
-    }
-};
-
-const handleClick = (value) => {
-    setActiveTeam((prevActiveTeam) => {
-        const newActiveTeam = prevActiveTeam === value ? "" : value;
-        return newActiveTeam;
-    });
     if (activeTeam === "") {
-        setNextBtn(false);
-    } else {
-        setNextBtn(true);
-        setErrorMessage(false)
+      setErrorMessage(true);
     }
-};
+  };
+
+  const handleClick = (value) => {
+    setActiveTeam((prevActiveTeam) => prevActiveTeam === value ? "" : value)
+  };
+  useEffect(() => {
+    if (activeTeam === "") {
+      setNextBtn(false);
+    } else {
+      setNextBtn(true);
+      setErrorMessage(false);
+    }
+  }, [activeTeam]);
 
   return (
     <View>

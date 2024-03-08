@@ -6,6 +6,8 @@ import LineChart from "./common/Chart/LineChart";
 import BarChart from "./common/Chart/BarChart";
 import LineChartComponent from "./common/Chart/LineChart";
 import BarChartComponent from "./common/Chart/BarChart";
+import { Trail } from "./Trail";
+import { Trail2 } from "./Trail2";
 
 const Stats = () => {
   const statsTabs = ["Runs", "Runrate"];
@@ -28,20 +30,17 @@ const Stats = () => {
             onPress={() => handlePress(item)}
           >
             <Text
-              style={[
-                styles.tabs,
-                activeButton === item && styles.activeText,
-              ]}
+              style={[styles.tabs, activeButton === item && styles.activeText]}
             >
               {item}
             </Text>
           </TouchableOpacity>
         ))}
       </View>
-      {/* {activeButton === "Runs" && <Text style={{color:"white"}}>hello</Text>}
-      {activeButton === "Runrate" && <Text style={{color:"white"}}>hello2</Text>} */}
-      { activeButton === "Runs" && <LineChartComponent/>}
-      {activeButton === "Runrate" && <BarChartComponent/>}
+      {/* { activeButton === "Runs" && <LineChartComponent/>} */}
+      {/* {activeButton === "Runrate" && <BarChartComponent/>} */}
+      {activeButton === "Runs" && <Trail />}
+      {activeButton === "Runrate" && <LineChartComponent />}
     </View>
   );
 };
@@ -67,7 +66,7 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center", // Center text vertically
     marginHorizontal: 5,
-    marginTop:10
+    marginTop: 10,
   },
   tabs: {
     color: theme.colors.fontColor,

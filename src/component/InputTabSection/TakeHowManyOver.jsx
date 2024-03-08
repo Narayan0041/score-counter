@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { View, Text, Button, StyleSheet, TouchableOpacity } from "react-native";
 import theme from "../../theme/style";
 
@@ -33,13 +33,15 @@ export default function TakeHowManyOver(props) {
 
   const handleClick = (value) => {
     setSelectBtn(value);
-    if(selectBtn === ""){
-        setNextBtn(false)
-    }else{
-        setNextBtn(true)
-        setErrorMessage(false)
-    }
   };
+  useEffect(() => {
+    if (selectBtn === "") {
+      setNextBtn(false);
+    } else {
+      setNextBtn(true);
+      setErrorMessage(false);
+    }
+  }, [selectBtn]);
 
   return (
     <View>
@@ -51,7 +53,7 @@ export default function TakeHowManyOver(props) {
           marginTop: "10%",
           fontWeight: "bold",
           fontStyle: "italic",
-        //   textDecorationLine: "underline",
+          //   textDecorationLine: "underline",
         }}
       >
         Select how many over you can play !!
@@ -59,24 +61,26 @@ export default function TakeHowManyOver(props) {
       <View style={{ marginTop: "10%" }}>
         <View style={styles.rowContainer}>
           {overData.slice(0, 3).map((item, index) => (
-           <TouchableOpacity
-           key={index}
-           style={[
-             styles.optionContainer,
-             selectBtn === item && styles.activeBorder,
-           ]}
-           onPress={() => handleClick(item)}
-         >
-           <Text style={styles.optionText}>{item}</Text>
-         </TouchableOpacity>
-         
+            <TouchableOpacity
+              key={index}
+              style={[
+                styles.optionContainer,
+                selectBtn === item && styles.activeBorder,
+              ]}
+              onPress={() => handleClick(item)}
+            >
+              <Text style={styles.optionText}>{item}</Text>
+            </TouchableOpacity>
           ))}
         </View>
         <View style={styles.rowContainer}>
           {overData.slice(3, 6).map((item, index) => (
             <TouchableOpacity
               key={index}
-              style={[styles.optionContainer , selectBtn === item && styles.activeBorder]}
+              style={[
+                styles.optionContainer,
+                selectBtn === item && styles.activeBorder,
+              ]}
               onPress={() => handleClick(item)}
             >
               <Text style={styles.optionText}>{item}</Text>
@@ -87,7 +91,10 @@ export default function TakeHowManyOver(props) {
           {overData.slice(6, 9).map((item, index) => (
             <TouchableOpacity
               key={index}
-              style={[styles.optionContainer2 , selectBtn === item && styles.activeBorder]}
+              style={[
+                styles.optionContainer2,
+                selectBtn === item && styles.activeBorder,
+              ]}
               onPress={() => handleClick(item)}
             >
               <Text style={styles.optionText}>{item}</Text>
