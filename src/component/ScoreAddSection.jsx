@@ -1,14 +1,159 @@
 import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import theme from "../theme/style";
 import { Image } from "react-native";
 import Icon from "react-native-vector-icons/Ionicons";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  currentRunRate,
+  noOfNOBall,
+  noOfWideBall,
+  runsScoreBoard,
+  secondInnCurrentRunRate,
+  secondInnNoOfNOBall,
+  secondInnNoOfWideBall,
+  secondInnTotalNoOFBalls,
+  secondInnTotalRun,
+  secondInnWicketFall,
+  totalNoOFBalls,
+  totalRun,
+  wicketFall,
+} from "../Store/Action";
 
 const ScoreAddSection = () => {
+  let dispatch = useDispatch();
+  let data = useSelector((state) => state.Reducers);
+console.warn(data)
   const [showScoreContainer, setShowScoreContainer] = useState(false);
-  const handleClick = (text) => {
-    alert(text);
+  //ball counting
+  const [balls, setBalls] = useState(0);
+  const [runs, setRuns] = useState(0);
+  const [noBalls, setNoBalls] = useState(0);
+  const [wides, setWides] = useState(0);
+  const [runRate, setRunRate] = useState("");
+  const [wicket, setWicket] = useState(0);
+  const [overData, setOverData] = useState([]);
+
+  // second Inning
+  const [secondInnBalls, setSecondInnBalls] = useState(0);
+  const [secondInnRuns, setSecondInnRuns] = useState(0);
+  const [secondInnNoBalls, setSecondInnNoBalls] = useState(0);
+  const [secondInnWides, setSecondInnWides] = useState(0);
+  const [secondInnRunRate, setSecondInnRunRate] = useState("");
+  const [secondInnWicket, setSecondInnWicket] = useState(0);
+  const [secondInnOverData, setSecondInnOverData] = useState([]);
+
+  // const [currentOver, setCurrentOver] = useState(1);
+
+  const handleBall = () => {
+    if (!data.secondInning) {
+      setBalls(balls + 1);
+    } else {
+      setSecondInnBalls(balls + 1);
+    }
   };
+
+  const handleRun = (runCount) => {
+    if (!data.secondInning) {
+      setRuns(runs + runCount);
+      setBalls((prev) => prev + 1);
+    } else {
+      setSecondInnRuns(runs + runCount);
+      setSecondInnBalls((prev) => prev + 1);
+    }
+
+    const updatedOverData = [...overData, runCount];
+    setOverData(updatedOverData);
+    // dispatch(runsScoreBoard(updatedOverData))
+    // If over is completed (6 balls), update container and reset over data
+    // if (updatedOverData.length === 6) {
+    //   console.log(`Over ${currentOver} completed. Data: `, updatedOverData);
+    //   setOverData([]);
+    //   setCurrentOver(currentOver + 1);
+    // dispatch(runsScoreBoard([]))
+
+    // }
+  };
+  const handleWicket = () => {
+    if (!data.secondInning) {
+      setWicket((prev) => prev + 1);
+      setBalls((prev) => prev + 1);
+    } else {
+      setSecondInnWicket((prev) => prev + 1);
+      setSecondInnBalls((prev) => prev + 1);
+    }
+  };
+  const handleNoBall = (value) => {
+    if (!data.secondInning) {
+      setNoBalls(value + 1);
+    } else {
+      setSecondInnNoBalls(value + 1);
+    }
+  };
+
+  const handleWide = (value) => {
+    if (!data.secondInning) {
+      setWides(value + 1);
+    } else {
+      setSecondInnWides(value + 1);
+    }
+  };
+  useEffect(() => {
+    if (!data.secondInning) {
+      if (runs) {
+        dispatch(totalRun(runs));
+        // dispatch(runsScoreBoard([runs])); // Pass runs as an element of an array
+      }
+      if (balls) {
+        dispatch(totalNoOFBalls(balls));
+        dispatch(secondInnTotalNoOFBalls(balls));
+      }
+      if (runs && balls) {
+        const runsScored = parseFloat(runs);
+        const ballsFaced = parseFloat(balls);
+        const runRateValue = (runsScored / (ballsFaced / 6)).toFixed(2);
+        setRunRate(runRateValue);
+      }
+      if (noBalls) {
+        dispatch(noOfNOBall(noBalls));
+        dispatch(secondInnNoOfNOBall(noBalls));
+      }
+      if (wides) {
+        dispatch(noOfWideBall(wides));
+        dispatch(secondInnNoOfWideBall(wides));
+      }
+      if (wicket) {
+        dispatch(wicketFall(wicket));
+      }
+      dispatch(currentRunRate(runRate));
+    }
+    
+    else {
+      if (secondInnRuns) {
+        dispatch(secondInnTotalRun(secondInnRuns));
+      }
+      if (secondInnBalls) {
+        dispatch(secondInnTotalNoOFBalls(secondInnBalls));
+      }
+      if (secondInnRuns && secondInnBalls) {
+        const runsScored = parseFloat(secondInnRuns);
+        const ballsFaced = parseFloat(secondInnBalls);
+        const runRateValue = (runsScored / (ballsFaced / 6)).toFixed(2);
+        setSecondInnRunRate(runRateValue);
+        dispatch(secondInnCurrentRunRate(runRateValue));
+      }
+      if (secondInnNoBalls) {
+        dispatch(secondInnNoOfNOBall(secondInnNoBalls));
+      }
+      if (secondInnWides) {
+        dispatch(secondInnNoOfWideBall(secondInnWides));
+      }
+      if (secondInnWicket) {
+        dispatch(secondInnWicketFall(secondInnWicket));
+      }
+    }
+    
+  }, [runs, balls, runRate, noBalls, wides, wicket,secondInnBalls ,secondInnRuns ,secondInnNoBalls ,secondInnWides ,secondInnRunRate ,secondInnWicket]);
   return (
     <View style={styles.scoreContainer}>
       {showScoreContainer ? (
@@ -16,38 +161,35 @@ const ScoreAddSection = () => {
           <View style={styles.container}>
             <TouchableOpacity
               style={styles.runBox}
-              onPress={() => handleClick("6")}
+              onPress={() => handleRun(6)}
             >
               <Text style={styles.runText}>6</Text>
             </TouchableOpacity>
             <TouchableOpacity
               style={styles.runBox}
-              onPress={() => handleClick("4")}
+              onPress={() => handleRun(4)}
             >
               <Text style={styles.runText}>4</Text>
             </TouchableOpacity>
             <TouchableOpacity
               style={styles.runBox}
-              onPress={() => handleClick("3")}
+              onPress={() => handleRun(3)}
             >
               <Text style={styles.runText}>3</Text>
             </TouchableOpacity>
             <TouchableOpacity
               style={styles.runBox}
-              onPress={() => handleClick("2")}
+              onPress={() => handleRun(2)}
             >
               <Text style={styles.runText}>2</Text>
             </TouchableOpacity>
             <TouchableOpacity
               style={styles.runBox}
-              onPress={() => handleClick("1")}
+              onPress={() => handleRun(1)}
             >
               <Text style={styles.runText}>1</Text>
             </TouchableOpacity>
-            <TouchableOpacity
-              style={styles.runBox}
-              onPress={() => handleClick("0")}
-            >
+            <TouchableOpacity style={styles.runBox} onPress={handleBall}>
               <Text style={styles.runText}>0</Text>
             </TouchableOpacity>
           </View>
@@ -55,7 +197,7 @@ const ScoreAddSection = () => {
           <View style={styles.container2}>
             <TouchableOpacity
               style={[styles.umpireSignal, { backgroundColor: "skyblue" }]}
-              onPress={() => handleClick("No")}
+              onPress={() => handleNoBall("No")}
             >
               <Image
                 source={require("../assets/no_ball.png")}
@@ -65,7 +207,7 @@ const ScoreAddSection = () => {
             </TouchableOpacity>
             <TouchableOpacity
               style={[styles.umpireSignal, { backgroundColor: "red" }]}
-              onPress={() => handleClick("W")}
+              onPress={handleWicket}
             >
               <Image
                 source={require("../assets/out.png")}
@@ -75,7 +217,7 @@ const ScoreAddSection = () => {
             </TouchableOpacity>
             <TouchableOpacity
               style={[styles.umpireSignal, { backgroundColor: "green" }]}
-              onPress={() => handleClick("Wide")}
+              onPress={() => handleWide("Wide")}
             >
               <Image
                 source={require("../assets/wide_ball.png")}

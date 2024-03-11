@@ -1,25 +1,35 @@
 import React, { useEffect, useState } from "react";
 import { View, Text, StyleSheet, TouchableOpacity, Image } from "react-native";
 import theme from "../../theme/style";
+import { useDispatch, useSelector } from "react-redux";
+import { whatYouChoose } from "../../Store/Action";
 
 export default function TakeBattingOption({ setActiveTab }) {
+  // Retrieve teamTossWin from the Redux store
+  let dispatch =useDispatch();
+  let teamTossWin = useSelector((store) => store.Reducers.teamTossWin);
+ 
   const [activeTeam, setActiveTeam] = useState("");
   const [nextBtn, setNextBtn] = useState(false);
   const [errorMessage, setErrorMessage] = useState(false);
+
   const handlePrev = () => {
-    setActiveTab(2); // Move to the previous tab
+    setActiveTab(2); 
   };
 
   const handleNext = () => {
     if (activeTeam !== "") {
+      dispatch(whatYouChoose(activeTeam))
       setActiveTab(4);
     } else {
       setErrorMessage(true);
     }
   };
+
   const handleClick = (value) => {
-    setActiveTeam((prevTeam) => (prevTeam == value ? "" : value));
+    setActiveTeam((prevTeam) => (prevTeam === value ? "" : value));
   };
+
   useEffect(() => {
     if (activeTeam === "") {
       setNextBtn(false);
@@ -41,17 +51,17 @@ export default function TakeBattingOption({ setActiveTab }) {
           marginTop: 20,
         }}
       >
-        What you want to do <Text>{`Team 1`}</Text>
+        What you want to do <Text>{teamTossWin}</Text>
       </Text>
       <View style={styles.battingContainer}>
         <View>
           <View style={styles.secondOption}>
             <TouchableOpacity
               style={styles.radioBtnContainer}
-              onPress={() => handleClick("1")}
+              onPress={() => handleClick("batting")}
             >
               <View style={styles.radioBtn}>
-                {activeTeam == 1 ? (
+                {activeTeam === "batting" ? (
                   <View style={styles.activeBtn}></View>
                 ) : null}
               </View>
@@ -69,10 +79,10 @@ export default function TakeBattingOption({ setActiveTab }) {
           <View style={[styles.secondOption, { marginTop: "10%" }]}>
             <TouchableOpacity
               style={styles.radioBtnContainer}
-              onPress={() => handleClick("2")}
+              onPress={() => handleClick("bowling")}
             >
               <View style={styles.radioBtn}>
-                {activeTeam == 2 ? (
+                {activeTeam === "bowling" ? (
                   <View style={styles.activeBtn}></View>
                 ) : null}
               </View>
@@ -98,7 +108,7 @@ export default function TakeBattingOption({ setActiveTab }) {
               marginTop: 20,
             }}
           >
-            Please select batting other wise bowling
+            Please select batting otherwise bowling
           </Text>
         )}
       </View>

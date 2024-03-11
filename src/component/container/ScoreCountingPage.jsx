@@ -9,14 +9,16 @@ import WicketDown from '../WicketDown'
 import ScoreCountSection from '../ScoreCountingPage/ScoreCountSection'
 import ScoreAddSection from '../ScoreAddSection'
 import ScoreCard from '../ScoreCard'
+import ExtraRunsComponent from '../ExtraRunsComponent'
 
 
 const ScoreCountingPage = (props) => {
-  const [activeCategory , setActiveCategory] = useState(undefined);
+  const [activeCategory , setActiveCategory] = useState("Home");
   return (
     <View style={styles.scoreCountingPage}>
       <ScoreCountSection/>
     <Category setActiveCategory={setActiveCategory}/>
+    {activeCategory === "Home" && <ExtraRunsComponent/>}
     {activeCategory === "Stats" && <Stats />}
     {activeCategory ==="Boundary" && <RingChart />}
     {activeCategory ==="Wicket Down" && <WicketDown />}

@@ -1,9 +1,7 @@
 import {
   View,
-  Text,
   FlatList,
   Dimensions,
-  TouchableOpacity,
   StyleSheet,
 } from "react-native";
 import React, { useState } from "react";

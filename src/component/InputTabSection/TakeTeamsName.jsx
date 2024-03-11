@@ -4,22 +4,22 @@ import {
   Text,
   StyleSheet,
   TextInput,
-  Button,
   TouchableOpacity,
 } from "react-native";
 import theme from "../../theme/style";
-import TabLayout from "../Layouts/TabLayout";
-import Icon from "react-native-vector-icons/Ionicons"; 
-
+import { useDispatch, useSelector } from "react-redux";
+import { TakeTeamName } from "../../Store/Action";
 
 export default function TakeTeamsName({ setActiveTab }) {
+  const dispatch =useDispatch()
+  let teamNameData =useSelector(store=>store.Reducers.takeTeamName)
   const hostInputRef = useRef();
   const [isHostFocused, setIsHostFocused] = useState(false);
   const [inactiveBtn, setInactiveBtn] = useState(true);
   const [errorMeassage , setErrorMessage] =useState(false)
   const [inputData, setInputData] = useState({
-    HostName: "",
-    VisitorName: "",
+    HostName: teamNameData.HostName, 
+    VisitorName: teamNameData.VisitorName, 
   });
 
   useEffect(() => {
@@ -35,28 +35,35 @@ export default function TakeTeamsName({ setActiveTab }) {
   };
 
   const handleChange = (text, inputFieldName) => {
-    setInputData((prev) => ({
+    setInputData(prev => ({
       ...prev,
       [inputFieldName]: text,
     }));
+  
+    // Check if the value is a string before calling trim
     if (
       inputFieldName === "HostName" &&
+      typeof text === "string" &&
       text.trim() !== "" &&
+      typeof inputData.VisitorName === "string" &&
       inputData.VisitorName.trim() !== ""
     ) {
       setInactiveBtn(false);
-      setErrorMessage(false)
+      setErrorMessage(false);
     } else if (
       inputFieldName === "VisitorName" &&
+      typeof text === "string" &&
       text.trim() !== "" &&
+      typeof inputData.HostName === "string" &&
       inputData.HostName.trim() !== ""
     ) {
       setInactiveBtn(false);
-      setErrorMessage(false)
+      setErrorMessage(false);
     } else {
       setInactiveBtn(true);
     }
   };
+  
 
   const handleNext = () => {
     if (
@@ -64,6 +71,7 @@ export default function TakeTeamsName({ setActiveTab }) {
       inputData.VisitorName.trim() !== ""
     ) {
       setActiveTab(2);
+     dispatch(TakeTeamName(inputData))
     }else{
         setErrorMessage(true)
     }
@@ -84,12 +92,14 @@ export default function TakeTeamsName({ setActiveTab }) {
           placeholderTextColor="gray"
           onFocus={handleHostFocus}
           onBlur={handleHostBlur}
+          value={inputData.HostName}
           onChangeText={(text) => handleChange(text, "HostName")}
         />
         <TextInput
           placeholder="Visitor Team Name"
           style={[styles.inputSection, { marginTop: 10 }]}
           placeholderTextColor="gray"
+          value={inputData.VisitorName}
           onChangeText={(text) => handleChange(text, "VisitorName")}
         />
       </View>

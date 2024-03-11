@@ -1,61 +1,126 @@
-import React, { useRef, useEffect } from 'react';
-import { View, Animated } from 'react-native';
-import { BarChart } from 'react-native-gifted-charts';
-import theme from '../theme/style';
+import { LineChart } from "react-native-gifted-charts";
+import theme from "../theme/style";
+import { StyleSheet, Text, View } from "react-native";
 
 export const Trail2 = () => {
-    const barData = [
-        {value: 250, label: 'M'},
-        {value: 500, label: 'T', frontColor: '#177AD5'},
-        {value: 745, label: 'W', frontColor: '#177AD5'},
-        {value: 320, label: 'T'},
-        {value: 600, label: 'F', frontColor: '#177AD5'},
-        {value: 256, label: 'S'},
-        {value: 300, label: 'S'},
-    ];
+  const data = [
+    { value: 15 },
+    { value: 15.5 },
+    { value: 15.8 },
+    { value: 19.8 },
+    { value: 17.8 },
+    { value: 21.8 },
+    { value: 10.8 },
+    { value: 25.8 },
+    { value: 30 },
+    { value: 26 },
+    { value: 10 },
+    { value: 30 },
 
-    // Create animated values for animation
-    const animation = useRef(new Animated.Value(0)).current;
+  ];
+  const data2 = [
+    { value: 10 },
+    { value: 35 },
+    { value: 26 },
+    // { value: 45 },
 
-    useEffect(() => {
-        Animated.timing(animation, {
-            toValue: 1,
-            duration: 1000, // Adjust the duration as needed
-            useNativeDriver: false, // Set to true if possible for better performance
-        }).start();
-    }, []);
+  ];
+  const xAxisLabelTexts = ["1", "2", "3", "4", "5"]; // Custom y-axis labels
 
-    // Interpolate animated value to get the animated value
-    const interpolatedAnimation = animation.interpolate({
-        inputRange: [0, 1],
-        outputRange: [0, 1],
-    });
-
-    // Custom x-axis labels
-    const xAxisData = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
-
-    // Custom y-axis labels
-    const yAxisData = [0, 250, 500, 750, 1000];
-
-    return (
-        <View style={{backgroundColor:theme.colors.secondaryBackground , marginTop:15, padding:10, margin:20, borderRadius:10}}>
-            <BarChart
-                barWidth={16}
-                noOfSections={5}
-                barBorderRadius={4}
-                frontColor="lightgray"
-                data={barData}
-                xAxisData={xAxisData} // Provide custom x-axis labels
-                yAxisData={yAxisData} // Provide custom y-axis labels
-                yAxisThickness={1} // Set y-axis thickness
-                xAxisThickness={1} // Set x-axis thickness
-                rulesColor="#333333"
-                height={150}
-                isAnimated={true}
-                animatedValue={interpolatedAnimation} // Pass the interpolated animation value
-                labelColor="white" // Set label color to white
-
-            />
+  return (
+    <View style={styles.LineChartContainer}>
+      <View style={styles.headerContainer}>
+        <View style={styles.teamContainer}>
+          <View style={styles.radio1}></View>
+          <Text style={styles.team1}>Team 1</Text>
         </View>
-    );
+        <View style={styles.teamContainer}>
+          <View style={styles.radio2}></View>
+          <Text style={styles.team2}>Team 2</Text>
+        </View>
+      </View>
+      <LineChart
+        data={data}
+        data2={data2}
+        backgroundColor={theme.colors.secondaryBackground}
+        thickness={1}
+        isAnimated={true}
+        width={320}
+        spacing={50}
+        initialSpacing={0}
+        color1={theme.colors.fontColor}
+        color2={theme.colors.primary}
+        hideDataPoints1
+        hideDataPoints2
+        // dataPointsColor1="white"
+        // dataPointsColor2={theme.colors.primary}
+        dashGap={3}
+        rulesColor="#444444"
+        xAxisLabelTexts={xAxisLabelTexts}
+        xAxisLabelTextStyle={{ color: theme.colors.fontColor }}
+        xAxisTextStyle={{ color: theme.colors.fontColor }}
+        yAxisTextStyle={{ color: theme.colors.fontColor }}
+        yAxisColor={theme.colors.secondaryBackground}
+        xAxisColor={theme.colors.fontColor}
+      />
+      <View style={styles.runsLabel}>
+        <Text style={styles.team2}>Runs</Text>
+      </View>
+      <View style={styles.oversLabel}>
+        <Text style={styles.team2}>OVERS</Text>
+      </View>
+    </View>
+  );
 };
+
+const styles = StyleSheet.create({
+  LineChartContainer: {
+    marginTop: 20,
+    paddingLeft: 25,
+    backgroundColor: theme.colors.secondaryBackground,
+    padding: 10,
+  },
+  headerContainer: {
+    flexDirection: "row",
+    justifyContent: "center",
+  },
+  teamContainer: {
+    flexDirection: "row",
+    alignItems: "center",
+  },
+  team1: {
+    color: theme.colors.primary,
+    fontSize: 15,
+    fontWeight: "600",
+  },
+  team2: {
+    color: "white",
+    fontSize: 15,
+    fontWeight: "600",
+  },
+  radio1: {
+    height: 8,
+    width: 25,
+    backgroundColor: theme.colors.primary,
+    borderRadius: 4,
+    marginRight: 5,
+  },
+  radio2: {
+    height: 8,
+    width: 25,
+    backgroundColor: "white",
+    borderRadius: 4,
+    marginLeft: 30,
+    marginRight: 5,
+  },
+  runsLabel: {
+    position: "absolute",
+    left: -5,
+    top: "50%",
+    transform: [{ rotate: "-90deg" }],
+  },
+  oversLabel: {
+    alignItems: "center",
+    marginTop: 5,
+  },
+});

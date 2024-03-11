@@ -1,8 +1,11 @@
 import React, { useEffect, useState } from "react";
 import { View, Text, Button, StyleSheet, TouchableOpacity } from "react-native";
 import theme from "../../theme/style";
+import { useDispatch, useSelector } from "react-redux";
+import { selectTheOver } from "../../Store/Action";
 
 export default function TakeHowManyOver(props) {
+  let dispatch =useDispatch()
   const [nextBtn, setNextBtn] = useState(false);
   const [errorMessage, setErrorMessage] = useState(false);
   const [selectBtn, setSelectBtn] = useState("");
@@ -24,6 +27,7 @@ export default function TakeHowManyOver(props) {
 
   const handleNext = () => {
     if (nextBtn !== false) {
+      dispatch(selectTheOver(selectBtn))
       props.navigation.navigate("ScoreCountPage");
     }
     if (selectBtn === "") {

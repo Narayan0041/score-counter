@@ -20,8 +20,8 @@ export default function App() {
   // }, []);
   // const { store, persistor } = configureSto(); 
   return (
-    // <Provider store={store}>
-    //   <PersistGate loading={null} persistor={persistor}>
+    <Provider store={store}>
+      <PersistGate loading={null} persistor={persistor}>
         <NavigationContainer>
           <Stack.Navigator initialRouteName="Splash">
             <Stack.Screen
@@ -47,8 +47,8 @@ export default function App() {
             />
           </Stack.Navigator>
         </NavigationContainer>
-  //      </PersistGate>
-  //  </Provider>
+       </PersistGate>
+   </Provider>
   );
 }
 

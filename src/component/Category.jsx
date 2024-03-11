@@ -4,9 +4,9 @@ import theme from "../theme/style";
 import Icon from "react-native-vector-icons/Ionicons"; // Import Ionicons from react-native-vector-icons
 
 const Category = ({setActiveCategory}) => {
-    const [activeClass , setActiveClass] = useState(undefined);
+    const [activeClass , setActiveClass] = useState("Home");
     const categoryData = [
-        { name: "Feed", icon: "home" }, 
+        { name: "Home", icon: "home" }, 
         { name: "Stats", icon: "stats-chart" }, 
         { name: "Boundary", icon: "tennisball" }, // Add the "Boundary" icon here
         { name: "Wicket Down", icon: "tennisball" }, // Add the "Boundary" icon here

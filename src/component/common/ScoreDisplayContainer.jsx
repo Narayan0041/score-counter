@@ -1,16 +1,15 @@
 import { View, Text, StyleSheet } from "react-native";
 import React from "react";
 import theme from "../../theme/style";
+import { useSelector } from "react-redux";
 
 const ScoreDisplayContainer = () => {
+  let Data =useSelector(state=>state.Reducers);
+  // console.warn(Data)
   let runsData = ["6", "2", "0", "1", "2", "4"];
   return (
     <View style={styles.container}>
       <View style={styles.outerContainer}>
-        {/* Absolutely positioned container */}
-        {/* <View style={styles.absoluteContainer}>
-          <Text style={styles.absoluteText}>{1} over</Text>
-        </View> */}
         {runsData.map((item, index) => {
           return (
             <View key={index + 1} style={styles.runBox}>

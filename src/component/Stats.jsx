@@ -40,7 +40,7 @@ const Stats = () => {
       {/* { activeButton === "Runs" && <LineChartComponent/>} */}
       {/* {activeButton === "Runrate" && <BarChartComponent/>} */}
       {activeButton === "Runs" && <Trail />}
-      {activeButton === "Runrate" && <LineChartComponent />}
+      {activeButton === "Runrate" && <Trail2 />}
     </View>
   );
 };

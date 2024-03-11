@@ -8,8 +8,12 @@ import {
   Image,
 } from "react-native";
 import theme from "../../theme/style";
+import { useDispatch, useSelector } from "react-redux";
+import { tossLoss, tossWin } from "../../Store/Action";
 
 export default function TakeTossInput({ setActiveTab }) {
+  let dispatch = useDispatch();
+  let teamNameData = useSelector((store) => store.Reducers.takeTeamName);
   const [activeTeam, setActiveTeam] = useState("");
   const [nextBtn, setNextBtn] = useState(false);
   const [errorMessage, setErrorMessage] = useState(false);
@@ -20,6 +24,7 @@ export default function TakeTossInput({ setActiveTab }) {
   const handleNext = () => {
     if (nextBtn !== false) {
       setActiveTab(3);
+      dispatch(tossWin(activeTeam));
     }
     if (activeTeam === "") {
       setErrorMessage(true);
@@ -27,9 +32,14 @@ export default function TakeTossInput({ setActiveTab }) {
   };
 
   const handleClick = (value) => {
-    setActiveTeam((prevActiveTeam) => prevActiveTeam === value ? "" : value)
+    setActiveTeam(value === activeTeam ? "" : value);
   };
   useEffect(() => {
+    if(activeTeam ==teamNameData.HostName){
+      dispatch(tossLoss(teamNameData.VisitorName))
+    }else{
+      dispatch(tossLoss(teamNameData.HostName))
+    }
     if (activeTeam === "") {
       setNextBtn(false);
     } else {
@@ -57,15 +67,17 @@ export default function TakeTossInput({ setActiveTab }) {
         <View style={styles.secondOption}>
           <TouchableOpacity
             style={styles.radioBtnContainer}
-            onPress={() => handleClick("1")}
+            onPress={() => handleClick(teamNameData.HostName)}
           >
             <View style={styles.radioBtn}>
-              {activeTeam == 1 ? <View style={styles.activeBtn}></View> : null}
+              {activeTeam === teamNameData.HostName ? (
+                <View style={styles.activeBtn}></View>
+              ) : null}
             </View>
-            <Text
-              style={{ color: "white", marginLeft: 10, fontSize: 18 }}
-            >{`Team 1`}</Text>
-            {activeTeam == 1 && (
+            <Text style={{ color: "white", marginLeft: 10, fontSize: 18 }}>
+              {teamNameData.HostName}
+            </Text>
+            {activeTeam === teamNameData.HostName && (
               <Image
                 source={require("../../assets/rupee.png")}
                 style={styles.tossImage}
@@ -76,15 +88,17 @@ export default function TakeTossInput({ setActiveTab }) {
         <View style={[styles.secondOption, { marginTop: "10%" }]}>
           <TouchableOpacity
             style={styles.radioBtnContainer}
-            onPress={() => handleClick("2")}
+            onPress={() => handleClick(teamNameData.VisitorName)}
           >
             <View style={styles.radioBtn}>
-              {activeTeam == 2 ? <View style={styles.activeBtn}></View> : null}
+              {activeTeam === teamNameData.VisitorName ? (
+                <View style={styles.activeBtn}></View>
+              ) : null}
             </View>
-            <Text
-              style={{ color: "white", marginLeft: 10, fontSize: 18 }}
-            >{`Team 2`}</Text>
-            {activeTeam == 2 && (
+            <Text style={{ color: "white", marginLeft: 10, fontSize: 18 }}>
+              {teamNameData.VisitorName}
+            </Text>
+            {activeTeam === teamNameData.VisitorName && (
               <Image
                 source={require("../../assets/rupee.png")}
                 style={styles.tossImage}

@@ -10,7 +10,7 @@ import { useSelector } from "react-redux";
 
 const Home = ({navigation}) => {
     const [currentTab , setCurrentTab] =useState(1);
-    // let data =useSelector(data=>console.warn(data))
+    // let data =useSelector(data=>console.warn(data.Reducers.takeTeamName))
   return (
     <View style={styles.container}>
       {/* Set StatusBar background color */}
