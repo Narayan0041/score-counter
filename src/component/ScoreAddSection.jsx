@@ -23,7 +23,7 @@ import {
 const ScoreAddSection = () => {
   let dispatch = useDispatch();
   let data = useSelector((state) => state.Reducers);
-console.warn(data)
+// console.warn(data)
   const [showScoreContainer, setShowScoreContainer] = useState(false);
   //ball counting
   const [balls, setBalls] = useState(0);
@@ -58,7 +58,7 @@ console.warn(data)
       setRuns(runs + runCount);
       setBalls((prev) => prev + 1);
     } else {
-      setSecondInnRuns(runs + runCount);
+      setSecondInnRuns(secondInnRuns + runCount);
       setSecondInnBalls((prev) => prev + 1);
     }
 
@@ -102,11 +102,9 @@ console.warn(data)
     if (!data.secondInning) {
       if (runs) {
         dispatch(totalRun(runs));
-        // dispatch(runsScoreBoard([runs])); // Pass runs as an element of an array
       }
       if (balls) {
         dispatch(totalNoOFBalls(balls));
-        dispatch(secondInnTotalNoOFBalls(balls));
       }
       if (runs && balls) {
         const runsScored = parseFloat(runs);
@@ -116,11 +114,9 @@ console.warn(data)
       }
       if (noBalls) {
         dispatch(noOfNOBall(noBalls));
-        dispatch(secondInnNoOfNOBall(noBalls));
       }
       if (wides) {
         dispatch(noOfWideBall(wides));
-        dispatch(secondInnNoOfWideBall(wides));
       }
       if (wicket) {
         dispatch(wicketFall(wicket));

@@ -18,7 +18,7 @@ import { secondInning } from "../../Store/Action";
 const ScoreCountSection = () => {
   let dispatch =useDispatch();
   let data = useSelector((state) => state.Reducers);
-  // console.warn(data)
+  // console.warn(data.secondInnNoOfBalls)
   const navigation = useNavigation();
   const [opacityValue] = useState(new Animated.Value(1));
   const [currentBattingTeam, setCurrentBattingTeam] = useState(data.teamTossWin);
@@ -49,21 +49,21 @@ const ScoreCountSection = () => {
     setCurrentBattingTeam(data.teamTossWin);
     return () => clearInterval(interval);
   }, [opacityValue, projectedScore, data.teamTossWin]);
-
+ 
   useEffect(() => {
-    if(!secondInn){
+    if (!secondInn) {
       const overValue = `${Math.floor(data.noOfBalls / 6)}.${data.noOfBalls % 6}`;
       setOver(overValue);
       if (parseFloat(overValue) >= selectedOverByUser) {
         setSecondInn(true);
         dispatch(secondInning(true));
       }
-    }else{
+    } else {
       const secondInnOverValue = `${Math.floor(data.secondInnNoOfBalls / 6)}.${data.secondInnNoOfBalls % 6}`;
       setSecondInningOver(secondInnOverValue);
     }
-  }, [data.noOfBalls, selectedOverByUser]);
- 
+  }, [data.noOfBalls, selectedOverByUser, secondInn, data.secondInnNoOfBalls]);
+  
 
   return (
     <View style={styles.container}>
