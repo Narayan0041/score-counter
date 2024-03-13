@@ -13,21 +13,30 @@ import { useNavigation } from "@react-navigation/native";
 import Icon from "react-native-vector-icons/Ionicons";
 import theme from "../../theme/style";
 import { useDispatch, useSelector } from "react-redux";
-import { secondInning } from "../../Store/Action";
+import { scoreAddContainer, secondInning, whatYouChoose } from "../../Store/Action";
 
 const ScoreCountSection = () => {
-  let dispatch =useDispatch();
+  let dispatch = useDispatch();
   let data = useSelector((state) => state.Reducers);
-  // console.warn(data.secondInnNoOfBalls)
+  // console.warn(data)
   const navigation = useNavigation();
   const [opacityValue] = useState(new Animated.Value(1));
-  const [currentBattingTeam, setCurrentBattingTeam] = useState(data.teamTossWin);
-  const [secondTeamBatting, setSecondTeamBatting] = useState(data.teamTossLoss);
+  const [currentBattingTeam, setCurrentBattingTeam] = useState(
+    data.whatYouChoose === "batting" ? data.teamTossWin : data.teamTossLoss
+  );
+  const [secondTeamBatting, setSecondTeamBatting] = useState(
+    data.whatYouChoose === "batting" ? data.teamTossLoss : data.teamTossWin
+  );
   const [over, setOver] = useState(0);
-  const[secondInningOver ,setSecondInningOver]=useState(0)
+  const [secondInningOver, setSecondInningOver] = useState(0);
   const [secondInn, setSecondInn] = useState(false);
-  const [projectedScoreData, setProjectedScoreData] = useState(undefined);
+  const [projectedScoreData, setProjectedScoreData] = useState(0);
+  const [requireRunsData, setRequireRunsData] = useState(0);
+  const [requireBallsData, setRequireBallsData] = useState(0);
+  const [message, setMessage] = useState(false);
+  const [messageForTeamOne, setMessageForTeamOne] = useState(false);
 
+  // get the projectedScore
   const currentRuns = data.totalRuns;
   const totalOvers = parseInt(data.selectTheOver.charAt(0));
   const totalBalls = data.noOfBalls;
@@ -35,8 +44,24 @@ const ScoreCountSection = () => {
   const remainingOvers = totalOvers - totalBalls / 6;
   const projectedScore = currentRuns + currentRunRate * remainingOvers;
 
-  let selectedOverByUser =data.selectTheOver.charAt(0);
+  // get require run
+  const dataTeamOneRun = data.totalRuns + 1;
+  const dataTeamTwoRun = data.secondInnTotalRuns;
+  const requireRuns = dataTeamOneRun - dataTeamTwoRun;
+
+  // get require balls
+  const totalNoOfOver = data.selectTheOver.charAt(0) * 6;
+  const totalNoOfBallPlayInSecondInning = data.secondInnNoOfBalls;
+  const requiredBalls = totalNoOfOver - totalNoOfBallPlayInSecondInning;
+
+  // get require run rate
+  const requiredRunRate = requireRunsData / (requiredBalls / 6);
+
+  let selectedOverByUser = parseInt(data.selectTheOver.charAt(0));
+
   useEffect(() => {
+    setRequireRunsData(requireRuns);
+    setRequireBallsData(requiredBalls);
     setProjectedScoreData(projectedScore.toFixed(0));
     const interval = setInterval(() => {
       Animated.timing(opacityValue, {
@@ -48,22 +73,48 @@ const ScoreCountSection = () => {
     }, 1000);
     setCurrentBattingTeam(data.teamTossWin);
     return () => clearInterval(interval);
-  }, [opacityValue, projectedScore, data.teamTossWin]);
- 
+  }, [
+    opacityValue,
+    projectedScore,
+    data.teamTossWin,
+    requireRuns,
+    requiredBalls,
+  ]);
+
   useEffect(() => {
-    if (!secondInn) {
-      const overValue = `${Math.floor(data.noOfBalls / 6)}.${data.noOfBalls % 6}`;
-      setOver(overValue);
-      if (parseFloat(overValue) >= selectedOverByUser) {
-        setSecondInn(true);
-        dispatch(secondInning(true));
-      }
-    } else {
-      const secondInnOverValue = `${Math.floor(data.secondInnNoOfBalls / 6)}.${data.secondInnNoOfBalls % 6}`;
-      setSecondInningOver(secondInnOverValue);
+    const overValue = `${Math.floor(data.noOfBalls / 6)}.${data.noOfBalls % 6}`;
+    setOver(overValue);
+    if (!secondInn && parseFloat(overValue) >= selectedOverByUser) {
+      setSecondInn(true);
+      dispatch(secondInning(true));
     }
-  }, [data.noOfBalls, selectedOverByUser, secondInn, data.secondInnNoOfBalls]);
-  
+  }, [data.noOfBalls, selectedOverByUser, secondInn]);
+
+  useEffect(() => {
+    const secondInnOverValue = `${Math.floor(data.secondInnNoOfBalls / 6)}.${
+      data.secondInnNoOfBalls % 6
+    }`;
+    setSecondInningOver(secondInnOverValue);
+  }, [data.secondInnNoOfBalls]);
+
+  useEffect(() => {
+    if (
+      dataTeamOneRun >= dataTeamTwoRun &&
+      secondInningOver &&
+      data.selectTheOver.charAt(0) === secondInningOver.charAt(0)
+    ) {
+      setMessageForTeamOne(true);
+      dispatch(scoreAddContainer(false))
+      return
+    }
+  }, [
+    dataTeamOneRun,
+    dataTeamTwoRun,
+    data.selectTheOver,
+    secondInningOver,
+    currentBattingTeam,
+    requireRuns
+  ]);
 
   return (
     <View style={styles.container}>
@@ -89,139 +140,264 @@ const ScoreCountSection = () => {
           </View>
         </View>
       </View>
-      <View style={styles.scoreSection}>
-        {/* Render based on batting choice after winning toss */}
-        {currentBattingTeam === data.teamTossWin && !secondInn  ? (
-          <>
-            {/* Toss win team selected batting option */}
-            <View style={styles.paticularTeam}>
-              <Image source={require("../../assets/india_flag.jpg")} style={styles.flag} />
-              <Text style={styles.text}>{data.teamTossWin}</Text>
-              <Text style={styles.textScore}>
-                {data.totalRuns}-{data.wicketFall} /{" "}
-                <Text style={{ fontSize: 17, marginLeft: 15, color: theme.colors.grayColor }}>
-                  ({over}{" "}
-                </Text>
-                /
-                <Text style={{ fontSize: 15, marginLeft: 15, color: theme.colors.grayColor }}>
-                  {data.selectTheOver.charAt(0)})
-                </Text>
-              </Text>
-              <Text style={styles.textPrimary}>
-                CRR{" "}
-                {data.currentRunRate == "" ? (0.0).toFixed(2) : data.currentRunRate}
-              </Text>
-            </View>
-            {/* <View>
-              {currentBattingTeam === data.teamTossWin && !secondInn && (
-                <Image source={require("../../assets/cricket_bat.png")} style={styles.battingImage} />
-              )}
-            </View> */}
-          </>
-        ) : (
-          <>
-            {/* Toss win team selected bowling option */}
-            <View style={styles.inActiveComponent}>
+      {/* ------------------------------------ this condition check the toss win team what seleced ---------------------------------- */}
+      {data.teamTossWin && data.whatYouChoose === "batting" ? (
+        <View style={styles.scoreSection}>
+          {currentBattingTeam === data.teamTossWin && !secondInn ? (
+            <>
               <View style={styles.paticularTeam}>
-                <Image source={require("../../assets/india_flag.jpg")} style={styles.flag} />
+                <Image
+                  source={require("../../assets/india_flag.jpg")}
+                  style={styles.flag}
+                />
                 <Text style={styles.text}>{data.teamTossWin}</Text>
                 <Text style={styles.textScore}>
                   {data.totalRuns}-{data.wicketFall} /{" "}
-                  <Text style={{ fontSize: 17, marginLeft: 15, color: theme.colors.grayColor }}>
-                    ({Math.floor(data.noOfBalls / 6)}.{data.noOfBalls % 6}{" "}
-                  </Text>
-                  /
-                  <Text style={{ fontSize: 15, marginLeft: 15, color: theme.colors.grayColor }}>
-                    {data.selectTheOver.charAt(0)})
+                  <Text style={styles.overText}>
+                    ({over} / {data.selectTheOver.charAt(0)})
                   </Text>
                 </Text>
                 <Text style={styles.textPrimary}>
                   CRR{" "}
-                  {data.currentRunRate == "" ? (0.0).toFixed(2) : data.currentRunRate}
+                  {data.currentRunRate === ""
+                    ? (0.0).toFixed(2)
+                    : data.currentRunRate}
                 </Text>
               </View>
-              {/* <View>
+              {/* ----------------------------------------bat image icon ---------------------------- */}
+              <View>
                 {currentBattingTeam === data.teamTossWin && !secondInn && (
-                  <Image source={require("../../assets/cricket_bat.png")} style={styles.battingImage} />
+                  <Image
+                    source={require("../../assets/cricket_bat.png")}
+                    style={styles.battingImage}
+                  />
                 )}
-              </View> */}
-            </View>
-          </>
-        )}
-
-        <View>
-          <Text style={styles.vsText}>Vs</Text>
-        </View>
-
-        {secondInn && secondTeamBatting === data.teamTossLoss ? (
-          <>
-            {/* Toss lose team bats first */}
-            <View style={styles.paticularTeam}>
-              <Image source={require("../../assets/sri_Lanka_flag.png")} style={styles.flag} />
-              <Text style={styles.text}>{data.teamTossLoss}</Text>
-              <Text style={styles.textScore}>
-                {data.secondInnTotalRuns}-{data.secondInnWicketFall} /{" "}
-                <Text style={{ fontSize: 17, marginLeft: 15, color: theme.colors.grayColor }}>
-                  ({secondInningOver}{" "}
-                </Text>
-                /
-                <Text style={{ fontSize: 15, marginLeft: 15, color: theme.colors.grayColor }}>
-                  {data.selectTheOver.charAt(0)})
-                </Text>
-              </Text>
-              <Text style={styles.textPrimary}>
-                CRR{" "}
-                {data.secondInnCurrentRunRate == "" ? (0.0).toFixed(2) : data.secondInnCurrentRunRate}
-              </Text>
-            </View>
-            {/* <View>
-              {secondInn && secondTeamBatting === data.teamTossLoss && (
-                <Image source={require("../../assets/cricket_bat.png")} style={styles.battingImage} />
-              )}
-            </View> */}
-          </>
-        ) : (
-          <>
-            {/* Toss lose team bowls first */}
+              </View>
+            </>
+          ) : (
             <View style={styles.inActiveComponent}>
               <View style={styles.paticularTeam}>
-                <Image source={require("../../assets/sri_Lanka_flag.png")} style={styles.flag} />
+                <Image
+                  source={require("../../assets/india_flag.jpg")}
+                  style={styles.flag}
+                />
+                <Text style={styles.text}>{data.teamTossWin}</Text>
+                <Text style={styles.textScore}>
+                  {data.totalRuns}-{data.wicketFall} /{" "}
+                  <Text style={styles.overText}>
+                    ({over} / {data.selectTheOver.charAt(0)})
+                  </Text>
+                </Text>
+                <Text style={styles.textPrimary}>
+                  CRR{" "}
+                  {data.currentRunRate === ""
+                    ? (0.0).toFixed(2)
+                    : data.currentRunRate}
+                </Text>
+              </View>
+            </View>
+          )}
+
+          <View>
+            <Text style={styles.vsText}>Vs</Text>
+          </View>
+
+          {secondInn && secondTeamBatting === data.teamTossLoss ? (
+            <>
+              <View style={styles.paticularTeam}>
+                <Image
+                  source={require("../../assets/sri_Lanka_flag.png")}
+                  style={styles.flag}
+                />
                 <Text style={styles.text}>{data.teamTossLoss}</Text>
                 <Text style={styles.textScore}>
                   {data.secondInnTotalRuns}-{data.secondInnWicketFall} /{" "}
-                  <Text style={{ fontSize: 17, marginLeft: 15, color: theme.colors.grayColor }}>
-                    ({secondInningOver}{" "}
-                  </Text>
-                  /
-                  <Text style={{ fontSize: 15, marginLeft: 15, color: theme.colors.grayColor }}>
-                    {data.selectTheOver.charAt(0)})
+                  <Text style={styles.overText}>
+                    ({secondInningOver} / {data.selectTheOver.charAt(0)})
                   </Text>
                 </Text>
                 <Text style={styles.textPrimary}>
                   CRR{" "}
-                  {data.secondInnCurrentRunRate == undefined ? (0.0).toFixed(2) : data.secondInnCurrentRunRate}
+                  {data.secondInnCurrentRunRate === ""
+                    ? (0.0).toFixed(2)
+                    : data.secondInnCurrentRunRate}
                 </Text>
               </View>
-              {/* <View>
+              {/* ------------------------------bat image icon------------------------------- */}
+              <View>
                 {secondInn && secondTeamBatting === data.teamTossLoss && (
-                  <Image source={require("../../assets/cricket_bat.png")} style={styles.battingImage} />
+                  <Image
+                    source={require("../../assets/cricket_bat.png")}
+                    style={styles.battingImage}
+                  />
                 )}
-              </View> */}
+              </View>
+            </>
+          ) : (
+            <View style={styles.inActiveComponent}>
+              <View style={styles.paticularTeam}>
+                <Image
+                  source={require("../../assets/sri_Lanka_flag.png")}
+                  style={styles.flag}
+                />
+                <Text style={styles.text}>{data.teamTossLoss}</Text>
+                <Text style={styles.textScore}>
+                  {data.secondInnTotalRuns}-{data.secondInnWicketFall} /{" "}
+                  <Text style={styles.overText}>
+                    ({secondInningOver} / {data.selectTheOver.charAt(0)})
+                  </Text>
+                </Text>
+                <Text style={styles.textPrimary}>
+                  CRR{" "}
+                  {data.secondInnCurrentRunRate === ""
+                    ? (0.0).toFixed(2)
+                    : data.secondInnCurrentRunRate}
+                </Text>
+              </View>
             </View>
-          </>
-        )}
-      </View>
+          )}
+        </View>
+      ) : (
+        // ----------------------------------if tossWin team choose the bowling  this code exicute----------------------------
+        <View style={styles.scoreSection}>
+          {currentBattingTeam === data.teamTossLoss && !secondInn ? (
+            <>
+              <View style={styles.paticularTeam}>
+                <Image
+                  source={require("../../assets/sri_Lanka_flag.png")}
+                  style={styles.flag}
+                />
+                <Text style={styles.text}>{data.teamTossLoss}</Text>
+                <Text style={styles.textScore}>
+                  {data.totalRuns}-{data.wicketFall} /{" "}
+                  <Text style={styles.overText}>
+                    ({over} / {data.selectTheOver.charAt(0)})
+                  </Text>
+                </Text>
+                <Text style={styles.textPrimary}>
+                  CRR{" "}
+                  {data.currentRunRate === ""
+                    ? (0.0).toFixed(2)
+                    : data.currentRunRate}
+                </Text>
+              </View>
+              <View>
+                {currentBattingTeam === data.teamTossLoss && !secondInn && (
+                  <Image
+                    source={require("../../assets/cricket_bat.png")}
+                    style={styles.battingImage}
+                  />
+                )}
+              </View>
+            </>
+          ) : (
+            <View style={styles.inActiveComponent}>
+              <View style={styles.paticularTeam}>
+                <Image
+                  source={require("../../assets/sri_Lanka_flag.png")}
+                  style={styles.flag}
+                />
+                <Text style={styles.text}>{data.teamTossLoss}</Text>
+                <Text style={styles.textScore}>
+                  {data.totalRuns}-{data.wicketFall} /{" "}
+                  <Text style={styles.overText}>
+                    ({over} / {data.selectTheOver.charAt(0)})
+                  </Text>
+                </Text>
+                <Text style={styles.textPrimary}>
+                  CRR{" "}
+                  {data.currentRunRate === ""
+                    ? (0.0).toFixed(2)
+                    : data.currentRunRate}
+                </Text>
+              </View>
+            </View>
+          )}
+
+          <View>
+            <Text style={styles.vsText}>Vs</Text>
+          </View>
+
+          {secondInn && secondTeamBatting === data.teamTossWin ? (
+            <>
+              <View style={styles.paticularTeam}>
+                <Image
+                  source={require("../../assets/india_flag.jpg")}
+                  style={styles.flag}
+                />
+                <Text style={styles.text}>{data.teamTossWin}</Text>
+                <Text style={styles.textScore}>
+                  {data.secondInnTotalRuns}-{data.secondInnWicketFall} /{" "}
+                  <Text style={styles.overText}>
+                    ({secondInningOver} / {data.selectTheOver.charAt(0)})
+                  </Text>
+                </Text>
+                <Text style={styles.textPrimary}>
+                  CRR{" "}
+                  {data.secondInnCurrentRunRate === ""
+                    ? (0.0).toFixed(2)
+                    : data.secondInnCurrentRunRate}
+                </Text>
+              </View>
+              <View>
+                {secondInn && secondTeamBatting === data.teamTossWin && (
+                  <Image
+                    source={require("../../assets/cricket_bat.png")}
+                    style={styles.battingImage}
+                  />
+                )}
+              </View>
+            </>
+          ) : (
+            <View style={styles.inActiveComponent}>
+              <View style={styles.paticularTeam}>
+                <Image
+                  source={require("../../assets/india_flag.jpg")}
+                  style={styles.flag}
+                />
+                <Text style={styles.text}>{data.teamTossWin}</Text>
+                <Text style={styles.textScore}>
+                  {data.secondInnTotalRuns}-{data.secondInnWicketFall} /{" "}
+                  <Text style={styles.overText}>
+                    ({secondInningOver} / {data.selectTheOver.charAt(0)})
+                  </Text>
+                </Text>
+                <Text style={styles.textPrimary}>
+                  CRR{" "}
+                  {data.secondInnCurrentRunRate === ""
+                    ? (0.0).toFixed(2)
+                    : data.secondInnCurrentRunRate}
+                </Text>
+              </View>
+            </View>
+          )}
+        </View>
+      )}
+
       <View>
-        <Text style={{ marginTop: 0, fontSize: 12, color: theme.colors.fontColor, textAlign: "center" }}>
+        <Text
+          style={{
+            marginTop: 0,
+            fontSize: 12,
+            color: theme.colors.fontColor,
+            textAlign: "center",
+          }}
+        >
           {secondInn ? `2nd Inning` : `1st Inning`}
         </Text>
       </View>
       <View style={styles.separatorLine}></View>
       <View>
         <Text style={styles.textPro}>
-          {secondInn
-            ? `India need 104 runs in 430 balls at 14.51 rpo`
-            : `${data.takeTeamName.HostName} Projected Score is ${projectedScoreData}`}
+          {message
+            ? `${secondTeamBatting} has win the match ✨✨✨ `
+            : messageForTeamOne
+            ? `${currentBattingTeam} win the match by ${requireRuns - 1} Runs`
+            : secondInn
+            ? `${secondTeamBatting} need ${requireRunsData} runs in ${requireBallsData} balls at ${requiredRunRate.toFixed(
+                2
+              )} rpo`
+            : `${currentBattingTeam} Projected Score is ${isNaN(projectedScoreData) ? 0 :projectedScoreData}`}
         </Text>
       </View>
     </View>
@@ -276,14 +452,13 @@ const styles = StyleSheet.create({
     fontWeight: "600",
   },
   scoreSection: {
-    marginTop: 25,
+    marginTop: 30,
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
     paddingBottom: "5%",
   },
   paticularTeam: {
-    // width:"90%",
     alignItems: "center",
   },
   textScore: {
@@ -292,7 +467,6 @@ const styles = StyleSheet.create({
     textTransform: "uppercase",
     fontWeight: "600",
     fontSize: 22,
-    paddingHorizontal: 10,
   },
   text: {
     color: theme.colors.fontColor,
@@ -300,15 +474,6 @@ const styles = StyleSheet.create({
     textTransform: "uppercase",
     fontWeight: "600",
     fontSize: 11,
-    paddingHorizontal: 10,
-  },
-  textProject: {
-    color: theme.colors.fontColor,
-    marginTop: 6,
-    textTransform: "uppercase",
-    fontWeight: "600",
-    fontSize: 17,
-    paddingHorizontal: 10,
   },
   textPrimary: {
     marginTop: 5,
@@ -347,9 +512,10 @@ const styles = StyleSheet.create({
     textAlign: "center",
     fontWeight: "600",
   },
-  icon: {
-    fontSize: 30,
-    color: "black",
+  overText: {
+    fontSize: 15,
+    marginLeft: 15,
+    color: theme.colors.grayColor,
   },
   battingImage: {
     height: 18,

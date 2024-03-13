@@ -23,7 +23,7 @@ const ScoreCountingPage = (props) => {
     {activeCategory ==="Boundary" && <RingChart />}
     {activeCategory ==="Wicket Down" && <WicketDown />}
     {/* {activeCategory === "Score" && <ScoreCard/>} */}
-    <Slider/>
+    {/* <Slider/> */}
     <ScoreAddSection/>
     </View>
   )

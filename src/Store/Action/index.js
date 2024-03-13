@@ -20,7 +20,7 @@ export const SECOND_INN_WIDE_BALL ="SECOND_INN_WIDE_BALL"
 export const SECOND_INN_NO_BALL ="SECOND_INN_NO_BALL"
 export const SECOND_INN_RUNS_SCORE_BOARD ="SECOND_INN_RUNS_SCORE_BOARD"
 export const SECOND_INN_WICKET ="SECOND_INN_WICKET"
-
+export const SCORE_ADD_CONTAINER ="SCORE_ADD_CONTAINER"
 // Action Creators
 export const TakeTeamName = (detail) => ({
     type: TAKE_TEAM_NAME,
@@ -142,6 +142,12 @@ export const secondInnRunsScoreBoard =(detail)=>{
 export const secondInnWicketFall =(detail)=>{
     return{
         type:SECOND_INN_WICKET,
+        payload:detail
+    }
+}
+export const scoreAddContainer =(detail)=>{
+    return{
+        type:SCORE_ADD_CONTAINER,
         payload:detail
     }
 }
