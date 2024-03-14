@@ -23,7 +23,7 @@ import {
 const ScoreAddSection = () => {
   let dispatch = useDispatch();
   let data = useSelector((state) => state.Reducers);
-// console.warn(data)
+  // console.warn(data)
   const [showScoreContainer, setShowScoreContainer] = useState(false);
   //ball counting
   const [balls, setBalls] = useState(0);
@@ -42,6 +42,7 @@ const ScoreAddSection = () => {
   const [secondInnRunRate, setSecondInnRunRate] = useState("");
   const [secondInnWicket, setSecondInnWicket] = useState(0);
   const [secondInnOverData, setSecondInnOverData] = useState([]);
+  const [getStartButtonActive, setGetStartButtonActive] =useState(undefined);
 
   // const [currentOver, setCurrentOver] = useState(1);
 
@@ -122,9 +123,7 @@ const ScoreAddSection = () => {
         dispatch(wicketFall(wicket));
       }
       dispatch(currentRunRate(runRate));
-    }
-    
-    else {
+    } else {
       if (secondInnRuns) {
         dispatch(secondInnTotalRun(secondInnRuns));
       }
@@ -148,8 +147,27 @@ const ScoreAddSection = () => {
         dispatch(secondInnWicketFall(secondInnWicket));
       }
     }
-    
-  }, [runs, balls, runRate, noBalls, wides, wicket,secondInnBalls ,secondInnRuns ,secondInnNoBalls ,secondInnWides ,secondInnRunRate ,secondInnWicket]);
+  }, [
+    runs,
+    balls,
+    runRate,
+    noBalls,
+    wides,
+    wicket,
+    secondInnBalls,
+    secondInnRuns,
+    secondInnNoBalls,
+    secondInnWides,
+    secondInnRunRate,
+    secondInnWicket,
+  ]);
+  useEffect(() => {
+    if(data.getStartButton){
+      setGetStartButtonActive(data.getStartButton);
+      setShowScoreContainer(!data.getStartButton)
+    }
+  }, [getStartButtonActive, data.getStartButton ,showScoreContainer]);
+  
   return (
     <View style={styles.scoreContainer}>
       {showScoreContainer ? (
@@ -258,7 +276,8 @@ const ScoreAddSection = () => {
       ) : (
         <View style={styles.getStartContainer}>
           <TouchableOpacity
-            style={styles.button}
+            style={getStartButtonActive ?  styles.inActiveButton :styles.button}
+            disabled={getStartButtonActive}
             onPress={() => setShowScoreContainer(true)}
           >
             <Text style={styles.text}>Get Start</Text>
@@ -358,6 +377,12 @@ const styles = StyleSheet.create({
   },
   button: {
     backgroundColor: "green",
+    paddingVertical: 10,
+    paddingHorizontal: 20,
+    borderRadius: 5,
+  },
+  inActiveButton: {
+    backgroundColor: theme.colors.grayColor,
     paddingVertical: 10,
     paddingHorizontal: 20,
     borderRadius: 5,

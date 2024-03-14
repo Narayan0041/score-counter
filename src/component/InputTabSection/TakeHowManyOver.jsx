@@ -191,7 +191,7 @@ const styles = StyleSheet.create({
     marginTop: "50%",
   },
   preButton: {
-    backgroundColor: "rgba(0, 128, 128, 1)",
+    backgroundColor:  theme.colors.primary,
     paddingHorizontal: 30,
     paddingVertical: 12,
     borderRadius: 8,

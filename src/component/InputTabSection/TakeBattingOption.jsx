@@ -5,10 +5,9 @@ import { useDispatch, useSelector } from "react-redux";
 import { whatYouChoose } from "../../Store/Action";
 
 export default function TakeBattingOption({ setActiveTab }) {
-  // Retrieve teamTossWin from the Redux store
-  let dispatch =useDispatch();
+  let dispatch = useDispatch();
   let teamTossWin = useSelector((store) => store.Reducers.teamTossWin);
- 
+
   const [activeTeam, setActiveTeam] = useState("");
   const [nextBtn, setNextBtn] = useState(false);
   const [errorMessage, setErrorMessage] = useState(false);
@@ -19,7 +18,7 @@ export default function TakeBattingOption({ setActiveTab }) {
 
   const handleNext = () => {
     if (activeTeam !== "") {
-      dispatch(whatYouChoose(activeTeam))
+      dispatch(whatYouChoose(activeTeam));
       setActiveTab(4);
     } else {
       setErrorMessage(true);
@@ -41,110 +40,66 @@ export default function TakeBattingOption({ setActiveTab }) {
 
   return (
     <View>
-      <Text
-        style={{
-          textAlign: "center",
-          fontSize: 24,
-          fontWeight: "bold",
-          fontStyle: "italic",
-          color: "white",
-          marginTop: 20,
-        }}
-      >
+      <Text style={styles.title}>
         What you want to do <Text>{teamTossWin}</Text>
       </Text>
       <View style={styles.battingContainer}>
-        <View>
-          <View style={styles.secondOption}>
-            <TouchableOpacity
-              style={styles.radioBtnContainer}
-              onPress={() => handleClick("batting")}
-            >
-              <View style={styles.radioBtn}>
-                {activeTeam === "batting" ? (
-                  <View style={styles.activeBtn}></View>
-                ) : null}
-              </View>
-              <Text style={{ color: "white", marginLeft: 10, fontSize: 20 }}>
-                Batting
-              </Text>
-              <Image
-                source={require("../../assets/cricket_bat.png")}
-                style={styles.tossImage}
-              />
-            </TouchableOpacity>
-          </View>
+        <View style={styles.option}>
+          <TouchableOpacity style={styles.radioBtnContainer} onPress={() => handleClick("batting")}>
+            <View style={styles.radioBtn}>
+              {activeTeam === "batting" && <View style={styles.activeBtn}></View>}
+            </View>
+            <Text style={styles.optionText}>Batting</Text>
+            <Image source={require("../../assets/cricket_bat.png")} style={styles.tossImage} />
+          </TouchableOpacity>
         </View>
-        <View>
-          <View style={[styles.secondOption, { marginTop: "10%" }]}>
-            <TouchableOpacity
-              style={styles.radioBtnContainer}
-              onPress={() => handleClick("bowling")}
-            >
-              <View style={styles.radioBtn}>
-                {activeTeam === "bowling" ? (
-                  <View style={styles.activeBtn}></View>
-                ) : null}
-              </View>
-              <Text style={{ color: "white", marginLeft: 10, fontSize: 20 }}>
-                Bowling
-              </Text>
-              <Image
-                source={require("../../assets/cricket_ball.png")}
-                style={styles.tossImage}
-              />
-            </TouchableOpacity>
-          </View>
+        <View style={[styles.option, { marginTop: 24 }]}>
+          <TouchableOpacity style={styles.radioBtnContainer} onPress={() => handleClick("bowling")}>
+            <View style={styles.radioBtn}>
+              {activeTeam === "bowling" && <View style={styles.activeBtn}></View>}
+            </View>
+            <Text style={styles.optionText}>Bowling</Text>
+            <Image source={require("../../assets/cricket_ball.png")} style={styles.tossImage} />
+          </TouchableOpacity>
         </View>
       </View>
 
-      <View>
-        {errorMessage && (
-          <Text
-            style={{
-              color: "red",
-              fontSize: 16,
-              textAlign: "center",
-              marginTop: 20,
-            }}
-          >
-            Please select batting otherwise bowling
-          </Text>
-        )}
-      </View>
+      {errorMessage && (
+        <Text style={styles.errorMessage}>
+          Please select batting otherwise bowling
+        </Text>
+      )}
 
       <View style={styles.btnSection}>
-        <View>
-          <TouchableOpacity onPress={handlePrev}>
-            <Text style={[styles.preButton, { color: theme.colors.fontColor }]}>
-              Go back
-            </Text>
-          </TouchableOpacity>
-        </View>
-        <View>
-          <TouchableOpacity onPress={handleNext}>
-            <Text
-              style={[
-                nextBtn ? styles.nextButton : styles.inActiveBtn,
-                { color: theme.colors.fontColor },
-              ]}
-            >
-              Next
-            </Text>
-          </TouchableOpacity>
-        </View>
+        <TouchableOpacity onPress={handlePrev}>
+          <Text style={styles.preButton}>Go back</Text>
+        </TouchableOpacity>
+        <TouchableOpacity onPress={handleNext}>
+          <Text style={[styles.nextButton, nextBtn ? null : styles.inActiveBtn]}>Next</Text>
+        </TouchableOpacity>
       </View>
     </View>
   );
 }
 
 const styles = StyleSheet.create({
+  title: {
+    textAlign: "center",
+    fontSize: 24,
+    fontWeight: "bold",
+    fontStyle: "italic",
+    color: "white",
+    marginTop: 20,
+  },
   battingContainer: {
     marginTop: "10%",
     paddingHorizontal: 30,
     paddingVertical: 30,
     borderRadius: 20,
     backgroundColor: theme.colors.secondaryBackground,
+  },
+  option: {
+    flexDirection: "row",
   },
   radioBtnContainer: {
     flexDirection: "row",
@@ -164,9 +119,21 @@ const styles = StyleSheet.create({
     backgroundColor: theme.colors.fontColor,
     borderRadius: 8,
   },
-  secondOption: {
-    flexDirection: "row",
-    // marginTop: 20,
+  optionText: {
+    color: "white",
+    marginLeft: 10,
+    fontSize: 20,
+  },
+  tossImage: {
+    height: 24,
+    width: 30,
+    marginLeft: 20,
+  },
+  errorMessage: {
+    color: "red",
+    fontSize: 16,
+    textAlign: "center",
+    marginTop: 20,
   },
   btnSection: {
     flexDirection: "row",
@@ -175,12 +142,13 @@ const styles = StyleSheet.create({
     marginTop: "100%",
   },
   preButton: {
-    backgroundColor: "rgba(0, 128, 128, 1)",
-    paddingHorizontal: 30,
+    backgroundColor: theme.colors.primary,
+    paddingHorizontal: 25,
     paddingVertical: 12,
     borderRadius: 8,
     fontSize: 20,
     fontWeight: "600",
+    color:"white"
   },
   nextButton: {
     backgroundColor: "orange",
@@ -192,15 +160,5 @@ const styles = StyleSheet.create({
   },
   inActiveBtn: {
     backgroundColor: "lightgray",
-    paddingHorizontal: 40,
-    paddingVertical: 12,
-    borderRadius: 8,
-    fontSize: 20,
-    fontWeight: "600",
-  },
-  tossImage: {
-    height: 24,
-    width: 30,
-    marginLeft: 20,
   },
 });

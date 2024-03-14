@@ -13,7 +13,12 @@ import { useNavigation } from "@react-navigation/native";
 import Icon from "react-native-vector-icons/Ionicons";
 import theme from "../../theme/style";
 import { useDispatch, useSelector } from "react-redux";
-import { scoreAddContainer, secondInning, whatYouChoose } from "../../Store/Action";
+import {
+  getStartButton,
+  scoreAddContainer,
+  secondInning,
+  whatYouChoose,
+} from "../../Store/Action";
 
 const ScoreCountSection = () => {
   let dispatch = useDispatch();
@@ -22,10 +27,10 @@ const ScoreCountSection = () => {
   const navigation = useNavigation();
   const [opacityValue] = useState(new Animated.Value(1));
   const [currentBattingTeam, setCurrentBattingTeam] = useState(
-    data.whatYouChoose === "batting" ? data.teamTossWin : data.teamTossLoss
+   data.teamTossWin && data.whatYouChoose === "batting" ? data.teamTossWin : data.teamTossLoss
   );
   const [secondTeamBatting, setSecondTeamBatting] = useState(
-    data.whatYouChoose === "batting" ? data.teamTossLoss : data.teamTossWin
+    data.teamTossWin && data.whatYouChoose === "batting" ? data.teamTossLoss : data.teamTossWin
   );
   const [over, setOver] = useState(0);
   const [secondInningOver, setSecondInningOver] = useState(0);
@@ -80,7 +85,7 @@ const ScoreCountSection = () => {
     requireRuns,
     requiredBalls,
   ]);
-
+  
   useEffect(() => {
     const overValue = `${Math.floor(data.noOfBalls / 6)}.${data.noOfBalls % 6}`;
     setOver(overValue);
@@ -104,8 +109,8 @@ const ScoreCountSection = () => {
       data.selectTheOver.charAt(0) === secondInningOver.charAt(0)
     ) {
       setMessageForTeamOne(true);
-      dispatch(scoreAddContainer(false))
-      return
+      dispatch(getStartButton(true));
+      return;
     }
   }, [
     dataTeamOneRun,
@@ -113,7 +118,7 @@ const ScoreCountSection = () => {
     data.selectTheOver,
     secondInningOver,
     currentBattingTeam,
-    requireRuns
+    requireRuns,
   ]);
 
   return (
@@ -397,7 +402,9 @@ const ScoreCountSection = () => {
             ? `${secondTeamBatting} need ${requireRunsData} runs in ${requireBallsData} balls at ${requiredRunRate.toFixed(
                 2
               )} rpo`
-            : `${currentBattingTeam} Projected Score is ${isNaN(projectedScoreData) ? 0 :projectedScoreData}`}
+            : `${currentBattingTeam} Projected Score is ${
+                isNaN(projectedScoreData) ? 0 : projectedScoreData
+              }`}
         </Text>
       </View>
     </View>

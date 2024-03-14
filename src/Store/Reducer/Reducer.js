@@ -5,6 +5,7 @@ import {
   RUNS,
   RUNS_SCORE_BOARD,
   SCORE_ADD_CONTAINER,
+  SCORE_ADD_GET_START_BUTTON,
   SECOND_INNING,
   SECOND_INN_CURRENT_RUN_RATE,
   SECOND_INN_NO_BALL,
@@ -43,7 +44,7 @@ const initialState = {
   secondInnNoOfNoBall: 0,
   secondInnrunScoreBoard: [],
   secondInnWicketFall: 0,
-  scoreAddContainer:undefined,
+  getStartButton:false,
 };
 
 const Reducers = (state = initialState, action) => {
@@ -154,10 +155,10 @@ const Reducers = (state = initialState, action) => {
         secondInnWicketFall: action.payload,
       };
 
-      case SCORE_ADD_CONTAINER:
+      case SCORE_ADD_GET_START_BUTTON:
         return{
           ...state,
-          scoreAddContainer:action.payload
+          getStartButton:action.payload
         }
 
     default:
