@@ -6,6 +6,7 @@ import Icon from "react-native-vector-icons/Ionicons";
 import { useDispatch, useSelector } from "react-redux";
 import {
   currentRunRate,
+  modalBox,
   noOfNOBall,
   noOfWideBall,
   runsScoreBoard,
@@ -19,6 +20,7 @@ import {
   totalRun,
   wicketFall,
 } from "../Store/Action";
+import ModalPopUp from "./ModalPopUp";
 
 const ScoreAddSection = () => {
   let dispatch = useDispatch();
@@ -42,10 +44,10 @@ const ScoreAddSection = () => {
   const [secondInnRunRate, setSecondInnRunRate] = useState("");
   const [secondInnWicket, setSecondInnWicket] = useState(0);
   const [secondInnOverData, setSecondInnOverData] = useState([]);
-  const [getStartButtonActive, setGetStartButtonActive] =useState(undefined);
+  const [getStartButtonActive, setGetStartButtonActive] = useState(undefined);
 
+  const [activePopUp , setActivePopUp] =useState(data.modalBox);
   // const [currentOver, setCurrentOver] = useState(1);
-
   const handleBall = () => {
     if (!data.secondInning) {
       setBalls(balls + 1);
@@ -90,6 +92,7 @@ const ScoreAddSection = () => {
     } else {
       setSecondInnNoBalls(value + 1);
     }
+    setActivePopUp(true);
   };
 
   const handleWide = (value) => {
@@ -114,6 +117,7 @@ const ScoreAddSection = () => {
         setRunRate(runRateValue);
       }
       if (noBalls) {
+        dispatch(modalBox(true))
         dispatch(noOfNOBall(noBalls));
       }
       if (wides) {
@@ -123,7 +127,8 @@ const ScoreAddSection = () => {
         dispatch(wicketFall(wicket));
       }
       dispatch(currentRunRate(runRate));
-    } else {
+    } 
+    else {
       if (secondInnRuns) {
         dispatch(secondInnTotalRun(secondInnRuns));
       }
@@ -160,16 +165,20 @@ const ScoreAddSection = () => {
     secondInnWides,
     secondInnRunRate,
     secondInnWicket,
+    activePopUp,
   ]);
   useEffect(() => {
-    if(data.getStartButton){
+    if (data.getStartButton) {
       setGetStartButtonActive(data.getStartButton);
-      setShowScoreContainer(!data.getStartButton)
+      setShowScoreContainer(!data.getStartButton);
     }
-  }, [getStartButtonActive, data.getStartButton ,showScoreContainer]);
-  
+  }, [getStartButtonActive, data.getStartButton, showScoreContainer]);
+
   return (
     <View style={styles.scoreContainer}>
+      {
+        activePopUp && <ModalPopUp />
+      }
       {showScoreContainer ? (
         <View>
           <View style={styles.container}>
@@ -276,7 +285,7 @@ const ScoreAddSection = () => {
       ) : (
         <View style={styles.getStartContainer}>
           <TouchableOpacity
-            style={getStartButtonActive ?  styles.inActiveButton :styles.button}
+            style={getStartButtonActive ? styles.inActiveButton : styles.button}
             disabled={getStartButtonActive}
             onPress={() => setShowScoreContainer(true)}
           >

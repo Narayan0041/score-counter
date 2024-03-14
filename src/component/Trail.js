@@ -4,7 +4,8 @@ import { StyleSheet, Text, View } from "react-native";
 
 export const Trail = () => {
   const data = [
-    { value: 15 },
+    { 
+      value: 15 },
     { value: 30 },
     { value: 26 },
     { value: 40 },

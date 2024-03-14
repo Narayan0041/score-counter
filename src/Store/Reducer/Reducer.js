@@ -1,5 +1,6 @@
 import {
   CURRENT_RUN_RATE,
+  MODAL_BOX,
   NO_BALL,
   NO_OF_BALLS,
   RUNS,
@@ -15,6 +16,7 @@ import {
   SECOND_INN_WICKET,
   SECOND_INN_WIDE_BALL,
   SELECT_HOW_MANY_OVER,
+  SET_PLAYERS_COUNT,
   TAKE_TEAM_NAME,
   TEAM_TOSS_LOSS,
   TEAM_TOSS_WIN,
@@ -45,6 +47,8 @@ const initialState = {
   secondInnrunScoreBoard: [],
   secondInnWicketFall: 0,
   getStartButton:false,
+  modalBox:false,
+  noOfPlayer:0,
 };
 
 const Reducers = (state = initialState, action) => {
@@ -160,6 +164,18 @@ const Reducers = (state = initialState, action) => {
           ...state,
           getStartButton:action.payload
         }
+
+        case SET_PLAYERS_COUNT:
+          return{
+            ...state,
+            noOfPlayer:action.payload
+          }
+
+        case MODAL_BOX:
+          return{
+            ...state,
+             modalBox:action.payload,
+          }
 
     default:
       return state;

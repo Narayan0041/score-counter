@@ -21,6 +21,8 @@ export const SECOND_INN_NO_BALL ="SECOND_INN_NO_BALL"
 export const SECOND_INN_RUNS_SCORE_BOARD ="SECOND_INN_RUNS_SCORE_BOARD"
 export const SECOND_INN_WICKET ="SECOND_INN_WICKET"
 export const SCORE_ADD_GET_START_BUTTON ="SCORE_ADD_GET_START_BUTTON"
+export const MODAL_BOX ="MODAL_BOX"
+export const  SET_PLAYERS_COUNT ="SET_PLAYERS_COUNT"
 // Action Creators
 export const TakeTeamName = (detail) => ({
     type: TAKE_TEAM_NAME,
@@ -150,4 +152,17 @@ export const getStartButton =(detail)=>{
         type:SCORE_ADD_GET_START_BUTTON,
         payload:detail
     }
+}
+
+export const modalBox =(detail)=>{
+    return{
+        type:MODAL_BOX,
+        payload:detail
+    }
+}
+export const noOfPlayer =(detail)=>{
+    return{ 
+        type: SET_PLAYERS_COUNT,
+     payload: detail
+     }
 }

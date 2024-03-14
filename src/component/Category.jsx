@@ -28,7 +28,7 @@ const Category = ({setActiveCategory}) => {
                 showsHorizontalScrollIndicator={false}
                 renderItem={({item}) => {
                     return (
-                        <View>
+                        <View style={{marginLeft:10}}>
                             <TouchableHighlight
                                 style={[styles.listItem, activeClass === item.name && styles.activeBar]} 
                                 onPress={() => handleClick(item.name)}
@@ -65,7 +65,7 @@ const styles = StyleSheet.create({
         marginRight:5
     },
     activeBar:{
-        borderWidth:2,
+        borderBottomWidth:2,
         borderBottomColor:theme.colors.primary
     }
 });

@@ -27,10 +27,14 @@ const ScoreCountSection = () => {
   const navigation = useNavigation();
   const [opacityValue] = useState(new Animated.Value(1));
   const [currentBattingTeam, setCurrentBattingTeam] = useState(
-   data.teamTossWin && data.whatYouChoose === "batting" ? data.teamTossWin : data.teamTossLoss
+    data.teamTossWin && data.whatYouChoose == "batting"
+      ? data.teamTossWin
+      : data.teamTossLoss
   );
   const [secondTeamBatting, setSecondTeamBatting] = useState(
-    data.teamTossWin && data.whatYouChoose === "batting" ? data.teamTossLoss : data.teamTossWin
+    data.teamTossWin && data.whatYouChoose == "batting"
+      ? data.teamTossLoss
+      : data.teamTossWin
   );
   const [over, setOver] = useState(0);
   const [secondInningOver, setSecondInningOver] = useState(0);
@@ -40,6 +44,7 @@ const ScoreCountSection = () => {
   const [requireBallsData, setRequireBallsData] = useState(0);
   const [message, setMessage] = useState(false);
   const [messageForTeamOne, setMessageForTeamOne] = useState(false);
+  const [messageForTeamSecond, setMessageForTeamSecond] = useState(false);
 
   // get the projectedScore
   const currentRuns = data.totalRuns;
@@ -76,7 +81,7 @@ const ScoreCountSection = () => {
         useNativeDriver: true,
       }).start();
     }, 1000);
-    setCurrentBattingTeam(data.teamTossWin);
+    // setCurrentBattingTeam(data.teamTossWin);
     return () => clearInterval(interval);
   }, [
     opacityValue,
@@ -85,13 +90,15 @@ const ScoreCountSection = () => {
     requireRuns,
     requiredBalls,
   ]);
-  
+
   useEffect(() => {
     const overValue = `${Math.floor(data.noOfBalls / 6)}.${data.noOfBalls % 6}`;
     setOver(overValue);
-    if (!secondInn && parseFloat(overValue) >= selectedOverByUser) {
+    if (!secondInn && parseFloat(overValue) == selectedOverByUser) {
       setSecondInn(true);
       dispatch(secondInning(true));
+      // setMessageForTeamOne(true);
+      // dispatch(getStartButton(true));
     }
   }, [data.noOfBalls, selectedOverByUser, secondInn]);
 
@@ -110,8 +117,10 @@ const ScoreCountSection = () => {
     ) {
       setMessageForTeamOne(true);
       dispatch(getStartButton(true));
-      return;
     }
+    // else{
+    //   setMessageForTeamSecond(true)
+    // }
   }, [
     dataTeamOneRun,
     dataTeamTwoRun,
@@ -168,7 +177,6 @@ const ScoreCountSection = () => {
                     ? (0.0).toFixed(2)
                     : data.currentRunRate}
                 </Text>
-              </View>
               {/* ----------------------------------------bat image icon ---------------------------- */}
               <View>
                 {currentBattingTeam === data.teamTossWin && !secondInn && (
@@ -177,6 +185,7 @@ const ScoreCountSection = () => {
                     style={styles.battingImage}
                   />
                 )}
+              </View>
               </View>
             </>
           ) : (
@@ -227,7 +236,6 @@ const ScoreCountSection = () => {
                     ? (0.0).toFixed(2)
                     : data.secondInnCurrentRunRate}
                 </Text>
-              </View>
               {/* ------------------------------bat image icon------------------------------- */}
               <View>
                 {secondInn && secondTeamBatting === data.teamTossLoss && (
@@ -236,6 +244,7 @@ const ScoreCountSection = () => {
                     style={styles.battingImage}
                   />
                 )}
+              </View>
               </View>
             </>
           ) : (
@@ -285,7 +294,6 @@ const ScoreCountSection = () => {
                     ? (0.0).toFixed(2)
                     : data.currentRunRate}
                 </Text>
-              </View>
               <View>
                 {currentBattingTeam === data.teamTossLoss && !secondInn && (
                   <Image
@@ -293,6 +301,7 @@ const ScoreCountSection = () => {
                     style={styles.battingImage}
                   />
                 )}
+              </View>
               </View>
             </>
           ) : (
@@ -343,7 +352,6 @@ const ScoreCountSection = () => {
                     ? (0.0).toFixed(2)
                     : data.secondInnCurrentRunRate}
                 </Text>
-              </View>
               <View>
                 {secondInn && secondTeamBatting === data.teamTossWin && (
                   <Image
@@ -351,6 +359,7 @@ const ScoreCountSection = () => {
                     style={styles.battingImage}
                   />
                 )}
+              </View>
               </View>
             </>
           ) : (
@@ -398,7 +407,9 @@ const ScoreCountSection = () => {
             ? `${secondTeamBatting} has win the match ✨✨✨ `
             : messageForTeamOne
             ? `${currentBattingTeam} win the match by ${requireRuns - 1} Runs`
-            : secondInn
+            : messageForTeamSecond 
+            ? `${secondTeamBatting} is win by 10 wicket`
+             : secondInn
             ? `${secondTeamBatting} need ${requireRunsData} runs in ${requireBallsData} balls at ${requiredRunRate.toFixed(
                 2
               )} rpo`
@@ -466,6 +477,7 @@ const styles = StyleSheet.create({
     paddingBottom: "5%",
   },
   paticularTeam: {
+    position:"relative",
     alignItems: "center",
   },
   textScore: {
@@ -528,8 +540,8 @@ const styles = StyleSheet.create({
     height: 18,
     width: 17,
     position: "absolute",
-    right: 40,
-    top: -50,
+    right: -50,
+    top: -100,
   },
   inActiveComponent: {
     opacity: 0.4,

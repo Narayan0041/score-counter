@@ -7,13 +7,10 @@ import theme from "../../theme/style";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
 export default function CompletedComponent() {
-  const handleClear = async () => {
-    try {
-      await AsyncStorage.clear();
-      console.warn("AsyncStorage successfully cleared");
-    } catch (error) {
-      console.error("Error clearing AsyncStorage: ", error.message);
-    }
+  const handleClear = () => {
+   AsyncStorage.getAllKeys()
+   .then(keys=>AsyncStorage.multiRemove(keys))
+   .then(()=>console.warn("Remove All the Item Sucess Fully"))
   };
 
   return (

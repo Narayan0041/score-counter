@@ -10,6 +10,7 @@ import ScoreCountSection from '../ScoreCountingPage/ScoreCountSection'
 import ScoreAddSection from '../ScoreAddSection'
 import ScoreCard from '../ScoreCard'
 import ExtraRunsComponent from '../ExtraRunsComponent'
+import ScoreSection from '../ScoreCountingPage/ScoreSection'
 
 
 const ScoreCountingPage = (props) => {
