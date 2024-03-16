@@ -1,12 +1,10 @@
 import { View, Text, StyleSheet } from "react-native";
 import React from "react";
 import theme from "../../theme/style";
-import { useSelector } from "react-redux";
 
-const ScoreDisplayContainer = () => {
-  let Data =useSelector(state=>state.Reducers);
-  // console.warn(Data)
-  let runsData = ["6", "2", "0", "1", "2", "4"];
+const ScoreDisplayContainer = (props) => {
+  const runsData = props.data // Access the data prop correctly
+
   return (
     <View style={styles.container}>
       <View style={styles.outerContainer}>
@@ -29,45 +27,25 @@ const styles = StyleSheet.create({
     marginTop: "5%",
   },
   outerContainer: {
-    backgroundColor:theme.colors.secondaryBackground,
+    backgroundColor: theme.colors.secondaryBackground,
     borderTopWidth: 0,
     padding: 10,
     borderRadius: 30,
     width: "97%",
-    flexDirection:"row",
-    marginLeft:8,
+    flexDirection: "row",
+    marginLeft: 8,
     position: "relative",
-    alignItems:"center",
-    justifyContent:"center"
-  },
-  // absoluteContainer: {
-  //   backgroundColor: theme.colors.primary,
-  //   position: "absolute",
-  //   top: "-10%",
-  //   left: -2,
-  //   right: -2,
-  //   borderRadius: 40,
-  //   padding: 10,
-  // },
-  // absoluteText: {
-  //   textAlign: "center",
-  //   fontSize: 16,
-  //   color: theme.colors.fontColor,
-  //   fontWeight: "800",
-  // },
-  textContent: {
-    justifyContent: "center",
     alignItems: "center",
-    color: theme.colors.fontColor,
+    justifyContent: "center",
   },
   runBox: {
     height: 45,
     width: 45,
     alignItems: "center",
-    backgroundColor: 'rgb(40, 40, 40)',
+    backgroundColor: "rgb(40, 40, 40)",
     borderRadius: 30,
     paddingTop: 6,
-    marginRight:10,
+    marginRight: 10,
   },
   runText: {
     fontSize: 20,

@@ -87,7 +87,7 @@ import { noOfPlayer } from "../../Store/Action";
       textAlign: "center",
       fontSize: 24,
       fontWeight: "bold",
-      fontStyle: "italic",
+      // fontStyle: "italic",
       color: "white",
       marginTop: 20,
     },

@@ -1,21 +1,24 @@
 import { LineChart } from "react-native-gifted-charts";
 import theme from "../theme/style";
 import { StyleSheet, Text, View } from "react-native";
-
+import { useSelector } from "react-redux";
+import { React , useState } from "react";
 export const Trail = () => {
-  const data = [
-    { 
-      value: 15 },
-    { value: 30 },
-    { value: 26 },
-    { value: 40 },
-    { value: 30 },
-    { value: 26 },
-    { value: 40 },
-    { value: 30 },
-    { value: 26 },
-    { value: 4 },
-  ];
+  const data =useSelector(state=>state.Reducers);
+//  console.warn(data.runScoreBoard)
+  const [currentBattingTeam, setCurrentBattingTeam] = useState(
+    data.teamTossWin && data.whatYouChoose == "batting"
+      ? data.teamTossWin
+      : data.teamTossLoss
+  );
+  const [secondTeamBatting, setSecondTeamBatting] = useState(
+    data.teamTossWin && data.whatYouChoose == "batting"
+      ? data.teamTossLoss
+      : data.teamTossWin
+  );
+  const graphData = [[10,28,25,6,6,8],[10,3,22,8,4,10],[1,2,7,2,10,5],[13,16,17,20,1,2]];
+// console.warn(graphData)
+  // const data = graphValue.map((item) => item?.runs)
   const data2 = [
     { value: 10 },
     { value: 35 },
@@ -35,26 +38,26 @@ export const Trail = () => {
       <View style={styles.headerContainer}>
         <View style={styles.teamContainer}>
           <View style={styles.radio1}></View>
-          <Text style={styles.team1}>Team 1</Text>
+          <Text style={styles.team1}>{currentBattingTeam}</Text>
         </View>
         <View style={styles.teamContainer}>
           <View style={styles.radio2}></View>
-          <Text style={styles.team2}>Team 2</Text>
+          <Text style={styles.team2}>{secondTeamBatting}</Text>
         </View>
       </View>
       <LineChart
-        data={data}
-        data2={data2}
+        data={graphData}
+        // data2={data2}
         backgroundColor={theme.colors.secondaryBackground}
         thickness={1}
         isAnimated={true}
         width={320}
         spacing={50}
-        initialSpacing={0}
+        initialSpacing={10}
         color1={theme.colors.fontColor}
         color2={theme.colors.primary}
-        dataPointsColor1="white"
-        dataPointsColor2={theme.colors.primary}
+        hideDataPoints1
+        hideDataPoints2
         dashGap={3}
         rulesColor="#444444"
         xAxisLabelTexts={xAxisLabelTexts}

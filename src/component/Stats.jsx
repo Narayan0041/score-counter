@@ -39,7 +39,7 @@ const Stats = () => {
       </View>
       {/* { activeButton === "Runs" && <LineChartComponent/>} */}
       {/* {activeButton === "Runrate" && <BarChartComponent/>} */}
-      {activeButton === "Runs" && <Trail />}
+      {activeButton === "Runs" && <Trail data={[[10,28,25,6,6,8],[10,3,22,8,4,10],[1,2,7,2,10,5],[13,16,17,20,1,2]]}/>}
       {activeButton === "Runrate" && <Trail2 />}
     </View>
   );

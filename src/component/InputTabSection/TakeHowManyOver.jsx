@@ -22,7 +22,7 @@ export default function TakeHowManyOver(props) {
   ];
 
   const handlePrev = () => {
-    props.setActiveTab(3); // Move to the previous tab
+    props.setActiveTab(4); // Move to the previous tab
   };
 
   const handleNext = () => {

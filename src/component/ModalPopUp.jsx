@@ -3,17 +3,71 @@ import React, { useState } from "react";
 import theme from "../theme/style";
 import Icon from "react-native-vector-icons/FontAwesome";
 import { useDispatch, useSelector } from "react-redux";
-import { modalBox } from "../Store/Action";
+import { modalBox, totalRun, secondInnTotalRun } from "../Store/Action";
 
-const ModalPopUp = () => {
-    let dispatch =useDispatch()
-  const data = useSelector((state) => state.Reducers);
-  console.warn(data)
+const ModalPopUp = ({
+  data,
+  secondInningdata,
+  setRuns,
+  setSecondInnRuns,
+  setWides,
+  setSecondInnWides,
+  setLegBy,
+  setSecondInnLegBy,
+  setBalls,
+  setSecondInnBalls
+}) => {
+  let dispatch = useDispatch();
+  const storeData = useSelector((state) => state.Reducers);
+
   const [closeModal, setCloseModal] = useState(undefined);
-  const handleRun = () => {};
+  const handleRun = (value) => {
+    // first ining add the No ball data
+    if (data && !storeData.secondInning) {
+      setRuns(data + value + 1);
+      dispatch(totalRun(data + value + 1));
+      dispatch(modalBox(false));
+      setCloseModal(false);
+    }
+    // second Inning No ball data
+    if (secondInningdata && storeData.secondInning) {
+      setSecondInnRuns(secondInningdata + value + 1);
+      dispatch(secondInnTotalRun(secondInningdata + value + 1));
+      dispatch(modalBox(false));
+      setCloseModal(false);
+    }
+    // --------------------------------Wide section ----------------------------------
+    if (setWides && !storeData.secondInning) {
+      setRuns(data + value + 1);
+      setWides(false);
+      dispatch(modalBox(false));
+      setCloseModal(false);
+    }
+    if (setSecondInnWides && storeData.secondInning) {
+      dispatch(secondInnTotalRun(secondInningdata + value + 1));
+      setSecondInnWides(false);
+      dispatch(modalBox(false));
+      setCloseModal(false);
+    }
+    // ----------------------------------------LegBy--------------------------------------------
+    if (setLegBy && !storeData.secondInning) {
+      setRuns(data + value + 1);
+      setBalls(prev =>prev +1)
+      setLegBy(false);
+      dispatch(modalBox(false));
+      setCloseModal(false);
+    }
+    if (setSecondInnLegBy && storeData.secondInning) {
+      setRuns(data + value + 1);
+      setSecondInnBalls(prev =>prev +1)
+      setLegBy(false);
+      dispatch(modalBox(false));
+      setCloseModal(false);
+    }
+  };
   const onClose = () => {
+    dispatch(modalBox(false));
     setCloseModal(false);
-    dispatch(modalBox(false))
   };
   return (
     <Modal transparent={true} visible={closeModal} animationType="slide">
@@ -88,7 +142,7 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
-    backgroundColor: "rgba(0, 0, 0, 0.8)", // semi-transparent black background
+    backgroundColor: "rgba(0, 0, 0, 0.8)",
   },
   modalBox: {
     margin: 15,

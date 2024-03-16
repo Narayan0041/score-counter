@@ -3,40 +3,49 @@ import {
   FlatList,
   Dimensions,
   StyleSheet,
+  Text,
 } from "react-native";
 import React, { useState } from "react";
 import theme from "../../theme/style";
 import ScoreDisplayContainer from "./ScoreDisplayContainer";
+import { useSelector } from "react-redux";
 
 const { height, width } = Dimensions.get("window");
 
 export default function Slider() {
-  const [data, SetData] = useState([1, 1, 1, 1, 1]);
+  const Data = useSelector((state) => state.Reducers);
   const [currentIndex, setCurrentIndex] = useState(0);
 
+  // Check if Data is undefined or runScoreBoard is undefined
+  if (!Data || !Data.runScoreBoard) {
+    return <Text>Loading...</Text>;
+  }
+
+  const runsData = Data.runScoreBoard;
+
   return (
-      <View style={styles.container}>
-        <FlatList
-          data={data}
-          showsHorizontalScrollIndicator={false}
-          pagingEnabled
-          onScroll={(e) => {
-            const x = e.nativeEvent.contentOffset.x;
-            setCurrentIndex(Math.round(x / (width - 40))); // Round to the nearest index
-          }}
-          horizontal
-          renderItem={({ item, index }) => {
-            return (
-              <View style={styles.itemContainer}>
-               <ScoreDisplayContainer/>
-              </View>
-            );
-          }}
-          keyExtractor={(item, index) => index.toString()}
-        />
+    <View style={styles.container}>
+      <FlatList
+        data={runsData}
+        showsHorizontalScrollIndicator={false}
+        pagingEnabled
+        onScroll={(e) => {
+          const x = e.nativeEvent.contentOffset.x;
+          setCurrentIndex(Math.round(x / (width - 40))); 
+        }}
+        horizontal
+        renderItem={({ item }) => {
+          return (
+            <View style={styles.itemContainer}>
+              <ScoreDisplayContainer data={item} /> 
+            </View>
+          );
+        }}
+        keyExtractor={(item, index) => index.toString()}
+      />
       <View style={styles.dotsContainer}>
-        <View style={styles.dotRow}>
-          {data.map((item, index) => {
+        {/* <View style={styles.dotRow}>
+          {runsData.map((item, index) => {
             return (
               <View
                 key={index}
@@ -53,16 +62,15 @@ export default function Slider() {
               ></View>
             );
           })}
-        </View>
+        </View> */}
       </View>
-      </View>
-
+    </View>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
-    width:"100%"
+    width: "100%",
   },
   itemContainer: {
     width: width,
@@ -84,7 +92,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   dot: {
-    marginTop:"5%",
+    marginTop: "5%",
     marginLeft: 5,
   },
 });

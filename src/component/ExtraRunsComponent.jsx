@@ -22,16 +22,15 @@ const ExtraRunsComponent = () => {
     NoBall: data.noOfNoBall,
     Bye: 10,
   });
-  const [activeTeam , setActiveTeam] =useState()
+  const [activeTeam, setActiveTeam] = useState(secondTeamBatting);
 
-  
   const extraType = ["Wide Ball", "No Ball", "Bye"];
   const dataOfWideBall = paticularTeamData.WideBall;
   const dataOfNoBall = paticularTeamData.NoBall;
   const dataOfBye = paticularTeamData.Bye;
 
   const handleClick = (value) => {
-    console.warn(value);
+    setActiveTeam(value);
   };
 
   return (
@@ -44,7 +43,10 @@ const ExtraRunsComponent = () => {
         >
           <View
             style={{
-              backgroundColor: theme.colors.primary,
+              backgroundColor:
+                activeTeam === currentBattingTeam
+                  ? theme.colors.primary
+                  : theme.colors.fontColor,
               height: 8,
               width: 8,
               borderRadius: 4,
@@ -69,7 +71,10 @@ const ExtraRunsComponent = () => {
         >
           <View
             style={{
-              backgroundColor: "white",
+              backgroundColor:
+                activeTeam === secondTeamBatting
+                  ? theme.colors.primary
+                  : "white",
               height: 8,
               width: 8,
               borderRadius: 4,
@@ -149,8 +154,7 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
     padding: 10,
   },
-  activeTeam:{
-    borderColor:"rgb(217 0 141)",
-    
-  }
+  activeTeam: {
+    borderColor: "rgb(217 0 141)",
+  },
 });
