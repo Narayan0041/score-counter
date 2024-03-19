@@ -23,7 +23,7 @@ import {
 const ScoreCountSection = () => {
   let dispatch = useDispatch();
   let data = useSelector((state) => state.Reducers);
-  // console.warn(data)
+  console.warn(data)
   const navigation = useNavigation();
   const [opacityValue] = useState(new Animated.Value(1));
   const [currentBattingTeam, setCurrentBattingTeam] = useState(
@@ -100,7 +100,17 @@ const ScoreCountSection = () => {
       // setMessageForTeamOne(true);
       // dispatch(getStartButton(true));
     }
-  }, [data.noOfBalls, selectedOverByUser, secondInn]);
+    // wicket are fall
+    if(data.noOfPlayer === data.wicketFall && !secondInn){
+      setSecondInn(true);
+      dispatch(secondInning(true));
+    }
+// wicket fall second inning
+    if( data.noOfPlayer === data.secondInnWicketFall && secondInn){
+      // setMessageForTeamOne(true);
+      dispatch(getStartButton(true));
+    }
+  }, [data.noOfBalls, selectedOverByUser, secondInn,data.secondInnWicketFall]);
 
   useEffect(() => {
     const secondInnOverValue = `${Math.floor(data.secondInnNoOfBalls / 6)}.${

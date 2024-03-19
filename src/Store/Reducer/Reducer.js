@@ -20,6 +20,7 @@ import {
   SECOND_INN_RUNS,
   SECOND_INN_RUNS_SCORE_BOARD,
   SECOND_INN_WICKET,
+  SECOND_INN_WICKETFALL_WITH_RUN,
   SECOND_INN_WIDE_BALL,
   SELECT_HOW_MANY_OVER,
   SET_PLAYERS_COUNT,
@@ -32,6 +33,7 @@ import {
   WIDE_BALL,
   wicketFallWithRun,
 } from "../Action";
+
 const initialState = {
   takeTeamName: {},
   teamTossWin: "",
@@ -43,6 +45,7 @@ const initialState = {
   currentRunRate: 0,
   noOfWideBall: 0,
   noOfNoBall: 0,
+  noOfBye:0,
   runScoreBoard:[],
   wicketFall: 0,
   noOfotherRuns:0,
@@ -55,6 +58,7 @@ const initialState = {
   secondInnCurrentRunRate: 0,
   secondInnNoOfWideBall: 0,
   secondInnNoOfNoBall: 0,
+  secondInnNoOfBye:0,
   secondInnrunScoreBoard: [],
   secondInnWicketFall: 0,
   getStartButton: false,
@@ -64,6 +68,7 @@ const initialState = {
   secondInnNoOfFour:0,
   secondInnNoOfSix:0,
   wicketFallWithRun: [],
+  secondInningWicketFallWithRun :[],
 };
 
 const Reducers = (state = initialState, action) => {
@@ -219,11 +224,16 @@ const Reducers = (state = initialState, action) => {
         ...state,
         modalBox: action.payload,
       };
-    case WICKETFALL_WITH_RUN:
-      return {
-        ...state,
-        wicketFallWithRun: [...state.wicketFallWithRun , action.payload],
-      };
+      case WICKETFALL_WITH_RUN:
+        return {
+          ...state,
+          wicketFallWithRun: [...state.wicketFallWithRun, action.payload], 
+        };
+      case SECOND_INN_WICKETFALL_WITH_RUN:
+        return {
+          ...state,
+          secondInningWicketFallWithRun: [...state.secondInningWicketFallWithRun, action.payload], 
+        };
     default:
       return state;
   }

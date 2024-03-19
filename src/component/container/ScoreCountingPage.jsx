@@ -15,7 +15,6 @@ import ModalPopUp from "../ModalPopUp";
 const ScoreCountingPage = (props) => {
   const data = useSelector((state) => state.Reducers);
   const [activeCategory, setActiveCategory] = useState("Home");
-  const [popUp, setPopUp] = useState(data.modalBox);
   return (
     <View style={styles.scoreCountingPage}>
       <ScoreCountSection />

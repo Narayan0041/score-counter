@@ -1,17 +1,17 @@
-import { Dimensions, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import React, { useState, useEffect } from "react";
+import { Dimensions, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import { ProgressChart } from "react-native-chart-kit";
-import theme from "../../../theme/style";
 import { useSelector } from "react-redux";
+import { ScrollView } from "react-native";
+import theme from "../../../theme/style";
 
-let screenWidth = Dimensions.get("window").width;
+const screenWidth = Dimensions.get("window").width;
 
 const RingChart = () => {
-  let data = useSelector((store) => store.Reducers);
-console.warn(data.noOfotherRuns)
-const [currentBattingTeam, setCurrentBattingTeam] = useState("");
-const [secondTeamBatting, setSecondTeamBatting] = useState("");
-const [activeTeam, setActiveTeam] = useState(currentBattingTeam);
+  const data = useSelector((store) => store.Reducers);
+  const [currentBattingTeam, setCurrentBattingTeam] = useState("");
+  const [secondTeamBatting, setSecondTeamBatting] = useState("");
+  const [activeTeam, setActiveTeam] = useState(undefined);
 
   useEffect(() => {
     if (data) {
@@ -20,50 +20,49 @@ const [activeTeam, setActiveTeam] = useState(currentBattingTeam);
           ? data.teamTossWin
           : data.teamTossLoss
       );
+      setActiveTeam(currentBattingTeam);
       setSecondTeamBatting(
         data.teamTossWin && data.whatYouChoose === "batting"
           ? data.teamTossLoss
           : data.teamTossWin
       );
     }
-  }, [data]); // Run this effect only when 'data' changes
+  }, [data, currentBattingTeam]);
 
   const boundaryData = {
     labels: ["FOUR", "SIXES", "OTHER"],
-    data: [
-      data?.noOfFour || 0,
-      data?.noOfSix || 0,
-      data?.noOfotherRuns || 0
-    ],
+    data: activeTeam === currentBattingTeam
+      ? [data?.noOfFour / 10 || 0, data?.noOfSix / 10 || 0, data?.noOfotherRuns / 10 || 0]
+      : [data?.secondInnNoOfFour / 10 || 0, data?.secondInnNoOfSix / 10 || 0, data?.secondInningNoOfOtherRuns / 10 || 0],
   };
 
   const chartConfig = {
     backgroundGradientFrom: "black",
     color: (opacity = 1) => `rgba(255, 255, 255, ${opacity})`,
     strokeWidth: 2,
-    barPercentage: 100,
+    barPercentage: 0.5,
     yAxisInterval: 2,
     propsForDots: {
       r: "4",
       strokeWidth: "1",
-      stroke: "#ffa726"
+      stroke: "#ffa726",
     },
     propsForBackgroundLines: {
       strokeDasharray: "",
-      strokeDashoffset: 0
+      strokeDashoffset: 0,
     },
     decimalPlaces: 0,
     propsForLabels: {
       fontSize: "14",
       fontWeight: "bold",
-      fill: "#fff"
+      fill: "#fff",
     },
     propsForHorizontalLabels: {
-      textAnchor: "start"
+      textAnchor: "start",
     },
-    color1: (opacity = 1) => `rgba(0, 0, 255, ${opacity})`, // Blue color for "FOUR" segment
-    color2: (opacity = 1) => `rgba(255, 192, 203, ${opacity})`, // Pink color for "SIXES" segment
-    color3: (opacity = 1) => `rgba(255, 255, 255, ${opacity})`, // White color for "OTHER" segment
+    progressColor: (opacity = 1) => `rgba(134, 65, 244, ${opacity})`, // // Blue color for "FOUR" segment
+    color2: (opacity = 1) => theme.colors.secondary, // Pink color for "SIXES" segment
+    color3: (opacity = 1) => theme.colors.fontColor, // White color for "OTHER" segment
   };
 
   const handleClick = (value) => {
@@ -71,7 +70,7 @@ const [activeTeam, setActiveTeam] = useState(currentBattingTeam);
   };
 
   return (
-    <>
+    <ScrollView>
       <View style={styles.displayTeamName}>
         <TouchableOpacity
           onPress={() => handleClick(currentBattingTeam)}
@@ -132,21 +131,23 @@ const [activeTeam, setActiveTeam] = useState(currentBattingTeam);
           hideLegend={false}
         />
         <View style={styles.dataContainer}>
-          <View style={{marginRight:20}}>
+          <View style={{ marginRight: 20 }}>
             <Text style={styles.DataTextHeader}>4 runs</Text>
-            <Text style={styles.DataText}>{data?.noOfFour || 0}</Text>
+            <Text style={styles.DataText}>{boundaryData.data[0]}</Text>
           </View>
           <View>
             <Text style={styles.DataTextHeader}>6 runs</Text>
-            <Text style={styles.DataText}>{data?.noOfSix || 0}</Text>
+            <Text style={styles.DataText}>{boundaryData.data[1]}</Text>
           </View>
           <View>
-            <Text style={[styles.DataTextHeader, {marginLeft:10}]}>Other runs</Text>
-            <Text style={styles.DataText}>{data.noOfotherRuns || 0}</Text>
+            <Text style={[styles.DataTextHeader, { marginLeft: 10 }]}>
+              Other runs
+            </Text>
+            <Text style={styles.DataText}>{boundaryData.data[2]}</Text>
           </View>
         </View>
       </View>
-    </>
+    </ScrollView>
   );
 };
 
@@ -159,25 +160,24 @@ const styles = StyleSheet.create({
     marginTop: "10%",
   },
   ringChartContainer: {
-    marginTop: 30
+    marginTop: 30,
   },
   dataContainer: {
     flexDirection: "row",
     justifyContent: "center",
     alignItems: "center",
-    padding:20,
-    // marginTop:20
+    padding: 20,
   },
   DataText: {
     color: theme.colors.fontColor,
-    textAlign: "center", 
-    fontSize:17,
-    fontWeight:"600"
+    textAlign: "center",
+    fontSize: 17,
+    fontWeight: "600",
   },
   DataTextHeader: {
     color: "gray",
     textAlign: "center",
-    fontSize:15,
-    fontWeight:"600"
-  }
+    fontSize: 15,
+    fontWeight: "600",
+  },
 });

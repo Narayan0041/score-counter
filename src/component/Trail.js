@@ -2,10 +2,10 @@ import { LineChart } from "react-native-gifted-charts";
 import theme from "../theme/style";
 import { StyleSheet, Text, View } from "react-native";
 import { useSelector } from "react-redux";
-import { React , useState } from "react";
+import { React, useState } from "react";
 export const Trail = () => {
-  const data =useSelector(state=>state.Reducers);
-//  console.warn(data.runScoreBoard)
+  const data = useSelector((state) => state.Reducers);
+  //  console.warn(data.runScoreBoard)
   const [currentBattingTeam, setCurrentBattingTeam] = useState(
     data.teamTossWin && data.whatYouChoose == "batting"
       ? data.teamTossWin
@@ -16,9 +16,13 @@ export const Trail = () => {
       ? data.teamTossLoss
       : data.teamTossWin
   );
-  const graphData = [[10,28,25,6,6,8],[10,3,22,8,4,10],[1,2,7,2,10,5],[13,16,17,20,1,2]];
-// console.warn(graphData)
-  // const data = graphValue.map((item) => item?.runs)
+  const data1 = [
+    { value: 15 },
+    {  value: 15,},
+    { value: 30 },
+    { value: 26 },
+    { value: 40 },
+  ];
   const data2 = [
     { value: 10 },
     { value: 35 },
@@ -46,8 +50,8 @@ export const Trail = () => {
         </View>
       </View>
       <LineChart
-        data={graphData}
-        // data2={data2}
+        data={data1}
+        data2={data2}
         backgroundColor={theme.colors.secondaryBackground}
         thickness={1}
         isAnimated={true}

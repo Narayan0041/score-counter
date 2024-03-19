@@ -30,6 +30,7 @@ export const WICKETFALL_WITH_RUN = "WICKETFALL_WITH_RUN";
 export const SECOND_INN_NO_OF_OTHER_RUNS = "SECOND_INN_NO_OF_OTHER_RUNS";
 export const SECOND_INN_NO_OF_FOUR = "SECOND_INN_NO_OF_FOUR";
 export const SECOND_INN_NO_OF_SIX = "SECOND_INN_NO_OF_SIX";
+export const SECOND_INN_WICKETFALL_WITH_RUN = "SECOND_INN_WICKETFALL_WITH_RUN";
 // Action Creators
 export const TakeTeamName = (detail) => ({
   type: TAKE_TEAM_NAME,
@@ -209,9 +210,15 @@ export const noOfPlayer = (detail) => {
 };
 
 export const wicketFallWithRun = (detail) => {
-  console.error(detail, "det");
   return {
     type: WICKETFALL_WITH_RUN,
+    payload: detail,
+  };
+};
+
+export const secondInnWicketFallWithRun = (detail) => {
+  return {
+    type: SECOND_INN_WICKETFALL_WITH_RUN,
     payload: detail,
   };
 };

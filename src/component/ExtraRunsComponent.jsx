@@ -17,18 +17,21 @@ const ExtraRunsComponent = () => {
       : data.teamTossWin
   );
 
-  const [paticularTeamData, setPaticularTeamData] = useState({
-    WideBall: data.noOfWideBall,
-    NoBall: data.noOfNoBall,
-    Bye: 10,
-  });
-  const [activeTeam, setActiveTeam] = useState(secondTeamBatting);
+  const [activeTeam, setActiveTeam] = useState(currentBattingTeam);
 
   const extraType = ["Wide Ball", "No Ball", "Bye"];
-  const dataOfWideBall = paticularTeamData.WideBall;
-  const dataOfNoBall = paticularTeamData.NoBall;
-  const dataOfBye = paticularTeamData.Bye;
+  let dataOfWideBall, dataOfNoBall, dataOfBye;
 
+  if (activeTeam === currentBattingTeam) {
+    dataOfWideBall = data.noOfWideBall;
+    dataOfNoBall = data.noOfNoBall;
+    dataOfBye = data.noOfBye;
+  } else {
+    dataOfWideBall = data.secondInnNoOfWideBall;
+    dataOfNoBall = data.secondInnNoOfNoBall;
+    dataOfBye = data.secondInnNoOfBye;
+  }
+  
   const handleClick = (value) => {
     setActiveTeam(value);
   };
