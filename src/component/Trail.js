@@ -3,29 +3,42 @@ import theme from "../theme/style";
 import { StyleSheet, Text, View } from "react-native";
 import { useSelector } from "react-redux";
 import { React, useState } from "react";
+import { noOfFour } from "../Store/Action";
 export const Trail = () => {
   const data = useSelector((state) => state.Reducers);
-  //  console.warn(data.runScoreBoard)
-const runsScoreBoard = data.runsScoreBoard;
-console.error(runsScoreBoard)
+  let noOfOver = [];
+  const numOfOvers = parseInt(data.selectTheOver.charAt(0)); 
+  
+  for (let i = 1; i <= numOfOvers; i++) { 
+    noOfOver.push(i);
+  }
   const [currentBattingTeam, setCurrentBattingTeam] = useState(
-    data.teamTossWin && data.whatYouChoose == "batting"
+    data.teamTossWin && data.whatYouChoose === "batting"
       ? data.teamTossWin
       : data.teamTossLoss
   );
+
   const [secondTeamBatting, setSecondTeamBatting] = useState(
-    data.teamTossWin && data.whatYouChoose == "batting"
+    data.teamTossWin && data.whatYouChoose === "batting"
       ? data.teamTossLoss
       : data.teamTossWin
   );
-  // Assuming you have dynamic data like this
-const dynamicData1 = [{run:1},{run:2},{run:100}];
-const dynamicData2 = [{run:5},{run:8},{run:15}];
 
-// Transform the data to match the expected format
-const transformedData1 = dynamicData1.map(item => ({ value: item.run }));
-const transformedData2 = dynamicData2.map(item => ({ value: item.run }));
-  const xAxisLabelTexts = ["1", "2", "3", "4", "5"]; // Custom y-axis labels
+  const dynamicRunsData1 = data.runScoreBoard;
+
+  const dynamicRunsData2 = data.secondInnRunScoreBoard
+
+  const transformedRunsData1 = dynamicRunsData1.map((item) => ({
+    value: item.over,
+    value: item.runs
+  }));
+  const transformedRunsData2 = dynamicRunsData2.map((item) => ({
+    value: item.over,
+    value: item.secondInnRuns
+  }));
+  // console.error(transformedRunsData1)
+  // console.error(transformedRunsData2)
+  const xAxisLabelTexts = noOfOver; // Custom x-axis labels
 
   return (
     <View style={styles.LineChartContainer}>
@@ -39,30 +52,32 @@ const transformedData2 = dynamicData2.map(item => ({ value: item.run }));
           <Text style={styles.team2}>{secondTeamBatting}</Text>
         </View>
       </View>
-      <LineChart
-        data={transformedData1}
-        data2={transformedData2}
-        backgroundColor={theme.colors.secondaryBackground}
-        thickness={1}
-        isAnimated={true}
-        width={250}
-        spacing={50}
-        initialSpacing={10}
-        color1={theme.colors.fontColor}
-        color2={theme.colors.primary}
-        hideDataPoints1
-        hideDataPoints2
-        dashGap={3}
-        noOfSections={5}
-        stepHeight={25}
-        rulesColor="#444444"
-        xAxisLabelTexts={xAxisLabelTexts}
-        xAxisLabelTextStyle={{ color: theme.colors.fontColor }}
-        xAxisTextStyle={{ color: theme.colors.fontColor }}
-        yAxisTextStyle={{ color: theme.colors.fontColor }}
-        yAxisColor={theme.colors.secondaryBackground}
-        xAxisColor={theme.colors.fontColor}
-      />
+      <View style={{ marginLeft: 10, marginTop: 10 }}>
+        <LineChart
+          data={transformedRunsData1}
+          data2={transformedRunsData2}
+          backgroundColor={theme.colors.secondaryBackground}
+          thickness={2.3}
+          isAnimated={true}
+          width={280}
+          spacing={50}
+          initialSpacing={10}
+          color1={theme.colors.fontColor}
+          color2={theme.colors.primary}
+          hideDataPoints1 
+          hideDataPoints2
+          dashGap={3}
+          noOfSections={5}
+          stepHeight={30}
+          rulesColor="#444444"
+          xAxisLabelTexts={xAxisLabelTexts}
+          xAxisLabelTextStyle={{ color: theme.colors.fontColor }}
+          xAxisTextStyle={{ color: theme.colors.fontColor }}
+          yAxisTextStyle={{ color: theme.colors.fontColor }}
+          yAxisColor={theme.colors.secondaryBackground}
+          xAxisColor={theme.colors.fontColor}
+        />
+      </View>
       <View style={styles.runsLabel}>
         <Text style={styles.team2}>Runs</Text>
       </View>
@@ -72,6 +87,7 @@ const transformedData2 = dynamicData2.map(item => ({ value: item.run }));
     </View>
   );
 };
+
 
 const styles = StyleSheet.create({
   LineChartContainer: {
@@ -89,7 +105,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   team1: {
-    color: theme.colors.primary,
+    color: theme.colors.fontColor,
     fontSize: 15,
     fontWeight: "600",
   },
@@ -100,15 +116,15 @@ const styles = StyleSheet.create({
   },
   radio1: {
     height: 8,
-    width: 25,
-    backgroundColor: theme.colors.primary,
+    width: 15,
+    backgroundColor: theme.colors.fontColor,
     borderRadius: 4,
     marginRight: 5,
   },
   radio2: {
     height: 8,
-    width: 25,
-    backgroundColor: "white",
+    width: 15,
+    backgroundColor: theme.colors.primary,
     borderRadius: 4,
     marginLeft: 30,
     marginRight: 5,

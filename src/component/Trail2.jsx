@@ -1,31 +1,44 @@
 import { LineChart } from "react-native-gifted-charts";
 import theme from "../theme/style";
 import { StyleSheet, Text, View } from "react-native";
+import { useSelector } from "react-redux";
+import { useState } from "react";
 
 export const Trail2 = () => {
-  const data = [
-    { value: 15 },
-    { value: 15.5 },
-    { value: 15.8 },
-    { value: 19.8 },
-    { value: 17.8 },
-    { value: 21.8 },
-    { value: 10.8 },
-    { value: 25.8 },
-    { value: 30 },
-    { value: 26 },
-    { value: 10 },
-    { value: 30 },
+  const data = useSelector((state) => state.Reducers);
+  let noOfOver = [];
+  const numOfOvers = parseInt(data.selectTheOver.charAt(0));
 
-  ];
-  const data2 = [
-    { value: 10 },
-    { value: 35 },
-    { value: 26 },
-    // { value: 45 },
+  for (let i = 1; i <= numOfOvers; i++) {
+    noOfOver.push(i);
+  }
+  const [currentBattingTeam, setCurrentBattingTeam] = useState(
+    data.teamTossWin && data.whatYouChoose === "batting"
+      ? data.teamTossWin
+      : data.teamTossLoss
+  );
 
-  ];
-  const xAxisLabelTexts = ["1", "2", "3", "4", "5"]; // Custom y-axis labels
+  const [secondTeamBatting, setSecondTeamBatting] = useState(
+    data.teamTossWin && data.whatYouChoose === "batting"
+      ? data.teamTossLoss
+      : data.teamTossWin
+  );
+
+  const dynamicRunsData1 = data.runRateChart;
+  const dynamicRunsData2 = data.secondInningRunRateChart;
+  // console.warn(dynamicRunsData2)
+  const transformedRunsData1 = dynamicRunsData1.map((item) => ({
+    x: item.over,
+    value: Number(item.runRate), // Convert string to number
+   }));
+   
+   const transformedRunsData2 = dynamicRunsData2.map((item) => ({
+    x: item.over,
+    value: Number(item.secondInnRunRate), // Convert string to number
+   }));
+   
+  // console.error(transformedRunsData2)
+  const xAxisLabelTexts = noOfOver; // Custom x-axis labels
 
   return (
     <View style={styles.LineChartContainer}>
@@ -40,12 +53,12 @@ export const Trail2 = () => {
         </View>
       </View>
       <LineChart
-        data={data}
-        data2={data2}
+        data={transformedRunsData1}
+        data2={transformedRunsData2}
         backgroundColor={theme.colors.secondaryBackground}
-        thickness={1}
+        thickness={2.3}
         isAnimated={true}
-        width={250}
+        width={280}
         spacing={50}
         initialSpacing={0}
         color1={theme.colors.fontColor}

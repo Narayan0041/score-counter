@@ -13,6 +13,7 @@ export const NO_OF_OTHER_RUNS = "NO_OF_OTHER_RUNS";
 export const NO_OF_FOUR = "NO_OF_FOUR";
 export const NO_OF_SIX = "NO_OF_SIX";
 export const NO_OF_BYE = "NO_OF_BYE";
+export const RUN_RATE_CHART ="RUN_RATE_CHART"
 
 // for Second inning
 export const SECOND_INNING = "SECOND_INNING";
@@ -33,6 +34,7 @@ export const SECOND_INN_NO_OF_FOUR = "SECOND_INN_NO_OF_FOUR";
 export const SECOND_INN_NO_OF_SIX = "SECOND_INN_NO_OF_SIX";
 export const SECOND_INN_WICKETFALL_WITH_RUN = "SECOND_INN_WICKETFALL_WITH_RUN";
 export const SECOND_INN_NO_OF_BYE = "SECOND_INN_NO_OF_BYE";
+export const SECOND_INNING_RUN_RATE_CHART ="SECOND_INNING_RUN_RATE_CHART"
 // Action Creators
 export const TakeTeamName = (detail) => ({
   type: TAKE_TEAM_NAME,
@@ -103,6 +105,12 @@ export const runsScoreBoard = (detail) => {
     payload: detail,
   };
 };
+export const runRateChart =(detail)=>{
+  return{
+    type:RUN_RATE_CHART,
+    payload:detail
+  }
+}
 export const wicketFall = (detail) => {
   return {
     type: WICKET,
@@ -173,6 +181,12 @@ export const secondInnRunsScoreBoard = (detail) => {
     payload: detail,
   };
 };
+export const secondInningRunRateChart =(detail)=>{
+  return{
+    type:SECOND_INNING_RUN_RATE_CHART,
+    payload:detail
+  }
+}
 export const secondInnWicketFall = (detail) => {
   return {
     type: SECOND_INN_WICKET,
