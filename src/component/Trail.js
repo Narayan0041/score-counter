@@ -6,6 +6,8 @@ import { React, useState } from "react";
 export const Trail = () => {
   const data = useSelector((state) => state.Reducers);
   //  console.warn(data.runScoreBoard)
+const runsScoreBoard = data.runsScoreBoard;
+console.error(runsScoreBoard)
   const [currentBattingTeam, setCurrentBattingTeam] = useState(
     data.teamTossWin && data.whatYouChoose == "batting"
       ? data.teamTossWin
@@ -16,25 +18,13 @@ export const Trail = () => {
       ? data.teamTossLoss
       : data.teamTossWin
   );
-  const data1 = [
-    { value: 15 },
-    {  value: 15,},
-    { value: 30 },
-    { value: 26 },
-    { value: 40 },
-  ];
-  const data2 = [
-    { value: 10 },
-    { value: 35 },
-    { value: 26 },
-    { value: 45 },
-    { value: 20 },
-    { value: 30 },
-    { value: 50 },
-    { value: 30 },
-    { value: 16 },
-    { value: 4 },
-  ];
+  // Assuming you have dynamic data like this
+const dynamicData1 = [{run:1},{run:2},{run:100}];
+const dynamicData2 = [{run:5},{run:8},{run:15}];
+
+// Transform the data to match the expected format
+const transformedData1 = dynamicData1.map(item => ({ value: item.run }));
+const transformedData2 = dynamicData2.map(item => ({ value: item.run }));
   const xAxisLabelTexts = ["1", "2", "3", "4", "5"]; // Custom y-axis labels
 
   return (
@@ -50,12 +40,12 @@ export const Trail = () => {
         </View>
       </View>
       <LineChart
-        data={data1}
-        data2={data2}
+        data={transformedData1}
+        data2={transformedData2}
         backgroundColor={theme.colors.secondaryBackground}
         thickness={1}
         isAnimated={true}
-        width={320}
+        width={250}
         spacing={50}
         initialSpacing={10}
         color1={theme.colors.fontColor}
@@ -63,6 +53,8 @@ export const Trail = () => {
         hideDataPoints1
         hideDataPoints2
         dashGap={3}
+        noOfSections={5}
+        stepHeight={25}
         rulesColor="#444444"
         xAxisLabelTexts={xAxisLabelTexts}
         xAxisLabelTextStyle={{ color: theme.colors.fontColor }}

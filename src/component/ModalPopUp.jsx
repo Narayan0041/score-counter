@@ -3,7 +3,7 @@ import React, { useState } from "react";
 import theme from "../theme/style";
 import Icon from "react-native-vector-icons/FontAwesome";
 import { useDispatch, useSelector } from "react-redux";
-import { modalBox, totalRun, secondInnTotalRun } from "../Store/Action";
+import { modalBox, totalRun, secondInnTotalRun, noOfByes, secondInnNoOfByes } from "../Store/Action";
 
 const ModalPopUp = ({
   data,
@@ -19,13 +19,14 @@ const ModalPopUp = ({
 }) => {
   let dispatch = useDispatch();
   const storeData = useSelector((state) => state.Reducers);
-
+  // console.warn(storeData.secondInnNoOfBye)
   const [closeModal, setCloseModal] = useState(undefined);
   const handleRun = (value) => {
     // first ining add the No ball data
     if (data && !storeData.secondInning) {
       setRuns(data + value + 1);
       dispatch(totalRun(data + value + 1));
+      dispatch(noOfByes(storeData.noOfBye + value))
       dispatch(modalBox(false));
       setCloseModal(false);
     }
@@ -33,19 +34,20 @@ const ModalPopUp = ({
     if (secondInningdata && storeData.secondInning) {
       setSecondInnRuns(secondInningdata + value + 1);
       dispatch(secondInnTotalRun(secondInningdata + value + 1));
+      dispatch(secondInnNoOfByes(storeData.secondInnNoOfBye + value))
       dispatch(modalBox(false));
       setCloseModal(false);
     }
     // --------------------------------Wide section ----------------------------------
     if (setWides && !storeData.secondInning) {
       setRuns(data + value + 1);
-      setWides(false);
+      dispatch(noOfByes(storeData.noOfBye + value))
       dispatch(modalBox(false));
       setCloseModal(false);
     }
     if (setSecondInnWides && storeData.secondInning) {
       dispatch(secondInnTotalRun(secondInningdata + value + 1));
-      setSecondInnWides(false);
+      dispatch(secondInnNoOfByes(storeData.secondInnNoOfBye + value))
       dispatch(modalBox(false));
       setCloseModal(false);
     }
@@ -53,6 +55,7 @@ const ModalPopUp = ({
     if (setLegBy && !storeData.secondInning) {
       setRuns(data + value + 1);
       setBalls(prev =>prev +1)
+      dispatch(noOfByes(storeData.noOfBye + value))
       setLegBy(false);
       dispatch(modalBox(false));
       setCloseModal(false);
@@ -61,6 +64,7 @@ const ModalPopUp = ({
       setRuns(data + value + 1);
       setSecondInnBalls(prev =>prev +1)
       setLegBy(false);
+      dispatch(secondInnNoOfByes(storeData.secondInnNoOfBye + value))
       dispatch(modalBox(false));
       setCloseModal(false);
     }

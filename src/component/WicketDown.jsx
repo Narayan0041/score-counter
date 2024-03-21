@@ -85,47 +85,50 @@ const WicketDown = () => {
       </View>
       <View style={styles.wicketDownContainer}>
         <Text style={[styles.title, { color: theme.colors.fontColor }]}>
-       FALL OF WICKET OF {activeTeam}
+          FALL OF WICKET OF {activeTeam}
         </Text>
         <View style={styles.table}>
-          <View style={[styles.headerRow]}>
-            <Text style={[styles.header, { color: theme.colors.fontColor }]}>
-              Sr No
-            </Text>
-            <Text style={[styles.header, { color: theme.colors.fontColor }]}>
-              Wicket Fall
-            </Text>
-          </View>
-          {activeTeam === currentBattingTeam
-            ? wicketDownData.map((item, index) => (
-                <View style={styles.row} key={index}>
-                  <Text
-                    style={[styles.cell, { color: theme.colors.fontColor }]}
-                  >
-                    {index + 1}
-                  </Text>
-                  <Text
-                    style={[styles.cell, { color: theme.colors.fontColor }]}
-                  >
-                    {item.runs}-{item.wicket} ({item.balls})
-                  </Text>
-                </View>
-              ))
-            : wicketDownData.map((item, index) => (
-                <View style={styles.row} key={index}>
-                  <Text
-                    style={[styles.cell, { color: theme.colors.fontColor }]}
-                  >
-                    {index + 1}
-                  </Text>
-                  <Text
-                    style={[styles.cell, { color: theme.colors.fontColor }]}
-                  >
-                    {item.secondInnRuns}-{item.secondInnWicket} ({item.secondInnBalls})
-                  </Text>
-                </View>
-              ))}
-        </View>
+  <View style={[styles.headerRow]}>
+    <Text style={[styles.header, { color: theme.colors.fontColor }]}>
+      Sr No
+    </Text>
+    <Text style={[styles.header, { color: theme.colors.fontColor }]}>
+      Wicket Fall
+    </Text>
+  </View>
+  {activeTeam === currentBattingTeam ? (
+    wicketDownData.map((item, index) => (
+      <View style={styles.row} key={index}>
+        <Text style={[styles.cell, { color: theme.colors.fontColor }]}>
+          {index + 1}
+        </Text>
+        <Text style={[styles.cell, { color: theme.colors.fontColor }]}>
+          {item.runs}-{item.wicket} ({item.balls})
+        </Text>
+      </View>
+    ))
+  ) : wicketDownData.length === 0 ? (
+    <View style={styles.row}>
+      <Text style={[styles.cell, { color: theme.colors.fontColor }]}>-</Text>
+      <Text style={[styles.cell, { color: theme.colors.fontColor }]}>
+        No Wicket Fall
+      </Text>
+    </View>
+  ) : (
+    wicketDownData.map((item, index) => (
+      <View style={styles.row} key={index}>
+        <Text style={[styles.cell, { color: theme.colors.fontColor }]}>
+          {index + 1}
+        </Text>
+        <Text style={[styles.cell, { color: theme.colors.fontColor }]}>
+          {item.secondInnRuns}-{item.secondInnWicket} (
+          {item.secondInnBalls})
+        </Text>
+      </View>
+    ))
+  )}
+</View>
+
       </View>
     </ScrollView>
   );

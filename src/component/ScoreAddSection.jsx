@@ -33,7 +33,7 @@ import ModalPopUp from "./ModalPopUp";
 const ScoreAddSection = () => {
   let dispatch = useDispatch();
   let data = useSelector((state) => state.Reducers);
-  // console.warn(data.noOfPlayer);
+  console.warn(data.runScoreBoard);
   const [showScoreContainer, setShowScoreContainer] = useState(false);
   const [balls, setBalls] = useState(0);
   const [runs, setRuns] = useState(0);
@@ -58,13 +58,13 @@ const ScoreAddSection = () => {
   const [allRuns, setAllRuns] = useState([]);
   const [popUp, setPopUp] = useState(data.modalBox);
 
-  const handleBall = () => {
-    if (!data.secondInning) {
-      setBalls(balls + 1);
-    } else {
-      setSecondInnBalls(balls + 1);
-    }
-  };
+  // const handleBall = () => {
+  //   if (!data.secondInning) {
+  //     setBalls(balls + 1);
+  //   } else {
+  //     setSecondInnBalls(balls + 1);
+  //   }
+  // };
 
   const handleRun = (runCount) => {
     if (!data.secondInning) {
@@ -93,19 +93,18 @@ const ScoreAddSection = () => {
       }
     }
     // Assuming this code is inside a function or a useEffect hook
-   // Assuming this code is inside a function or a useEffect hook
-setRunsInOver((prevRuns) => {
-  const newRunsInOver = [...prevRuns, runCount];
-  // if (newRunsInOver.length === 6) {
-  //   setAllRuns((prevAllRuns) => [...prevAllRuns, newRunsInOver]);
-  //   return [];
-  // } else if (newRunsInOver.length > 6) {
-  //   setAllRuns((prevAllRuns) => [...prevAllRuns, newRunsInOver.slice(0, 6)]);
-  //   return newRunsInOver.slice(6);
-  // }
-  return newRunsInOver;
-});
-
+    // Assuming this code is inside a function or a useEffect hook
+    //   setRunsInOver((prevRuns) => {
+    //     const newRunsInOver = [...prevRuns, runCount];
+    //     // if (newRunsInOver.length === 6) {
+    //     //   setAllRuns((prevAllRuns) => [...prevAllRuns, newRunsInOver]);
+    //     //   return [];
+    //     // } else if (newRunsInOver.length > 6) {
+    //     //   setAllRuns((prevAllRuns) => [...prevAllRuns, newRunsInOver.slice(0, 6)]);
+    //     //   return newRunsInOver.slice(6);
+    //     // }
+    //     return newRunsInOver;
+    //   });
   };
 
   const handleWicket = () => {
@@ -121,17 +120,17 @@ setRunsInOver((prevRuns) => {
   const handleNoBall = (value) => {
     dispatch(modalBox(true));
     if (!data.secondInning) {
-      setNoBalls(value + 1);
+      setNoBalls((prev) => prev + 1);
     } else {
-      setSecondInnNoBalls(value + 1);
+      setSecondInnNoBalls((prev) => prev + 1);
     }
   };
 
   const handleWide = (value) => {
     if (!data.secondInning) {
-      setWides(true);
+      setWides((prevWides) => prevWides + 1);
     } else {
-      setSecondInnWides(true);
+      setSecondInnWides((prevSecondInnWides) => prevSecondInnWides + 1);
     }
     dispatch(modalBox(true));
   };
@@ -229,6 +228,7 @@ setRunsInOver((prevRuns) => {
     wicket,
     runsInOver,
     secondInnWicket,
+    secondInnRuns
   ]);
 
   useEffect(() => {
@@ -241,6 +241,7 @@ setRunsInOver((prevRuns) => {
   useEffect(() => {
     setPopUp(data.modalBox);
   }, [data.modalBox]);
+  
 
   return (
     <>

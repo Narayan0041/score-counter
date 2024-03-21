@@ -31,7 +31,7 @@ const ExtraRunsComponent = () => {
     dataOfNoBall = data.secondInnNoOfNoBall;
     dataOfBye = data.secondInnNoOfBye;
   }
-  
+
   const handleClick = (value) => {
     setActiveTeam(value);
   };
@@ -125,6 +125,18 @@ const ExtraRunsComponent = () => {
               </View>
             );
           })}
+          <View
+            style={[
+              styles.row,
+              {
+                borderTopColor: theme.colors.grayColor,
+                borderTopWidth: 1,
+              },
+            ]}
+          >
+            <Text style={{ color: "white" }}>Total Extras</Text>
+            <Text style={{ color: "white" }}>{dataOfWideBall+dataOfNoBall+ dataOfBye} runs</Text>
+          </View>
         </View>
       </View>
     </View>

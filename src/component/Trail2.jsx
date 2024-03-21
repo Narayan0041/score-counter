@@ -45,15 +45,15 @@ export const Trail2 = () => {
         backgroundColor={theme.colors.secondaryBackground}
         thickness={1}
         isAnimated={true}
-        width={320}
+        width={250}
         spacing={50}
         initialSpacing={0}
         color1={theme.colors.fontColor}
         color2={theme.colors.primary}
         hideDataPoints1
         hideDataPoints2
-        // dataPointsColor1="white"
-        // dataPointsColor2={theme.colors.primary}
+        noOfSections={5}
+        stepHeight={25}
         dashGap={3}
         rulesColor="#444444"
         xAxisLabelTexts={xAxisLabelTexts}

@@ -23,7 +23,7 @@ import {
 const ScoreCountSection = () => {
   let dispatch = useDispatch();
   let data = useSelector((state) => state.Reducers);
-  console.warn(data)
+  // console.warn(data)
   const navigation = useNavigation();
   const [opacityValue] = useState(new Animated.Value(1));
   const [currentBattingTeam, setCurrentBattingTeam] = useState(
@@ -45,6 +45,7 @@ const ScoreCountSection = () => {
   const [message, setMessage] = useState(false);
   const [messageForTeamOne, setMessageForTeamOne] = useState(false);
   const [messageForTeamSecond, setMessageForTeamSecond] = useState(false);
+  const [completeMatch, setCompleteMatch] = useState(false);
 
   // get the projectedScore
   const currentRuns = data.totalRuns;
@@ -101,16 +102,22 @@ const ScoreCountSection = () => {
       // dispatch(getStartButton(true));
     }
     // wicket are fall
-    if(data.noOfPlayer === data.wicketFall && !secondInn){
+    if (data.noOfPlayer === data.wicketFall && !secondInn) {
       setSecondInn(true);
       dispatch(secondInning(true));
     }
-// wicket fall second inning
-    if( data.noOfPlayer === data.secondInnWicketFall && secondInn){
+    // wicket fall second inning
+    if (data.noOfPlayer === data.secondInnWicketFall && secondInn) {
       // setMessageForTeamOne(true);
+      setCompleteMatch(true);
       dispatch(getStartButton(true));
     }
-  }, [data.noOfBalls, selectedOverByUser, secondInn,data.secondInnWicketFall]);
+  }, [
+    data.noOfBalls,
+    selectedOverByUser,
+    secondInn,
+    data.secondInnWicketFall.completeMatch,
+  ]);
 
   useEffect(() => {
     const secondInnOverValue = `${Math.floor(data.secondInnNoOfBalls / 6)}.${
@@ -127,6 +134,7 @@ const ScoreCountSection = () => {
     ) {
       setMessageForTeamOne(true);
       dispatch(getStartButton(true));
+      setCompleteMatch(true);
     }
     // else{
     //   setMessageForTeamSecond(true)
@@ -138,7 +146,16 @@ const ScoreCountSection = () => {
     secondInningOver,
     currentBattingTeam,
     requireRuns,
+    completeMatch,
   ]);
+  useEffect(() => {
+    if (secondInn && data.totalRuns <= data.secondInnTotalRuns) {
+      setMessage(true);
+      dispatch(getStartButton(true));
+      setCompleteMatch(true);
+    }
+  }, [secondInn, data.totalRuns, data.secondInnTotalRuns]);
+
 
   return (
     <View style={styles.container}>
@@ -157,10 +174,19 @@ const ScoreCountSection = () => {
             </Text>
           </View>
           <View style={styles.liveContainer}>
-            <Animated.View
-              style={[styles.liveColor, { opacity: opacityValue }]}
-            />
-            <Text style={styles.liveText}>LIVE</Text>
+            {completeMatch ? (
+              <View style={{ alignItems: "center", flexDirection: "row" }}>
+                <View style={styles.completeMatchSection}></View>
+                <Text style={styles.liveText}>Complete</Text>
+              </View>
+            ) : (
+              <View style={{ alignItems: "center", flexDirection: "row" }}>
+                <Animated.View
+                  style={[styles.liveColor, { opacity: opacityValue }]}
+                />
+                <Text style={styles.liveText}>LIVE</Text>
+              </View>
+            )}
           </View>
         </View>
       </View>
@@ -187,15 +213,15 @@ const ScoreCountSection = () => {
                     ? (0.0).toFixed(2)
                     : data.currentRunRate}
                 </Text>
-              {/* ----------------------------------------bat image icon ---------------------------- */}
-              <View>
-                {currentBattingTeam === data.teamTossWin && !secondInn && (
-                  <Image
-                    source={require("../../assets/cricket_bat.png")}
-                    style={styles.battingImage}
-                  />
-                )}
-              </View>
+                {/* ----------------------------------------bat image icon ---------------------------- */}
+                <View>
+                  {currentBattingTeam === data.teamTossWin && !secondInn && (
+                    <Image
+                      source={require("../../assets/cricket_bat.png")}
+                      style={styles.battingImage}
+                    />
+                  )}
+                </View>
               </View>
             </>
           ) : (
@@ -246,15 +272,15 @@ const ScoreCountSection = () => {
                     ? (0.0).toFixed(2)
                     : data.secondInnCurrentRunRate}
                 </Text>
-              {/* ------------------------------bat image icon------------------------------- */}
-              <View>
-                {secondInn && secondTeamBatting === data.teamTossLoss && (
-                  <Image
-                    source={require("../../assets/cricket_bat.png")}
-                    style={styles.battingImage}
-                  />
-                )}
-              </View>
+                {/* ------------------------------bat image icon------------------------------- */}
+                <View>
+                  {secondInn && secondTeamBatting === data.teamTossLoss && (
+                    <Image
+                      source={require("../../assets/cricket_bat.png")}
+                      style={styles.battingImage}
+                    />
+                  )}
+                </View>
               </View>
             </>
           ) : (
@@ -304,14 +330,14 @@ const ScoreCountSection = () => {
                     ? (0.0).toFixed(2)
                     : data.currentRunRate}
                 </Text>
-              <View>
-                {currentBattingTeam === data.teamTossLoss && !secondInn && (
-                  <Image
-                    source={require("../../assets/cricket_bat.png")}
-                    style={styles.battingImage}
-                  />
-                )}
-              </View>
+                <View>
+                  {currentBattingTeam === data.teamTossLoss && !secondInn && (
+                    <Image
+                      source={require("../../assets/cricket_bat.png")}
+                      style={styles.battingImage}
+                    />
+                  )}
+                </View>
               </View>
             </>
           ) : (
@@ -362,14 +388,14 @@ const ScoreCountSection = () => {
                     ? (0.0).toFixed(2)
                     : data.secondInnCurrentRunRate}
                 </Text>
-              <View>
-                {secondInn && secondTeamBatting === data.teamTossWin && (
-                  <Image
-                    source={require("../../assets/cricket_bat.png")}
-                    style={styles.battingImage}
-                  />
-                )}
-              </View>
+                <View>
+                  {secondInn && secondTeamBatting === data.teamTossWin && (
+                    <Image
+                      source={require("../../assets/cricket_bat.png")}
+                      style={styles.battingImage}
+                    />
+                  )}
+                </View>
               </View>
             </>
           ) : (
@@ -414,12 +440,14 @@ const ScoreCountSection = () => {
       <View>
         <Text style={styles.textPro}>
           {message
-            ? `${secondTeamBatting} has win the match ✨✨✨ `
+            ? `${secondTeamBatting} has win the match by ${
+                data.noOfPlayer - data.secondInnWicketFall
+              } wicket  `
             : messageForTeamOne
             ? `${currentBattingTeam} win the match by ${requireRuns - 1} Runs`
-            : messageForTeamSecond 
+            : messageForTeamSecond
             ? `${secondTeamBatting} is win by 10 wicket`
-             : secondInn
+            : secondInn
             ? `${secondTeamBatting} need ${requireRunsData} runs in ${requireBallsData} balls at ${requiredRunRate.toFixed(
                 2
               )} rpo`
@@ -487,7 +515,7 @@ const styles = StyleSheet.create({
     paddingBottom: "5%",
   },
   paticularTeam: {
-    position:"relative",
+    position: "relative",
     alignItems: "center",
   },
   textScore: {
@@ -555,5 +583,11 @@ const styles = StyleSheet.create({
   },
   inActiveComponent: {
     opacity: 0.4,
+  },
+  completeMatchSection: {
+    backgroundColor: "green",
+    height: 8,
+    width: 8,
+    borderRadius: 8,
   },
 });

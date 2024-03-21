@@ -3,6 +3,7 @@ import {
   MODAL_BOX,
   NO_BALL,
   NO_OF_BALLS,
+  NO_OF_BYE,
   NO_OF_FOUR,
   NO_OF_OTHER_RUNS,
   NO_OF_SIX,
@@ -14,6 +15,7 @@ import {
   SECOND_INN_CURRENT_RUN_RATE,
   SECOND_INN_NO_BALL,
   SECOND_INN_NO_OF_BALLS,
+  SECOND_INN_NO_OF_BYE,
   SECOND_INN_NO_OF_FOUR,
   SECOND_INN_NO_OF_OTHER_RUNS,
   SECOND_INN_NO_OF_SIX,
@@ -31,6 +33,7 @@ import {
   WICKET,
   WICKETFALL_WITH_RUN,
   WIDE_BALL,
+  runsScoreBoard,
   wicketFallWithRun,
 } from "../Action";
 
@@ -45,12 +48,12 @@ const initialState = {
   currentRunRate: 0,
   noOfWideBall: 0,
   noOfNoBall: 0,
-  noOfBye:0,
-  runScoreBoard:[],
+  noOfBye: 0,
+  runScoreBoard: [],
   wicketFall: 0,
-  noOfotherRuns:0,
-  noOfFour:0,
-  noOfSix:0,
+  noOfotherRuns: 0,
+  noOfFour: 0,
+  noOfSix: 0,
 
   secondInning: false,
   secondInnTotalRuns: 0,
@@ -58,17 +61,17 @@ const initialState = {
   secondInnCurrentRunRate: 0,
   secondInnNoOfWideBall: 0,
   secondInnNoOfNoBall: 0,
-  secondInnNoOfBye:0,
+  secondInnNoOfBye: 0,
   secondInnrunScoreBoard: [],
   secondInnWicketFall: 0,
   getStartButton: false,
   modalBox: false,
   noOfPlayer: 0,
-  secondInningNoOfOtherRuns:0,
-  secondInnNoOfFour:0,
-  secondInnNoOfSix:0,
+  secondInningNoOfOtherRuns: 0,
+  secondInnNoOfFour: 0,
+  secondInnNoOfSix: 0,
   wicketFallWithRun: [],
-  secondInningWicketFallWithRun :[],
+  secondInningWicketFallWithRun: [],
 };
 
 const Reducers = (state = initialState, action) => {
@@ -123,31 +126,36 @@ const Reducers = (state = initialState, action) => {
         ...state,
         noOfNoBall: action.payload,
       };
+    case NO_OF_BYE:
+      return {
+        ...state,
+        noOfBye: action.payload,
+      };
     case RUNS_SCORE_BOARD:
       return {
         ...state,
-        runScoreBoard: [...state.runScoreBoard, action.payload],
+        runScoreBoard: [...state.runScoreBoard ,action.payload],
       };
     case WICKET:
       return {
         ...state,
         wicketFall: action.payload,
       };
-      case NO_OF_OTHER_RUNS:
-        return{
-          ...state,
-          noOfotherRuns:action.payload,
-        }
-      case NO_OF_FOUR:
-        return{
-          ...state,
-          noOfFour:action.payload
-        }
-      case NO_OF_SIX:
-        return{
-          ...state,
-          noOfSix:action.payload
-        }
+    case NO_OF_OTHER_RUNS:
+      return {
+        ...state,
+        noOfotherRuns: action.payload,
+      };
+    case NO_OF_FOUR:
+      return {
+        ...state,
+        noOfFour: action.payload,
+      };
+    case NO_OF_SIX:
+      return {
+        ...state,
+        noOfSix: action.payload,
+      };
 
     case SECOND_INNING:
       return {
@@ -179,6 +187,11 @@ const Reducers = (state = initialState, action) => {
         ...state,
         secondInnNoOfNoBall: action.payload,
       };
+    case SECOND_INN_NO_OF_BYE:
+      return {
+        ...state,
+        secondInnNoOfBye: action.payload,
+      };
     case SECOND_INN_RUNS_SCORE_BOARD:
       return {
         ...state,
@@ -192,21 +205,21 @@ const Reducers = (state = initialState, action) => {
         ...state,
         secondInnWicketFall: action.payload,
       };
-      case SECOND_INN_NO_OF_OTHER_RUNS:
-        return{
-          ...state,
-          secondInningNoOfOtherRuns:action.payload,
-        }
-      case SECOND_INN_NO_OF_FOUR:
-        return{
-          ...state,
-          secondInnNoOfFour:action.payload
-        }
-      case SECOND_INN_NO_OF_SIX:
-        return{
-          ...state,
-          secondInnNoOfSix:action.payload
-        }
+    case SECOND_INN_NO_OF_OTHER_RUNS:
+      return {
+        ...state,
+        secondInningNoOfOtherRuns: action.payload,
+      };
+    case SECOND_INN_NO_OF_FOUR:
+      return {
+        ...state,
+        secondInnNoOfFour: action.payload,
+      };
+    case SECOND_INN_NO_OF_SIX:
+      return {
+        ...state,
+        secondInnNoOfSix: action.payload,
+      };
     case SCORE_ADD_GET_START_BUTTON:
       return {
         ...state,
@@ -224,16 +237,19 @@ const Reducers = (state = initialState, action) => {
         ...state,
         modalBox: action.payload,
       };
-      case WICKETFALL_WITH_RUN:
-        return {
-          ...state,
-          wicketFallWithRun: [...state.wicketFallWithRun, action.payload], 
-        };
-      case SECOND_INN_WICKETFALL_WITH_RUN:
-        return {
-          ...state,
-          secondInningWicketFallWithRun: [...state.secondInningWicketFallWithRun, action.payload], 
-        };
+    case WICKETFALL_WITH_RUN:
+      return {
+        ...state,
+        wicketFallWithRun: [...state.wicketFallWithRun, action.payload],
+      };
+    case SECOND_INN_WICKETFALL_WITH_RUN:
+      return {
+        ...state,
+        secondInningWicketFallWithRun: [
+          ...state.secondInningWicketFallWithRun,
+          action.payload,
+        ],
+      };
     default:
       return state;
   }
