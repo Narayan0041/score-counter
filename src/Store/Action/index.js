@@ -14,6 +14,9 @@ export const NO_OF_FOUR = "NO_OF_FOUR";
 export const NO_OF_SIX = "NO_OF_SIX";
 export const NO_OF_BYE = "NO_OF_BYE";
 export const RUN_RATE_CHART ="RUN_RATE_CHART"
+export const WIDE_BALL_CONTAINER ="WIDE_BALL_CONTAINER"
+export const NO_BALL_CONTAINER = "NO_BALL_CONTAINER";
+export const LEG_BY_CONATAINER ="LEG_BY_CONATAINER"
 
 // for Second inning
 export const SECOND_INNING = "SECOND_INNING";
@@ -35,6 +38,9 @@ export const SECOND_INN_NO_OF_SIX = "SECOND_INN_NO_OF_SIX";
 export const SECOND_INN_WICKETFALL_WITH_RUN = "SECOND_INN_WICKETFALL_WITH_RUN";
 export const SECOND_INN_NO_OF_BYE = "SECOND_INN_NO_OF_BYE";
 export const SECOND_INNING_RUN_RATE_CHART ="SECOND_INNING_RUN_RATE_CHART"
+export const SECOND_INNING_WIDE_BALL_CONTAINER ="SECOND_INNING_WIDE_BALL_CONTAINER"
+export const SECOND_INNING_NO_BALL_CONTAINER = "SECOND_INNING_NO_BALL_CONTAINER";
+export const SECOND_INNING_LEG_BY_CONATAINER ="SECOND_INNING_LEG_BY_CONATAINER"
 // Action Creators
 export const TakeTeamName = (detail) => ({
   type: TAKE_TEAM_NAME,
@@ -135,6 +141,24 @@ export const noOfSix = (detail) => {
     payload: detail,
   };
 };
+export const wideBallContainer =(detail)=>{
+  return{
+    type:WIDE_BALL_CONTAINER,
+    payload:detail,
+  }
+}
+export const noBallContainer =(detail)=>{
+  return{
+    type:NO_BALL_CONTAINER,
+    payload:detail,
+  }
+}
+export const legByContainer =(detail)=>{
+  return{
+    type:LEG_BY_CONATAINER,
+    payload:detail,
+  }
+}
 
 // Second inning start
 
@@ -249,5 +273,23 @@ export const secondInnNoOfByes =(detail)=>{
   return{
     type:SECOND_INN_NO_OF_BYE,
     payload:detail
+  }
+}
+export const secondInningWideBallContainer =(detail)=>{
+  return{
+    type:SECOND_INNING_WIDE_BALL_CONTAINER,
+    payload:detail,
+  }
+}
+export const secondInningNoBallContainer =(detail)=>{
+  return{
+    type:SECOND_INNING_NO_BALL_CONTAINER,
+    payload:detail,
+  }
+}
+export const secondInningLegByContainer =(detail)=>{
+  return{
+    type:SECOND_INNING_LEG_BY_CONATAINER,
+    payload:detail,
   }
 }

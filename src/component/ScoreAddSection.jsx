@@ -6,7 +6,9 @@ import Icon from "react-native-vector-icons/Ionicons";
 import { useDispatch, useSelector } from "react-redux";
 import {
   currentRunRate,
+  legByContainer,
   modalBox,
+  noBallContainer,
   noOfFour,
   noOfNOBall,
   noOfOtherRuns,
@@ -25,11 +27,15 @@ import {
   secondInnTotalRun,
   secondInnWicketFall,
   secondInnWicketFallWithRun,
+  secondInningLegByContainer,
+  secondInningNoBallContainer,
   secondInningRunRateChart,
+  secondInningWideBallContainer,
   totalNoOFBalls,
   totalRun,
   wicketFall,
   wicketFallWithRun,
+  wideBallContainer,
 } from "../Store/Action";
 import ModalPopUp from "./ModalPopUp";
 
@@ -47,6 +53,7 @@ const ScoreAddSection = () => {
   const [wicket, setWicket] = useState(0);
   const [overData, setOverData] = useState([]);
   const [legBy, setLegBy] = useState(0);
+
 
   //second inning State
   const [secondInnLegBy, setSecondInnLegBy] = useState(0);
@@ -122,19 +129,22 @@ const ScoreAddSection = () => {
   };
 
   const handleNoBall = (value) => {
-    dispatch(modalBox(true));
     if (!data.secondInning) {
       setNoBalls((prev) => prev + 1);
+      dispatch(noBallContainer(true))
     } else {
       setSecondInnNoBalls((prev) => prev + 1);
+      dispatch(secondInningNoBallContainer(true))
     }
+    dispatch(modalBox(true));
   };
-
   const handleWide = (value) => {
     if (!data.secondInning) {
       setWides((prevWides) => prevWides + 1);
+      dispatch(wideBallContainer(true))
     } else {
       setSecondInnWides((prevSecondInnWides) => prevSecondInnWides + 1);
+      dispatch(secondInningWideBallContainer(true))
     }
     dispatch(modalBox(true));
   };
@@ -143,11 +153,14 @@ const ScoreAddSection = () => {
     dispatch(modalBox(true));
     if (!data.secondInning) {
       setLegBy(true);
+      dispatch(legByContainer(true))
     } else {
       setSecondInnBalls(true);
+      dispatch(secondInningLegByContainer(true))
     }
   };
 
+  // wicket fall useEffect section
   useEffect(() => {
     if (!data.secondInning && wicket) {
       dispatch(wicketFall(wicket));
@@ -171,6 +184,7 @@ const ScoreAddSection = () => {
       );
     }
   }, [wicket, secondInnWicket]);
+
 
   useEffect(() => {
     if (!data.secondInning) {
@@ -231,6 +245,7 @@ const ScoreAddSection = () => {
     secondInnRuns,
   ]);
 
+  // getStart Button
   useEffect(() => {
     if (data.getStartButton) {
       setGetStartButtonActive(data.getStartButton);
@@ -238,6 +253,7 @@ const ScoreAddSection = () => {
     }
   }, [getStartButtonActive, data.getStartButton, showScoreContainer]);
 
+  // get Modal box
   useEffect(() => {
     setPopUp(data.modalBox);
   }, [data.modalBox]);
@@ -276,7 +292,7 @@ const ScoreAddSection = () => {
         })
       );
     }
-  }, [runRate, secondInnRunRate]);
+  }, [runRate, secondInnRunRate,data.secondInning]);
   return (
     <>
       {popUp && (

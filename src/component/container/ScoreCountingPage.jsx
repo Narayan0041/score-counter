@@ -11,6 +11,7 @@ import ScoreAddSection from "../ScoreAddSection";
 import ExtraRunsComponent from "../ExtraRunsComponent";
 import { useSelector } from "react-redux";
 import ModalPopUp from "../ModalPopUp";
+import BoundryPieChart from "../BoundryPieChart";
 
 const ScoreCountingPage = (props) => {
   const data = useSelector((state) => state.Reducers);
@@ -21,7 +22,7 @@ const ScoreCountingPage = (props) => {
       <Category setActiveCategory={setActiveCategory} />
       {activeCategory === "Home" && <ExtraRunsComponent />}
       {activeCategory === "Stats" && <Stats />}
-      {activeCategory === "Boundary" && <RingChart />}
+      {activeCategory === "Boundary" && <BoundryPieChart/>}
       {activeCategory === "Wicket Down" && <WicketDown />}
       {/* <Slider /> */}
       <ScoreAddSection />

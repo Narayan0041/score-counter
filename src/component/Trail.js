@@ -29,11 +29,11 @@ export const Trail = () => {
   const dynamicRunsData2 = data.secondInnRunScoreBoard
 
   const transformedRunsData1 = dynamicRunsData1.map((item) => ({
-    value: item.over,
+    label: item.over,
     value: item.runs
   }));
   const transformedRunsData2 = dynamicRunsData2.map((item) => ({
-    value: item.over,
+    label: item.over,
     value: item.secondInnRuns
   }));
   // console.error(transformedRunsData1)

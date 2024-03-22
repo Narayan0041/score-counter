@@ -1,7 +1,9 @@
 import {
   CURRENT_RUN_RATE,
+  LEG_BY_CONATAINER,
   MODAL_BOX,
   NO_BALL,
+  NO_BALL_CONTAINER,
   NO_OF_BALLS,
   NO_OF_BYE,
   NO_OF_FOUR,
@@ -13,7 +15,10 @@ import {
   SCORE_ADD_CONTAINER,
   SCORE_ADD_GET_START_BUTTON,
   SECOND_INNING,
+  SECOND_INNING_LEG_BY_CONATAINER,
+  SECOND_INNING_NO_BALL_CONTAINER,
   SECOND_INNING_RUN_RATE_CHART,
+  SECOND_INNING_WIDE_BALL_CONTAINER,
   SECOND_INN_CURRENT_RUN_RATE,
   SECOND_INN_NO_BALL,
   SECOND_INN_NO_OF_BALLS,
@@ -35,6 +40,7 @@ import {
   WICKET,
   WICKETFALL_WITH_RUN,
   WIDE_BALL,
+  WIDE_BALL_CONTAINER,
   runsScoreBoard,
   wicketFallWithRun,
 } from "../Action";
@@ -52,11 +58,14 @@ const initialState = {
   noOfNoBall: 0,
   noOfBye: 0,
   runScoreBoard: [],
-  runRateChart:[],
+  runRateChart: [],
   wicketFall: 0,
   noOfotherRuns: 0,
   noOfFour: 0,
   noOfSix: 0,
+  wideBallContainer: false,
+  noBallContainer: false,
+  legByContainer: false,
 
   secondInning: false,
   secondInnTotalRuns: 0,
@@ -66,7 +75,7 @@ const initialState = {
   secondInnNoOfNoBall: 0,
   secondInnNoOfBye: 0,
   secondInnRunScoreBoard: [],
-  secondInningRunRateChart:[],
+  secondInningRunRateChart: [],
   secondInnWicketFall: 0,
   getStartButton: false,
   modalBox: false,
@@ -76,6 +85,9 @@ const initialState = {
   secondInnNoOfSix: 0,
   wicketFallWithRun: [],
   secondInningWicketFallWithRun: [],
+  secondInningWideBallContainer: false,
+  secondInningNoBallContainer: false,
+  secondInningLegByContainer: false,
 };
 
 const Reducers = (state = initialState, action) => {
@@ -138,13 +150,13 @@ const Reducers = (state = initialState, action) => {
     case RUNS_SCORE_BOARD:
       return {
         ...state,
-        runScoreBoard: [...state.runScoreBoard ,action.payload],
+        runScoreBoard: [...state.runScoreBoard, action.payload],
       };
-      case RUN_RATE_CHART:
-        return{
-          ...state,
-          runRateChart:[...state.runRateChart , action.payload]
-        }
+    case RUN_RATE_CHART:
+      return {
+        ...state,
+        runRateChart: [...state.runRateChart, action.payload],
+      };
     case WICKET:
       return {
         ...state,
@@ -165,6 +177,25 @@ const Reducers = (state = initialState, action) => {
         ...state,
         noOfSix: action.payload,
       };
+
+    case WIDE_BALL_CONTAINER:
+      return {
+        ...state,
+        wideBallContainer: action.payload,
+      };
+    case NO_BALL_CONTAINER:
+      return {
+        ...state,
+        noBallContainer: action.payload,
+      };
+    case LEG_BY_CONATAINER:
+      return {
+        ...state,
+        legByContainer: action.payload,
+      };
+
+
+
 
     case SECOND_INNING:
       return {
@@ -251,11 +282,14 @@ const Reducers = (state = initialState, action) => {
         ...state,
         wicketFallWithRun: [...state.wicketFallWithRun, action.payload],
       };
-      case SECOND_INNING_RUN_RATE_CHART:
-        return{
-          ...state,
-          secondInningRunRateChart:[...state.secondInningRunRateChart , action.payload]
-        }
+    case SECOND_INNING_RUN_RATE_CHART:
+      return {
+        ...state,
+        secondInningRunRateChart: [
+          ...state.secondInningRunRateChart,
+          action.payload,
+        ],
+      };
     case SECOND_INN_WICKETFALL_WITH_RUN:
       return {
         ...state,
@@ -264,6 +298,22 @@ const Reducers = (state = initialState, action) => {
           action.payload,
         ],
       };
+
+      case SECOND_INNING_WIDE_BALL_CONTAINER:
+        return{
+          ...state,
+          secondInningWideBallContainer:action.payload
+        }
+        case SECOND_INNING_NO_BALL_CONTAINER:
+          return{
+            ...state,
+            secondInningNoBallContainer:action.payload
+          }
+          case SECOND_INNING_LEG_BY_CONATAINER:
+            return{
+              ...state,
+              secondInningLegByContainer: action.payload
+            }
     default:
       return state;
   }

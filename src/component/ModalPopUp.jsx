@@ -3,7 +3,19 @@ import React, { useState } from "react";
 import theme from "../theme/style";
 import Icon from "react-native-vector-icons/FontAwesome";
 import { useDispatch, useSelector } from "react-redux";
-import { modalBox, totalRun, secondInnTotalRun, noOfByes, secondInnNoOfByes } from "../Store/Action";
+import {
+  modalBox,
+  totalRun,
+  secondInnTotalRun,
+  noOfByes,
+  secondInnNoOfByes,
+  noBallContainer,
+  wideBallContainer,
+  legByContainer,
+  secondInningNoBallContainer,
+  secondInningWideBallContainer,
+  secondInningLegByContainer,
+} from "../Store/Action";
 
 const ModalPopUp = ({
   data,
@@ -15,60 +27,76 @@ const ModalPopUp = ({
   setLegBy,
   setSecondInnLegBy,
   setBalls,
-  setSecondInnBalls
+  setSecondInnBalls,
 }) => {
   let dispatch = useDispatch();
   const storeData = useSelector((state) => state.Reducers);
-  // console.warn(storeData.secondInnNoOfBye)
   const [closeModal, setCloseModal] = useState(undefined);
   const handleRun = (value) => {
-    // first ining add the No ball data
-    if (data && !storeData.secondInning) {
+    // console.warn(value)
+    if (storeData.noBallContainer && data && !storeData.secondInning) {
       setRuns(data + value + 1);
       dispatch(totalRun(data + value + 1));
-      dispatch(noOfByes(storeData.noOfBye + value))
+      dispatch(noOfByes(storeData.noOfBye + value));
+      dispatch(noBallContainer(false));
       dispatch(modalBox(false));
       setCloseModal(false);
     }
-    // second Inning No ball data
-    if (secondInningdata && storeData.secondInning) {
+    if (
+      storeData.secondInningNoBallContainer &&
+      secondInningdata &&
+      storeData.secondInning
+    ) {
       setSecondInnRuns(secondInningdata + value + 1);
       dispatch(secondInnTotalRun(secondInningdata + value + 1));
-      dispatch(secondInnNoOfByes(storeData.secondInnNoOfBye + value))
+      dispatch(secondInnNoOfByes(storeData.secondInnNoOfBye + value));
+      dispatch(secondInningNoBallContainer(false));
       dispatch(modalBox(false));
       setCloseModal(false);
     }
-    // --------------------------------Wide section ----------------------------------
-    if (setWides && !storeData.secondInning) {
+    
+    if (storeData.wideBallContainer && !storeData.secondInning) {
       setRuns(data + value + 1);
-      dispatch(noOfByes(storeData.noOfBye + value))
+      dispatch(noOfByes(storeData.noOfBye + value));
       dispatch(modalBox(false));
+      dispatch(wideBallContainer(false));
       setCloseModal(false);
     }
-    if (setSecondInnWides && storeData.secondInning) {
+    if (
+      storeData.secondInningWideBallContainer &&
+      setSecondInnWides &&
+      storeData.secondInning
+    ) {
       dispatch(secondInnTotalRun(secondInningdata + value + 1));
-      dispatch(secondInnNoOfByes(storeData.secondInnNoOfBye + value))
+      dispatch(secondInnNoOfByes(storeData.secondInnNoOfBye + value));
+      dispatch(secondInningWideBallContainer(false));
       dispatch(modalBox(false));
       setCloseModal(false);
     }
-    // ----------------------------------------LegBy--------------------------------------------
-    if (setLegBy && !storeData.secondInning) {
+    if (storeData.legByContainer && setLegBy && !storeData.secondInning) {
       setRuns(data + value + 1);
-      setBalls(prev =>prev +1)
-      dispatch(noOfByes(storeData.noOfBye + value))
+      setBalls((prev) => prev + 1);
+      dispatch(noOfByes(storeData.noOfBye + value));
       setLegBy(false);
+      dispatch(legByContainer(false));
       dispatch(modalBox(false));
       setCloseModal(false);
     }
-    if (setSecondInnLegBy && storeData.secondInning) {
+    if (
+      storeData.secondInningLegByContainer &&
+      setSecondInnLegBy &&
+      storeData.secondInning
+    ) {
       setRuns(data + value + 1);
-      setSecondInnBalls(prev =>prev +1)
+      setSecondInnBalls((prev) => prev + 1);
       setLegBy(false);
-      dispatch(secondInnNoOfByes(storeData.secondInnNoOfBye + value))
+      dispatch(secondInnNoOfByes(storeData.secondInnNoOfBye + value));
+      dispatch(secondInningLegByContainer(false));
       dispatch(modalBox(false));
       setCloseModal(false);
     }
   };
+
   const onClose = () => {
     dispatch(modalBox(false));
     setCloseModal(false);

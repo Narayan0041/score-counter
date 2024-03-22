@@ -28,12 +28,12 @@ export const Trail2 = () => {
   const dynamicRunsData2 = data.secondInningRunRateChart;
   // console.warn(dynamicRunsData2)
   const transformedRunsData1 = dynamicRunsData1.map((item) => ({
-    x: item.over,
+    label: item.over,
     value: Number(item.runRate), // Convert string to number
    }));
    
    const transformedRunsData2 = dynamicRunsData2.map((item) => ({
-    x: item.over,
+    label: item.over,
     value: Number(item.secondInnRunRate), // Convert string to number
    }));
    
@@ -60,7 +60,7 @@ export const Trail2 = () => {
         isAnimated={true}
         width={280}
         spacing={50}
-        initialSpacing={0}
+        initialSpacing={8}
         color1={theme.colors.fontColor}
         color2={theme.colors.primary}
         hideDataPoints1
