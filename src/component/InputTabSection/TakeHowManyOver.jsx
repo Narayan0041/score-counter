@@ -3,6 +3,7 @@ import { View, Text, Button, StyleSheet, TouchableOpacity } from "react-native";
 import theme from "../../theme/style";
 import { useDispatch, useSelector } from "react-redux";
 import { selectTheOver } from "../../Store/Action";
+import Icon from "react-native-vector-icons/Ionicons";
 
 export default function TakeHowManyOver(props) {
   let dispatch =useDispatch()
@@ -117,17 +118,18 @@ export default function TakeHowManyOver(props) {
               marginTop: 20,
             }}
           >
-            Please select above one option.
+            Please select above one over option.
           </Text>
         )}
       </View>
       <View style={styles.btnSection}>
         <View>
-          <TouchableOpacity onPress={handlePrev}>
-            <Text style={[styles.preButton, { color: theme.colors.fontColor }]}>
-              Go back
-            </Text>
-          </TouchableOpacity>
+        <TouchableOpacity onPress={handlePrev} style={styles.button}>
+  <View style={styles.buttonContent}>
+    <Icon name="chevron-back" size={22} color="white" />
+    <Text style={styles.buttonText}>Go back</Text>
+  </View>
+</TouchableOpacity>
         </View>
         <View>
           <TouchableOpacity onPress={handleNext}>
@@ -214,4 +216,18 @@ const styles = StyleSheet.create({
     fontSize: 20,
     fontWeight: "600",
   },
+  button: {
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  buttonContent: {
+    flexDirection: "row",
+    alignItems: "center",
+  },
+  buttonText: {
+    marginLeft:10,
+    fontSize: 20,
+    fontWeight: "600",
+    color: "white",
+  }
 });

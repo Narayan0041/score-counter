@@ -15,10 +15,11 @@ import {store , persistor} from "./src/Store/index"
 const Stack = createNativeStackNavigator();
 
 export default function App() {
-  // useEffect(() => {
-  //   SplashScreen.hide();
-  // }, []);
-  // const { store, persistor } = configureSto(); 
+  useEffect(() => {
+    if (SplashScreen) {
+      SplashScreen.hide();
+    }
+  }, []);
   return (
     <Provider store={store}>
       <PersistGate loading={null} persistor={persistor}>

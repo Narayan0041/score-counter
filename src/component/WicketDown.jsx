@@ -34,7 +34,7 @@ const WicketDown = () => {
     setActiveTeam(value);
   };
   return (
-    <ScrollView>
+    <ScrollView style={styles.ScrollViewContainer}>
       <View style={styles.displayTeamName}>
         <TouchableOpacity
           onPress={() => handleClick(currentBattingTeam)}
@@ -57,6 +57,8 @@ const WicketDown = () => {
               marginRight: "5%",
               marginLeft: 8,
               fontWeight: "600",
+              fontSize:16,
+              textTransform:"uppercase"
             }}
           >
             {currentBattingTeam}
@@ -78,14 +80,15 @@ const WicketDown = () => {
               borderRadius: 4,
             }}
           ></View>
-          <Text style={{ color: "white", marginLeft: 8, fontWeight: "600" }}>
+          <Text style={{ color: "white", marginLeft: 8, fontWeight: "600" , fontSize:16,
+              textTransform:"uppercase"}}>
             {secondTeamBatting}
           </Text>
         </TouchableOpacity>
       </View>
       <View style={styles.wicketDownContainer}>
         <Text style={[styles.title, { color: theme.colors.fontColor }]}>
-          FALL OF WICKET OF {activeTeam}
+          FALL OF WICKET 
         </Text>
         <View style={styles.table}>
   <View style={[styles.headerRow]}>
@@ -107,14 +110,7 @@ const WicketDown = () => {
         </Text>
       </View>
     ))
-  ) : wicketDownData.length === 0 ? (
-    <View style={styles.row}>
-      <Text style={[styles.cell, { color: theme.colors.fontColor }]}>-</Text>
-      <Text style={[styles.cell, { color: theme.colors.fontColor }]}>
-        No Wicket Fall
-      </Text>
-    </View>
-  ) : (
+  )  : (
     wicketDownData.map((item, index) => (
       <View style={styles.row} key={index}>
         <Text style={[styles.cell, { color: theme.colors.fontColor }]}>
@@ -128,7 +124,6 @@ const WicketDown = () => {
     ))
   )}
 </View>
-
       </View>
     </ScrollView>
   );
@@ -142,6 +137,9 @@ const styles = StyleSheet.create({
     marginLeft: 10,
     marginRight: 10,
   },
+  ScrollViewContainer:{
+    marginBottom:"25%"
+  },
   title: {
     fontSize: 20,
     fontWeight: "bold",
@@ -151,7 +149,7 @@ const styles = StyleSheet.create({
   displayTeamName: {
     flexDirection: "row",
     justifyContent: "center",
-    marginTop: "10%",
+    marginTop: "5%",
   },
   table: {
     // borderWidth: 1,

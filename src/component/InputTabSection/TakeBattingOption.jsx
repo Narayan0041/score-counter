@@ -3,6 +3,7 @@ import { View, Text, StyleSheet, TouchableOpacity, Image } from "react-native";
 import theme from "../../theme/style";
 import { useDispatch, useSelector } from "react-redux";
 import { whatYouChoose } from "../../Store/Action";
+import Icon from "react-native-vector-icons/Ionicons";
 
 export default function TakeBattingOption({ setActiveTab }) {
   let dispatch = useDispatch();
@@ -13,7 +14,7 @@ export default function TakeBattingOption({ setActiveTab }) {
   const [errorMessage, setErrorMessage] = useState(false);
 
   const handlePrev = () => {
-    setActiveTab(2); 
+    setActiveTab(2);
   };
 
   const handleNext = () => {
@@ -45,21 +46,37 @@ export default function TakeBattingOption({ setActiveTab }) {
       </Text>
       <View style={styles.battingContainer}>
         <View style={styles.option}>
-          <TouchableOpacity style={styles.radioBtnContainer} onPress={() => handleClick("batting")}>
+          <TouchableOpacity
+            style={styles.radioBtnContainer}
+            onPress={() => handleClick("batting")}
+          >
             <View style={styles.radioBtn}>
-              {activeTeam === "batting" && <View style={styles.activeBtn}></View>}
+              {activeTeam === "batting" && (
+                <View style={styles.activeBtn}></View>
+              )}
             </View>
             <Text style={styles.optionText}>Batting</Text>
-            <Image source={require("../../assets/cricket_bat.png")} style={styles.tossImage} />
+            <Image
+              source={require("../../assets/cricket_bat.png")}
+              style={styles.tossImage}
+            />
           </TouchableOpacity>
         </View>
         <View style={[styles.option, { marginTop: 24 }]}>
-          <TouchableOpacity style={styles.radioBtnContainer} onPress={() => handleClick("bowling")}>
+          <TouchableOpacity
+            style={styles.radioBtnContainer}
+            onPress={() => handleClick("bowling")}
+          >
             <View style={styles.radioBtn}>
-              {activeTeam === "bowling" && <View style={styles.activeBtn}></View>}
+              {activeTeam === "bowling" && (
+                <View style={styles.activeBtn}></View>
+              )}
             </View>
             <Text style={styles.optionText}>Bowling</Text>
-            <Image source={require("../../assets/cricket_ball.png")} style={styles.tossImage} />
+            <Image
+              source={require("../../assets/cricket_ball.png")}
+              style={styles.tossImage}
+            />
           </TouchableOpacity>
         </View>
       </View>
@@ -71,11 +88,18 @@ export default function TakeBattingOption({ setActiveTab }) {
       )}
 
       <View style={styles.btnSection}>
-        <TouchableOpacity onPress={handlePrev}>
-          <Text style={styles.preButton}>Go back</Text>
+        <TouchableOpacity onPress={handlePrev} style={styles.button}>
+          <View style={styles.buttonContent}>
+            <Icon name="chevron-back" size={22} color="white" />
+            <Text style={styles.buttonText}>Go back</Text>
+          </View>
         </TouchableOpacity>
         <TouchableOpacity onPress={handleNext}>
-          <Text style={[styles.nextButton, nextBtn ? null : styles.inActiveBtn]}>Next</Text>
+          <Text
+            style={[styles.nextButton, nextBtn ? null : styles.inActiveBtn]}
+          >
+            Next
+          </Text>
         </TouchableOpacity>
       </View>
     </View>
@@ -146,12 +170,14 @@ const styles = StyleSheet.create({
     paddingHorizontal: 25,
     paddingVertical: 12,
     borderRadius: 8,
+    alignItems: "center",
     fontSize: 20,
     fontWeight: "600",
-    color:"white"
+    color: "white",
   },
   nextButton: {
     backgroundColor: "orange",
+    color: "white",
     paddingHorizontal: 40,
     paddingVertical: 12,
     borderRadius: 8,
@@ -161,4 +187,18 @@ const styles = StyleSheet.create({
   inActiveBtn: {
     backgroundColor: "lightgray",
   },
+  button: {
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  buttonContent: {
+    flexDirection: "row",
+    alignItems: "center",
+  },
+  buttonText: {
+    marginLeft:10,
+    fontSize: 20,
+    fontWeight: "600",
+    color: "white",
+  }
 });

@@ -10,6 +10,7 @@ import {
 import theme from "../../theme/style";
 import { useDispatch, useSelector } from "react-redux";
 import { tossLoss, tossWin } from "../../Store/Action";
+import Icon from "react-native-vector-icons/Ionicons";
 
 export default function TakeTossInput({ setActiveTab }) {
   let dispatch = useDispatch();
@@ -35,10 +36,10 @@ export default function TakeTossInput({ setActiveTab }) {
     setActiveTeam(value === activeTeam ? "" : value);
   };
   useEffect(() => {
-    if(activeTeam ==teamNameData.HostName){
-      dispatch(tossLoss(teamNameData.VisitorName))
-    }else{
-      dispatch(tossLoss(teamNameData.HostName))
+    if (activeTeam == teamNameData.HostName) {
+      dispatch(tossLoss(teamNameData.VisitorName));
+    } else {
+      dispatch(tossLoss(teamNameData.HostName));
     }
     if (activeTeam === "") {
       setNextBtn(false);
@@ -123,10 +124,11 @@ export default function TakeTossInput({ setActiveTab }) {
       </View>
       <View style={styles.btnSection}>
         <View>
-          <TouchableOpacity onPress={handlePrev}>
-            <Text style={[styles.preButton, { color: theme.colors.fontColor }]}>
-              Go back
-            </Text>
+          <TouchableOpacity onPress={handlePrev} style={styles.button}>
+            <View style={styles.buttonContent}>
+              <Icon name="chevron-back" size={22} color="white" />
+              <Text style={styles.buttonText}>Go back</Text>
+            </View>
           </TouchableOpacity>
         </View>
         <View>
@@ -181,7 +183,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
-    marginTop: "80%",
+    marginTop: "90%",
   },
   preButton: {
     backgroundColor: "rgba(0, 128, 128, 1)",
@@ -212,4 +214,18 @@ const styles = StyleSheet.create({
     width: 20,
     marginLeft: 20,
   },
+  button: {
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  buttonContent: {
+    flexDirection: "row",
+    alignItems: "center",
+  },
+  buttonText: {
+    marginLeft:10,
+    fontSize: 20,
+    fontWeight: "600",
+    color: "white",
+  }
 });

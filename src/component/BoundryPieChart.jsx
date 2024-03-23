@@ -1,11 +1,12 @@
 import React, { useEffect, useState } from "react";
-import { Text, View, TouchableOpacity, StyleSheet } from "react-native";
+import { Text, View, TouchableOpacity, StyleSheet, ScrollView } from "react-native";
 import { PieChart } from "react-native-gifted-charts";
 import theme from "../theme/style";
 import { useSelector } from "react-redux";
 
 const BoundryPieChart = () => {
   const data = useSelector((store) => store.Reducers);
+  // console.warn(data.noOfotherRuns);
   const [focusedIndex, setFocusedIndex] = useState(2);
   const [currentBattingTeam, setCurrentBattingTeam] = useState("");
   const [secondTeamBatting, setSecondTeamBatting] = useState("");
@@ -27,9 +28,14 @@ const BoundryPieChart = () => {
     }
   }, [data, currentBattingTeam]);
 
-  let fourData =activeTeam === currentBattingTeam ? data.noOfFour :data.secondInnNoOfFour;
-  let sixData = activeTeam === currentBattingTeam ?data.noOfSix : data.secondInnNoOfSix;
-  let otherRuns =activeTeam === currentBattingTeam ?data.noOfotherRuns : data.secondInningNoOfOtherRuns;
+  let fourData =
+    activeTeam === currentBattingTeam ? data.noOfFour : data.secondInnNoOfFour;
+  let sixData =
+    activeTeam === currentBattingTeam ? data.noOfSix : data.secondInnNoOfSix;
+  let otherRuns =
+    activeTeam === currentBattingTeam
+      ? data.noOfotherRuns
+      : data.secondInningNoOfOtherRuns;
   const total = fourData + sixData + otherRuns;
   const handleClick = (value) => {
     setActiveTeam(value);
@@ -91,7 +97,7 @@ const BoundryPieChart = () => {
           <View style={styles.legendItem}>
             <View style={styles.legendItemContent}>
               <View style={{ flexDirection: "row", alignItems: "center" }}>
-                {renderDot("#3BE9DE")}
+                {renderDot("#rgb(217 0 141)")}
                 <Text style={styles.legendText}>SIXES </Text>
               </View>
               <Text style={styles.legendValue}>{sixData}</Text>
@@ -106,7 +112,9 @@ const BoundryPieChart = () => {
                 <Text style={styles.legendText}>OTHER RUNS </Text>
               </View>
               <Text style={styles.legendValue}>
-                {((otherRuns / total) * 100).toFixed(2)}%
+                {((otherRuns / total) * 100).toFixed(2) === "NaN"
+                  ? 0
+                  : ((otherRuns / total) * 100).toFixed(2)} %
               </Text>
             </View>
           </View>
@@ -116,7 +124,7 @@ const BoundryPieChart = () => {
   };
 
   return (
-    <>
+    <ScrollView style={styles.ScrollViewContainer}>
       <View style={styles.displayTeamName}>
         <TouchableOpacity
           onPress={() => handleClick(currentBattingTeam)}
@@ -139,6 +147,8 @@ const BoundryPieChart = () => {
               marginRight: "5%",
               marginLeft: 8,
               fontWeight: "600",
+              fontSize: 16,
+              textTransform: "uppercase",
             }}
           >
             {currentBattingTeam}
@@ -160,14 +170,22 @@ const BoundryPieChart = () => {
               borderRadius: 4,
             }}
           ></View>
-          <Text style={{ color: "white", marginLeft: 8, fontWeight: "600" }}>
+          <Text
+            style={{
+              color: "white",
+              marginLeft: 8,
+              fontWeight: "600",
+              fontSize: 16,
+              textTransform: "uppercase",
+            }}
+          >
             {secondTeamBatting}
           </Text>
         </TouchableOpacity>
       </View>
       <View style={{ flex: 1 }}>
         <View style={styles.container}>
-          <Text style={styles.header}>Boundary</Text>
+          <Text style={styles.header}>Show the number of Boundary</Text>
           <View style={styles.chartContainer}>
             <PieChart
               data={pieData}
@@ -198,15 +216,18 @@ const BoundryPieChart = () => {
           {renderLegendComponent()}
         </View>
       </View>
-    </>
+    </ScrollView>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
-    margin: 20,
+    // margin: 20,
     padding: 16,
     borderRadius: 20,
+  },
+  ScrollViewContainer:{
+    marginBottom:"15%",
   },
   header: {
     color: "white",
@@ -255,7 +276,7 @@ const styles = StyleSheet.create({
   displayTeamName: {
     flexDirection: "row",
     justifyContent: "center",
-    marginTop: "10%",
+    marginTop: "5%",
   },
   ringChartContainer: {
     marginTop: 30,

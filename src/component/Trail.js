@@ -36,8 +36,6 @@ export const Trail = () => {
     label: item.over,
     value: item.secondInnRuns
   }));
-  // console.error(transformedRunsData1)
-  // console.error(transformedRunsData2)
   const xAxisLabelTexts = noOfOver; // Custom x-axis labels
 
   return (
@@ -45,14 +43,14 @@ export const Trail = () => {
       <View style={styles.headerContainer}>
         <View style={styles.teamContainer}>
           <View style={styles.radio1}></View>
-          <Text style={styles.team1}>{currentBattingTeam}</Text>
+          <Text style={styles.team1}>{currentBattingTeam} - {data.totalRuns} / {data.wicketFall}</Text>
         </View>
         <View style={styles.teamContainer}>
           <View style={styles.radio2}></View>
-          <Text style={styles.team2}>{secondTeamBatting}</Text>
+          <Text style={styles.team2}>{secondTeamBatting} - {data.secondInnTotalRuns} / {data.secondInnWicketFall}</Text>
         </View>
       </View>
-      <View style={{ marginLeft: 10, marginTop: 10 }}>
+      <View style={{ marginLeft: 10, marginTop: 20 }}>
         <LineChart
           data={transformedRunsData1}
           data2={transformedRunsData2}
@@ -131,12 +129,12 @@ const styles = StyleSheet.create({
   },
   runsLabel: {
     position: "absolute",
-    left: -5,
+    left: 2,
     top: "50%",
     transform: [{ rotate: "-90deg" }],
   },
   oversLabel: {
     alignItems: "center",
-    marginTop: 5,
+    marginTop: 10,
   },
 });

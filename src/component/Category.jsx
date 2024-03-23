@@ -1,7 +1,7 @@
 import { StyleSheet, Text, View , FlatList, TouchableOpacity, Alert, TouchableHighlight } from "react-native";
 import React, { useState } from "react";
 import theme from "../theme/style";
-import Icon from "react-native-vector-icons/Ionicons"; // Import Ionicons from react-native-vector-icons
+import Icon from "react-native-vector-icons/Ionicons"; 
 
 const Category = ({setActiveCategory}) => {
     const [activeClass , setActiveClass] = useState("Home");

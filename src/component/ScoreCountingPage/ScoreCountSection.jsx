@@ -98,8 +98,6 @@ const ScoreCountSection = () => {
     if (!secondInn && parseFloat(overValue) == selectedOverByUser) {
       setSecondInn(true);
       dispatch(secondInning(true));
-      // setMessageForTeamOne(true);
-      // dispatch(getStartButton(true));
     }
     // wicket are fall
     if (data.noOfPlayer === data.wicketFall && !secondInn) {
@@ -108,7 +106,6 @@ const ScoreCountSection = () => {
     }
     // wicket fall second inning
     if (data.noOfPlayer === data.secondInnWicketFall && secondInn) {
-      // setMessageForTeamOne(true);
       setCompleteMatch(true);
       dispatch(getStartButton(true));
     }
@@ -136,9 +133,6 @@ const ScoreCountSection = () => {
       dispatch(getStartButton(true));
       setCompleteMatch(true);
     }
-    // else{
-    //   setMessageForTeamSecond(true)
-    // }
   }, [
     dataTeamOneRun,
     dataTeamTwoRun,
@@ -149,7 +143,7 @@ const ScoreCountSection = () => {
     completeMatch,
   ]);
   useEffect(() => {
-    if (secondInn && data.totalRuns <= data.secondInnTotalRuns) {
+    if (secondInn && data.totalRuns < data.secondInnTotalRuns) {
       setMessage(true);
       dispatch(getStartButton(true));
       setCompleteMatch(true);
@@ -165,7 +159,7 @@ const ScoreCountSection = () => {
           onPress={() => navigation.navigate("Home")}
           style={styles.iconContainer}
         >
-          <Icon name="arrow-back" size={20} color="white" />
+          <Icon name="chevron-back" size={20} color="white" />
         </TouchableHighlight>
         <View style={styles.info}>
           <View style={styles.teamsContainer}>
@@ -503,9 +497,10 @@ const styles = StyleSheet.create({
     color: theme.colors.fontColor,
   },
   vsText: {
-    fontSize: 16,
+    fontSize: 25,
     color: theme.colors.primary,
     fontWeight: "600",
+    fontStyle:"italic"
   },
   scoreSection: {
     marginTop: 30,
@@ -542,12 +537,14 @@ const styles = StyleSheet.create({
     height: 17,
   },
   iconContainer: {
+    marginTop:"1.2%",
     backgroundColor: "transparent",
   },
   navBarHeaderText: {
     color: theme.colors.fontColor,
     fontSize: 25,
     marginLeft: "10%",
+    alignItems:"center",
     fontWeight: "bold",
   },
   flexspainText: {

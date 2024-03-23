@@ -39,7 +39,7 @@ const Stats = () => {
       </View>
       {/* { activeButton === "Runs" && <LineChartComponent/>} */}
       {/* {activeButton === "Runrate" && <BarChartComponent/>} */}
-      {activeButton === "Runs" && <Trail data={[[10,28,25,6,6,8],[10,3,22,8,4,10],[1,2,7,2,10,5],[13,16,17,20,1,2]]}/>}
+      {activeButton === "Runs" && <Trail/>}
       {activeButton === "Runrate" && <Trail2 />}
     </View>
   );
@@ -53,20 +53,22 @@ const styles = StyleSheet.create({
   },
   flatListContainer: {
     width: "100%",
-    marginTop: 10,
+    backgroundColor:theme.colors.secondaryBackground,
+    marginTop: 15,
     justifyContent: "center",
     alignItems: "center",
     flexDirection: "row",
+    paddingBottom:2,
   },
   tabContainer: {
     width: "30%",
     borderRadius: 8,
-    backgroundColor: "gray",
+    // backgroundColor: "gray",
     padding: 10,
     justifyContent: "center",
     alignItems: "center", // Center text vertically
     marginHorizontal: 5,
-    marginTop: 10,
+    // marginTop: 10,
   },
   tabs: {
     color: theme.colors.fontColor,
@@ -74,7 +76,8 @@ const styles = StyleSheet.create({
     textTransform: "uppercase",
   },
   activeTab: {
-    backgroundColor: theme.colors.primary,
+    borderBottomWidth:2.1,
+    borderColor: theme.colors.primary,
   },
   activeText: {
     color: "white",

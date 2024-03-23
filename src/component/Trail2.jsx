@@ -45,13 +45,14 @@ export const Trail2 = () => {
       <View style={styles.headerContainer}>
         <View style={styles.teamContainer}>
           <View style={styles.radio1}></View>
-          <Text style={styles.team1}>Team 1</Text>
+          <Text style={styles.team1}>{currentBattingTeam} - {data.currentRunRate} rpo</Text>
         </View>
         <View style={styles.teamContainer}>
           <View style={styles.radio2}></View>
-          <Text style={styles.team2}>Team 2</Text>
+          <Text style={styles.team2}>{secondTeamBatting} - {data.secondInnCurrentRunRate} rpo</Text>
         </View>
       </View>
+      <View style={{marginTop: 20 }}>
       <LineChart
         data={transformedRunsData1}
         data2={transformedRunsData2}
@@ -66,7 +67,7 @@ export const Trail2 = () => {
         hideDataPoints1
         hideDataPoints2
         noOfSections={5}
-        stepHeight={25}
+        stepHeight={30}
         dashGap={3}
         rulesColor="#444444"
         xAxisLabelTexts={xAxisLabelTexts}
@@ -76,6 +77,7 @@ export const Trail2 = () => {
         yAxisColor={theme.colors.secondaryBackground}
         xAxisColor={theme.colors.fontColor}
       />
+      </View>
       <View style={styles.runsLabel}>
         <Text style={styles.team2}>Runs</Text>
       </View>
@@ -102,7 +104,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   team1: {
-    color: theme.colors.primary,
+    color: "white",
     fontSize: 15,
     fontWeight: "600",
   },
@@ -113,27 +115,27 @@ const styles = StyleSheet.create({
   },
   radio1: {
     height: 8,
-    width: 25,
-    backgroundColor: theme.colors.primary,
+    width: 15,
+    backgroundColor:theme.colors.fontColor ,
     borderRadius: 4,
     marginRight: 5,
   },
   radio2: {
     height: 8,
-    width: 25,
-    backgroundColor: "white",
+    width: 15,
+    backgroundColor: theme.colors.primary,
     borderRadius: 4,
     marginLeft: 30,
     marginRight: 5,
   },
   runsLabel: {
     position: "absolute",
-    left: -5,
+    left: 2,
     top: "50%",
     transform: [{ rotate: "-90deg" }],
   },
   oversLabel: {
     alignItems: "center",
-    marginTop: 5,
+    marginTop: 10,
   },
 });

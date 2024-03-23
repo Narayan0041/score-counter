@@ -43,6 +43,7 @@ const ScoreAddSection = () => {
   let dispatch = useDispatch();
   let data = useSelector((state) => state.Reducers);
   // console.warn(data);
+
   // console.error(data.secondInnRunScoreBoard)
   const [showScoreContainer, setShowScoreContainer] = useState(false);
   const [balls, setBalls] = useState(0);
@@ -53,7 +54,6 @@ const ScoreAddSection = () => {
   const [wicket, setWicket] = useState(0);
   const [overData, setOverData] = useState([]);
   const [legBy, setLegBy] = useState(0);
-
 
   //second inning State
   const [secondInnLegBy, setSecondInnLegBy] = useState(0);
@@ -131,33 +131,33 @@ const ScoreAddSection = () => {
   const handleNoBall = (value) => {
     if (!data.secondInning) {
       setNoBalls((prev) => prev + 1);
-      dispatch(noBallContainer(true))
+      dispatch(noBallContainer(true));
     } else {
       setSecondInnNoBalls((prev) => prev + 1);
-      dispatch(secondInningNoBallContainer(true))
+      dispatch(secondInningNoBallContainer(true));
     }
     dispatch(modalBox(true));
   };
   const handleWide = (value) => {
     if (!data.secondInning) {
       setWides((prevWides) => prevWides + 1);
-      dispatch(wideBallContainer(true))
+      dispatch(wideBallContainer(true));
     } else {
       setSecondInnWides((prevSecondInnWides) => prevSecondInnWides + 1);
-      dispatch(secondInningWideBallContainer(true))
+      dispatch(secondInningWideBallContainer(true));
     }
     dispatch(modalBox(true));
   };
 
   const handleLegBy = (value) => {
-    dispatch(modalBox(true));
     if (!data.secondInning) {
       setLegBy(true);
-      dispatch(legByContainer(true))
+      dispatch(legByContainer(true));
     } else {
       setSecondInnBalls(true);
-      dispatch(secondInningLegByContainer(true))
+      dispatch(secondInningLegByContainer(true));
     }
+    dispatch(modalBox(true));
   };
 
   // wicket fall useEffect section
@@ -184,7 +184,6 @@ const ScoreAddSection = () => {
       );
     }
   }, [wicket, secondInnWicket]);
-
 
   useEffect(() => {
     if (!data.secondInning) {
@@ -222,16 +221,11 @@ const ScoreAddSection = () => {
         dispatch(secondInnCurrentRunRate(runRateValue));
       }
       if (secondInnNoBalls) {
-        dispatch(modalBox(true));
         dispatch(secondInnNoOfNOBall(secondInnNoBalls));
       }
       if (secondInnWides) {
         dispatch(secondInnNoOfWideBall(secondInnWides));
       }
-
-      // if (runsInOver) {
-      //   dispatch(runsScoreBoard(runsInOver));
-      // }
     }
   }, [
     runs,
@@ -243,6 +237,7 @@ const ScoreAddSection = () => {
     runsInOver,
     secondInnWicket,
     secondInnRuns,
+    secondInnBalls,
   ]);
 
   // getStart Button
@@ -266,18 +261,6 @@ const ScoreAddSection = () => {
           over: `${Math.floor(balls / 6)}.${balls % 6}`,
         })
       );
-    } else {
-      dispatch(
-        secondInnRunsScoreBoard({
-          secondInnRuns,
-          over: `${Math.floor(secondInnBalls / 6)}.${secondInnBalls % 6}`,
-        })
-      );
-    }
-  }, [runs, balls, secondInnRuns, secondInnBalls, data.secondInning]);
-
-  useEffect(() => {
-    if (!data.secondInning) {
       dispatch(
         runRateChart({
           runRate,
@@ -286,13 +269,20 @@ const ScoreAddSection = () => {
       );
     } else {
       dispatch(
+        secondInnRunsScoreBoard({
+          secondInnRuns,
+          over: `${Math.floor(secondInnBalls / 6)}.${secondInnBalls % 6}`,
+        })
+      );
+      dispatch(
         secondInningRunRateChart({
           secondInnRunRate,
           over: `${Math.floor(secondInnBalls / 6)}.${secondInnBalls % 6}`,
         })
       );
     }
-  }, [runRate, secondInnRunRate,data.secondInning]);
+  }, [runs, balls, secondInnRuns, secondInnBalls, data.secondInning]);
+
   return (
     <>
       {popUp && (
@@ -389,18 +379,18 @@ const ScoreAddSection = () => {
                 style={[styles.extraOptionBox, { paddingTop: 1 }]}
                 onPress={() => setShowScoreContainer(false)}
               >
+                  {/* <Text style={{ color: "white", fontWeight: "800" }}>
+                    Close Tab
+                  </Text> */}
                 <Icon
-                  name="arrow-down-sharp"
+                  name="chevron-down"
                   style={{
-                    fontSize: 20,
-                    paddingTop: 0,
+                    fontSize: 25,
+                    paddingTop: "10%",
                     fontWeight: "800",
                     color: theme.colors.fontColor,
                   }}
                 />
-                <Text style={{ color: "white", fontWeight: "800" }}>
-                  Close Tab
-                </Text>
               </TouchableOpacity>
               <TouchableOpacity
                 style={styles.extraOptionBox}
@@ -408,12 +398,13 @@ const ScoreAddSection = () => {
               >
                 <Text style={styles.extraOptionText}>LB</Text>
               </TouchableOpacity>
-              <TouchableOpacity
+              {/* <TouchableOpacity
                 style={styles.extraOptionBox}
                 onPress={() => handleLegBy("UNDO")}
+                disabled={true}
               >
                 <Text style={styles.extraOptionText}>UNDO</Text>
-              </TouchableOpacity>
+              </TouchableOpacity> */}
             </View>
           </View>
         ) : (

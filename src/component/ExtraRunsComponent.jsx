@@ -61,6 +61,8 @@ const ExtraRunsComponent = () => {
               marginRight: "5%",
               marginLeft: 8,
               fontWeight: "600",
+              textTransform:"uppercase",
+              fontSize:16
             }}
           >
             {currentBattingTeam}
@@ -83,12 +85,15 @@ const ExtraRunsComponent = () => {
               borderRadius: 4,
             }}
           ></View>
-          <Text style={{ color: "white", marginLeft: 8, fontWeight: "600" }}>
+          <Text style={{ color: "white", marginLeft: 8, fontWeight: "600", textTransform:"uppercase" ,fontSize:16 }}>
             {secondTeamBatting}
           </Text>
         </TouchableOpacity>
       </View>
-
+{/* 
+    <View>
+      <Text style={{color:"white", textAlign:"center", marginTop:"5%", fontWeight:"600"}}>Extra Run for {activeTeam}</Text>
+    </View> */}
       <View style={styles.extraRunComponenr}>
         <View style={styles.table}>
           <View
@@ -149,7 +154,7 @@ const styles = StyleSheet.create({
   displayTeamName: {
     flexDirection: "row",
     justifyContent: "center",
-    marginTop: "10%",
+    marginTop: "5%",
   },
   extraRunComponenr: {
     marginTop: "5%",
