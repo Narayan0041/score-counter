@@ -12,7 +12,7 @@ const Category = ({setActiveCategory}) => {
         { name: "Wicket Down", icon: "tennisball" }, // Add the "Boundary" icon here
         // { name: "Score", icon: "trophy" }, 
         // { name: "Watch Party ", icon: "eye" }, 
-        // { name: "Point Table", icon: "list" }
+        { name: "Point Table", icon: "trophy" }
     ];
 
     const handleClick = (item) => {

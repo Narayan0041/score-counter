@@ -112,9 +112,9 @@ const BoundryPieChart = () => {
                 <Text style={styles.legendText}>OTHER RUNS </Text>
               </View>
               <Text style={styles.legendValue}>
-                {((otherRuns / total) * 100).toFixed(2) === "NaN"
+                {((otherRuns / total) * 100).toFixed(0) === "NaN"
                   ? 0
-                  : ((otherRuns / total) * 100).toFixed(2)} %
+                  : ((otherRuns / total) * 100).toFixed(0)} %
               </Text>
             </View>
           </View>
